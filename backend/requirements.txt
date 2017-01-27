@@ -1,0 +1,7 @@
+rq
+django
+djangorestframework
+drfdocs
+drf-tracking
+django-cors-headers
+django_rq
