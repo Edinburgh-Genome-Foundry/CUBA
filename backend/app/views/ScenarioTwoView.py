@@ -19,7 +19,7 @@ class worker_class(AsyncWorker):
         time.sleep(3)
 
         self.set_progress_message("Job (fakely) in progress")
-        text = ("Congratulations, your new pet has been generated. It's called"
+        text = ("Congratulations, your new pet has been generated. Its name is"
                 "%{name}, has %{legs} legs and %{eyes} eyes.") % self.data
         time.sleep(3)
 

@@ -1,8 +1,8 @@
 {
-  "name": "dnaweaverdemo",
+  "name": "cab-frontend",
   "version": "1.0.0",
-  "description": "Demo for DnaWeaver",
-  "author": "Zulko <valentin.zulkower@gmail.com>",
+  "description": "Frontend for a Computational Application Boilerplate",
+  "author": "Zulko <valentin.zulkower@ed.ac.uk>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -35,7 +35,7 @@
     "eslint-loader": "^1.5.0",
     "eslint-plugin-html": "^1.3.0",
     "eslint-config-standard": "^6.1.0",
-    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.13.3",

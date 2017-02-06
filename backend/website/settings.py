@@ -25,7 +25,10 @@ SECRET_KEY = '$^w)ki!o4e415@l@^8n1*cy6q8wfo#wul0wj^q6q0wqu4$c*o!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+USING_DOCKER = os.getenv("USING_DOCKER", False)
+REDIS_HOST = 'redis' if USING_DOCKER else "localhost"
+REPORTING_HOST = 'django' if USING_DOCKER else "localhost"
+ALLOWED_HOSTS = list(set([REPORTING_HOST, "localhost"]))
 
 # Application definition
 
@@ -133,14 +136,16 @@ STATICFILES_DIRS = (
 
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
+        # 'URL': 'redis://localhost:6379/0',
+        'HOST': REDIS_HOST,
         'PORT': 6379,
         'DB': 0,
         #'PASSWORD': 'some-password',
         'DEFAULT_TIMEOUT': 360,
     },
     'high': {
-        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        # If you're on Heroku
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'),
         'DEFAULT_TIMEOUT': 500,
     },
     'low': {

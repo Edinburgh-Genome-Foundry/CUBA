@@ -1,4 +1,5 @@
 import json
+import os
 
 from rest_framework_tracking.mixins import LoggingMixin
 
@@ -7,13 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
-from django.urls import reverse
-
 import django_rq
 import rq
-
-import dnaweaver as dw
-import requests
 
 class ObjectDict(dict):
 
@@ -59,8 +55,6 @@ class SerializerView(APIView):
             return ObjectDict.from_dict(request.data)
 
 
-
-
 class PollJobView(SerializerView):
     renderer_classes = (JSONRenderer,)
     class serializer_class(serializers.Serializer):
@@ -69,15 +63,19 @@ class PollJobView(SerializerView):
     def post(self, request, format=None):
         """A view to report the progress to the user."""
         data = self.serialize(request)
-        # job_id = request.POST['job_id']
         job = django_rq.get_queue("default").fetch_job(data.job_id)
         if job is None:
             return Response(dict(success=False, error="Unknown job ID."))
+        job_status = job.get_status()
+        success, error = True, ""
+        if job_status == "failed":
+            success = False
+            error = 'There was an internal error during solving.'
         return Response(
             dict(
-                success=True,
-                status=job.get_status(),
-                error='',
+                success=success,
+                status=job_status,
+                error=error,
                 progress=dict(
                   data=job.meta.get('progress_data', None),
                   message=job.meta.get('progress_message', None)
@@ -86,6 +84,7 @@ class PollJobView(SerializerView):
             ),
             status=status.HTTP_200_OK
         )
+
 
 class StartJobView(SerializerView, LoggingMixin):
     renderer_classes = (JSONRenderer, )
@@ -113,13 +112,16 @@ class JobResult:
         self.file_name = file_name
 
     def as_json(self):
-        return dict(
-            error=self.error,
-            json=self.json,
-            preview=dict(html=self.preview_html, js=self.preview_js),
-            file=dict(data=self.file_data, name=self.file_name,
-                      mimetype=self.file_mimetype)
-        )
+        preview = (None if self.preview_html is None else
+                   dict(html=self.preview_html, js=self.preview_js))
+        file = (None if self.file_data is None else
+                dict(data=self.file_data, name=self.file_name,
+                     mimetype=self.file_mimetype))
+        return dict(error=self.error,
+                    json=self.json,
+                    preview=preview,
+                    file=file)
+
 
 class AsyncWorker:
 
@@ -127,7 +129,6 @@ class AsyncWorker:
 
         self.job = job
         self.data = data
-        self.domain_name = self.data.pop("domain_name", None)
 
     def set_progress_message(self, message):
         self.job.meta['progress_message'] = message

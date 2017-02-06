@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .base import AsyncWorker, StartJobView
 import requests
 import time
+from website.settings import REPORTING_HOST
 from django.urls import reverse
 
 class serializer_class(serializers.Serializer):
@@ -15,7 +16,7 @@ class worker_class(AsyncWorker):
     generate_preview = True
 
     def work(self):
-        print("i am here")
+        print("i am here AH AH AH AH AH AH AH ")
         print(self.data)
 
         self.set_progress_message("Job (fakely) in progress")
@@ -31,13 +32,14 @@ class worker_class(AsyncWorker):
             "generate_report": self.generate_report,
             "generate_preview": self.generate_preview,
         }
-        reports_uri = "http://%s%s" % (self.domain_name, reverse("reports"))
+        reports_uri = "http://%s%s" % (REPORTING_HOST + ':8000',
+                                       reverse("reports"))
         response = requests.post(reports_uri, request_data)
+        print(reports_uri)
+        print(response)
         time.sleep(1)
 
         return response.json()
-
-
 
 
 class ScenarioOneView(StartJobView):

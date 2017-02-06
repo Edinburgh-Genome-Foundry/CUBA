@@ -1,0 +1,12 @@
+sut:
+  build: .
+  dockerfile: Dockerfile.test
+  links:
+    - web
+web:
+  build: .
+  dockerfile: Dockerfile
+  links:
+    - redis
+redis:
+  image: redis

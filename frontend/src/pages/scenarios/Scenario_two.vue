@@ -1,25 +1,24 @@
 <template lang="pug">
-scenario(:title='infos.title', v-model='fields', :backendUrl='infos.backendUrl')
-  div(slot="head")
-    img.title-img.center-block(slot='title-img', :src='infos.icon')
-    | In this scenario we will learn how to make mammoths.
-    el-collapse(slot='learnmore-paragr')
-      el-collapse-item(title='Learn more', name='1')
-        div
-          | Bla bla bla.
-          | Bla bla bla.
+div
+  h1 {{infos.title}}
+  img.title-img.center-block(slot='title-img', :src='infos.icon')
+  | Lets make mammoths.
+  learnmore
+    p Bla bla bla
 
-  div(slot='form')
+  .form
     h4 NAME
-    el-input(placeholder="Name you pet" v-model="fields.name")
+    el-input(placeholder="Name you pet" v-model="form.name")
     h4 Number of legs
-    el-slider(v-model="fields.legs", :min='legsRange[0]', :max='legsRange[1]')
+    el-slider(v-model="form.legs", :min='legsRange[0]', :max='legsRange[1]')
     h4 Number of eyes
-    el-slider(v-model="fields.eyes", :min='eyesRange[0]', :max='eyesRange[1]')
+    el-slider(v-model="form.eyes", :min='eyesRange[0]', :max='eyesRange[1]')
+    resultsarea(:form='form', :backendUrl='infos.backendUrl')
 </template>
 
 <script>
-import scenario from './Scenario'
+import resultsarea from './ResultsArea'
+import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
   title: 'Scenario 2',
@@ -33,7 +32,7 @@ var infos = {
 export default {
   data: function () {
     return {
-      fields: {
+      form: {
         name: '',
         legs: 4,
         eyes: 2
@@ -44,7 +43,8 @@ export default {
     }
   },
   components: {
-    scenario
+    resultsarea,
+    learnmore
   },
   infos: infos
 }
