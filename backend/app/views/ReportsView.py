@@ -24,7 +24,7 @@ class ReportsView(SerializerView):
         data = self.serialize(request)
         if not isinstance(data, dict):
             return data
-        print ("rololo", data.text)
+        print ("rolollolol", data.text)
         weasywriter = HTML(string=u"<h1>Report</h1><p>%s</p>" % data.text)
         root = flametree.file_tree("@memory")
         weasywriter.write_pdf(root._file("Report.pdf"))

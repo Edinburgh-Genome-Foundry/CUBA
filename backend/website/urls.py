@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^poll$', views.PollJobView.as_view()),
     url(r'^start/scenario_one$', views.ScenarioOneView.as_view()),
     url(r'^start/scenario_two$', views.ScenarioOneView.as_view()),
+    url(r'^start/test$', views.TestView.as_view()),
     url(r'^reports', views.ReportsView.as_view(), name="reports"),
 
     url(r'^docs/', include('rest_framework_docs.urls')),

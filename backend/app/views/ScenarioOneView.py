@@ -16,12 +16,12 @@ class worker_class(AsyncWorker):
     generate_preview = True
 
     def work(self):
-        print("i am here AH AH AH AH AH AH AH ")
+        print("i am here AH AH AH")
         print(self.data)
 
         self.set_progress_message("Job (fakely) in progress")
         text = (
-            "Congratulations, your new pet has been generated. It's called "
+            "Congratulations! your new pet has been generated. It's called "
             "{name}, has {legs} legs and {eyes} eyes."
         ).format(**self.data)
         time.sleep(1)

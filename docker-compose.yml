@@ -24,13 +24,15 @@ services:
   rqworker:
     restart: always
     build: backend
-    command: python manage.py rqworker
+    command: ./rqworker.sh
     links:
       - redis
       - django
     depends_on:
       - redis
       - django
+    volumes:
+      - ./backend:/code
 
   vue:
     restart: always

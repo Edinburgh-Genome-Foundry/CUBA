@@ -41,6 +41,13 @@ class ObjectDict(dict):
             obj.__dict__[sanitized_key] = value
         return obj
 
+    def __repr__(self):
+    return "Obj(%s)" % str({
+        k: str(v) if (isinstance(v, ObjectDict) or (len(str(v)) < 50))
+                  else (str(v)[:50] + "...")
+        for k, v in self.items()
+    })
+
 
 class SerializerView(APIView):
     def serialize(self, request):
@@ -146,4 +153,4 @@ class AsyncWorker:
         result = agent.work()
         if isinstance(result, JobResult):
             result = result.as_json()
-        return result
+        return ObjectDict(result)
