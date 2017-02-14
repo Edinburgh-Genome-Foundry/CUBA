@@ -23,12 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$^w)ki!o4e415@l@^8n1*cy6q8wfo#wul0wj^q6q0wqu4$c*o!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', True)
 
 USING_DOCKER = os.getenv("USING_DOCKER", False)
 REDIS_HOST = 'redis' if USING_DOCKER else "localhost"
 REPORTING_HOST = 'django' if USING_DOCKER else "localhost"
-ALLOWED_HOSTS = list(set([REPORTING_HOST, "localhost"]))
+ALLOWED_HOSTS = ['*'] # list(set([REPORTING_HOST, "localhost"]))
 
 # Application definition
 

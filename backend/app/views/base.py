@@ -42,14 +42,15 @@ class ObjectDict(dict):
         return obj
 
     def __repr__(self):
-    return "Obj(%s)" % str({
-        k: str(v) if (isinstance(v, ObjectDict) or (len(str(v)) < 50))
-                  else (str(v)[:50] + "...")
-        for k, v in self.items()
-    })
+        return "Obj(%s)" % str({
+             k: str(v) if (isinstance(v, ObjectDict) or (len(str(v)) < 50))
+                       else (str(v)[:50] + "...")
+             for k, v in self.items()
+        })
 
 
 class SerializerView(APIView):
+    """Base class for a view with a serializer."""
     def serialize(self, request):
         if hasattr(self, 'serializer_class'):
             serializer = self.serializer_class(data=request.data)
@@ -63,6 +64,7 @@ class SerializerView(APIView):
 
 
 class PollJobView(SerializerView):
+    """View returning the status and possibly the result of a job"""
     renderer_classes = (JSONRenderer,)
     class serializer_class(serializers.Serializer):
         job_id = serializers.CharField(label="Job ID")

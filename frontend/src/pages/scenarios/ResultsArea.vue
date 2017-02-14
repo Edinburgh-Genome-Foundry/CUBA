@@ -22,6 +22,7 @@ import honeypot from '../../components/widgets/Honeypot'
 import downloadbutton from '../../components/widgets/DownloadButton'
 import spinner from 'vue-spinner/src/PulseLoader'
 import tools from '../../tools.js'
+import ip from 'ip'
 
 export default {
   mixins: [tools.valueTracker],
@@ -30,7 +31,7 @@ export default {
     submitButtonText: {default: 'Submit'},
     value: {default: () => ({})},
     backendUrl: {default: ''},
-    backendRoot: {default: 'http://localhost:8000/'},
+    backendRoot: {default: 'http://' + ip.address() + ':8000/'},
     form: {default: () => ({})}
   },
   data: function () {

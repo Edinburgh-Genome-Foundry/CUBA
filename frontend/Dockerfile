@@ -1,6 +1,7 @@
 FROM node:alpine
 
 # Bundle app source
+RUN npm install http-server -g
 RUN mkdir /code
 ADD . /code
 WORKDIR /code
