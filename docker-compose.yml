@@ -42,3 +42,4 @@ services:
       - "8080:8080"
     volumes:
       - ./frontend:/code
+      - /code/node_modules

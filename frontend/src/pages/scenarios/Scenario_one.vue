@@ -1,8 +1,8 @@
 <template lang="pug">
 div
   h1 {{infos.title}}
-  img.title-img.center-block(slot='title-img', :src='infos.icon')
-  | Lets make dinosaurs.
+  img.icon(:src='infos.icon')
+  p Lets make dinosaurs.
   learnmore
     p Bla bla bla
 
@@ -13,7 +13,7 @@ div
     el-slider(v-model="form.legs", :min='legsRange[0]', :max='legsRange[1]')
     h4 Number of eyes
     el-slider(v-model="form.eyes", :min='eyesRange[0]', :max='eyesRange[1]')
-    resultsarea(:form='form', :backendUrl='infos.backendUrl')
+    resultsarea(:form='form', :backendUrl='infos.backendUrl', :validate_form='validate_form')
 </template>
 
 <script>
@@ -46,7 +46,16 @@ export default {
     resultsarea,
     learnmore
   },
-  infos: infos
+  infos: infos,
+  methods: {
+    validate_form: function () {
+      var errors = []
+      if (this.form.name.length === 0) {
+        errors.push('You must give a name to your pet.')
+      }
+      return errors
+    }
+  }
 }
 </script>
 

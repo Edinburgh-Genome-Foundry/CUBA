@@ -2,11 +2,12 @@
 el-row
   el-col(:xs="24", :sm="12", :md="6", :lg="6" v-for='scenario in scenarios')
     el-card.box-card
-      img(:src='scenario.infos.icon', alt='')
+      img.icon(:src='scenario.infos.icon', alt='')
       .caption
         h3 {{scenario.infos.title}}
         p.thumbnail-description {{scenario.infos.description}}
-        router-link.btn.btn-primary(:to='scenario.infos.path') Go
+        router-link(:to='scenario.infos.path')
+          el-button(type='primary') Go
 </template>
 
 <script>

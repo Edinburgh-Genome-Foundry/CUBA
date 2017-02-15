@@ -1,7 +1,5 @@
 <template lang='pug'>
-a.btn.btn-lg.btn-default.center-block.download-button(type='button' @click='downloadContent')
-  i.el-icon-document
-  span Download Report
+el-button.download.center(type='primary' @click='downloadContent' icon='document') Download Report
 </template>
 
 <script>
@@ -23,12 +21,4 @@ export default {
 </script>
 
 <style scoped>
-.download-button {
-  margin-top: 20px;
-  max-width: 230px;
-}
-.el-icon-document {
-  display: inline;
-  margin-right: 10px
-}
 </style>

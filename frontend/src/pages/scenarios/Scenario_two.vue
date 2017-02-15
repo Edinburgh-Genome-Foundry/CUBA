@@ -1,8 +1,8 @@
 <template lang="pug">
 div
   h1 {{infos.title}}
-  img.title-img.center-block(slot='title-img', :src='infos.icon')
-  | Lets make mammoths.
+  img.icon(slot='title-img', :src='infos.icon')
+  p Lets make mammoths.
   learnmore
     p Bla bla bla
 

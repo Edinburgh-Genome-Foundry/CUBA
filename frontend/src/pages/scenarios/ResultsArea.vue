@@ -1,7 +1,7 @@
 <template lang='pug'>
 div
   honeypot(v-model='honeypot')
-  .btn.btn-lg.btn-default.center-block.submit-button(v-if='submitButton && (!polling.inProgress)' @click='submit()') {{submitButtonText }}
+  el-button.center(v-if='submitButton && (!polling.inProgress)' @click='submit()') {{submitButtonText }}
   .polling(v-if='polling.inProgress')
     spinner(:color="spinner.color", :size="spinner.size")
     .polling-message {{polling.message}}
@@ -11,10 +11,11 @@ div
       el-step.last-step(icon='message')
 
   //- el-alert(v-if='result.error', :title="result.error", type="warning")
-  el-alert(v-if='requestError', :title="requestError", type="error")
+  el-alert(v-if='requestError', :title="requestError", type="error", :closable="false")
   .results(v-if='!polling.inProgress')
-    .results-summary(v-if='result.preview', v-html="result.preview.html")
     downloadbutton(:filedata='result.file' v-if='result.file')
+    .results-summary(v-if='result.preview', v-html="result.preview.html")
+
 </template>
 
 <script>
@@ -32,7 +33,8 @@ export default {
     value: {default: () => ({})},
     backendUrl: {default: ''},
     backendRoot: {default: 'http://' + ip.address() + ':8000/'},
-    form: {default: () => ({})}
+    form: {default: () => ({})},
+    validate_form: {default: () => () => ([])}
   },
   data: function () {
     return {
@@ -85,8 +87,12 @@ export default {
   },
   methods: {
     submit: function () {
-      console.log('form', this.form)
-      console.log('sc2', this.$http, this.backendUrl)
+      var errors = this.validate_form()
+      if (errors.length) {
+        this.requestError = 'Invalid form: ' + errors.join('   ')
+        return false
+      }
+
       this.$http.post(
         this.backendRoot + this.backendUrl,
         this.form
@@ -157,7 +163,8 @@ export default {
 .el-alert {
   margin: 15px auto 15px;
   width: auto;
-  max-width: 500px;
+  font-size: 14px;
+  max-width: 700px;
   padding-right: 40px
 }
 

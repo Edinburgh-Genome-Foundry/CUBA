@@ -57,14 +57,29 @@ body {
   margin: 0px auto;
 }
 
+.el-button {
+  font-size: 18px;
+}
 
+.el-button.center {
+  display: block;
+  margin: 2em auto;
+}
 
 h1, h2 {
   text-align: center;
-  margin-bottom:1.5em
-
+  margin-bottom:1em;
+  font-weight: normal
 }
 
+h1 { font-size: 3em; }
+h2 { font-size: 2em; }
+
+img.icon {
+  display: block;
+  margin: 0 auto;
+  max-width: 100px;
+}
 
 
 

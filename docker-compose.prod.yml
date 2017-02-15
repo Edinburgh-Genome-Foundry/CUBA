@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  django:
+    environment:
+      - DEBUG=0
+
+  rqworker:
+    environment:
+      - DEBUG=0
+
+  vue:
+    command: ./production_server.sh
