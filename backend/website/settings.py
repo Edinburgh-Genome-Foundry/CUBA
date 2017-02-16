@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$^w)ki!o4e415@l@^8n1*cy6q8wfo#wul0wj^q6q0wqu4$c*o!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', True)
+DEBUG = (os.getenv('DEBUG', 'true').lower() in ['true', '1', 'yes'])
 
 USING_DOCKER = os.getenv("USING_DOCKER", False)
 REDIS_HOST = 'redis' if USING_DOCKER else "localhost"

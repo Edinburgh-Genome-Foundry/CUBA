@@ -15,7 +15,6 @@ div
   .results(v-if='!polling.inProgress')
     downloadbutton(:filedata='result.file' v-if='result.file')
     .results-summary(v-if='result.preview', v-html="result.preview.html")
-
 </template>
 
 <script>
@@ -23,7 +22,6 @@ import honeypot from '../../components/widgets/Honeypot'
 import downloadbutton from '../../components/widgets/DownloadButton'
 import spinner from 'vue-spinner/src/PulseLoader'
 import tools from '../../tools.js'
-import ip from 'ip'
 
 export default {
   mixins: [tools.valueTracker],
@@ -32,14 +30,15 @@ export default {
     submitButtonText: {default: 'Submit'},
     value: {default: () => ({})},
     backendUrl: {default: ''},
-    backendRoot: {default: 'http://' + ip.address() + ':8000/'},
+    backendIP: {default: 'auto'},
     form: {default: () => ({})},
     validate_form: {default: () => () => ([])}
   },
   data: function () {
+    console.log(this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP)
     return {
-
       honeypot: '',
+      backendRoot: this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP,
       polling: {
         inProgress: false,
         status: 'queued',
@@ -92,18 +91,16 @@ export default {
         this.requestError = 'Invalid form: ' + errors.join('   ')
         return false
       }
-
       this.$http.post(
         this.backendRoot + this.backendUrl,
         this.form
       ).then(function (response) {
         // SUCCESS
-        console.log('res', response)
-        console.log('jobstart response', response)
+        console.log('job-start response', response)
         this.startPolling(response.body.job_id)
       }, function (response) {
         // FAILURE OF THE JOB STARTING
-        console.log('job starting error res', response)
+        console.log('job-start error response', response)
         this.requestError = 'Failed with status ' + response.status
         if (response.status === 400) {
           this.requestError = 'Bad Request: ' + window.JSON.stringify(response.body)
@@ -117,8 +114,7 @@ export default {
           this.backendRoot + 'poll',
           {job_id: jobId}
         ).then(function (pollResponse) {
-          console.log('poll response', pollResponse)
-          // clearInterval(jobPoller)
+          // console.log('poll response', pollResponse)
           this.requestError = pollResponse.error
           var data = pollResponse.body
           this.polling.status = data.status
@@ -138,15 +134,20 @@ export default {
             clearInterval(jobPoller)
           }
           this.polling.message = data.progress.message
-          console.log('polmess', this.polling.message)
         }, function (pollResponse) {
           // FAILURE OF THE POLLING
           this.polling.inProgress = false
-          console.log('polling error res', pollResponse)
           this.requestError = 'Failed with status ' + pollResponse.status
           clearInterval(jobPoller)
         })
       }.bind(this), 100)
+    },
+    computeBackendIP: function () {
+      var location = window.location.origin
+      if (location[location.length - 5] === ':') {
+        location = location.slice(0, location.length - 5)
+      }
+      return location + ':8000/'
     }
   }
 }

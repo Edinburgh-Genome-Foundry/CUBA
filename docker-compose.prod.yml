@@ -3,11 +3,11 @@ version: '2'
 services:
   django:
     environment:
-      - DEBUG=0
+      - DEBUG=False
 
   rqworker:
     environment:
-      - DEBUG=0
+      - DEBUG=False
 
   vue:
     command: ./production_server.sh
