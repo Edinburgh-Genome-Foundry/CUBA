@@ -27,7 +27,7 @@ class ReportsView(SerializerView):
         print ("rolollolol", data.text)
         weasywriter = HTML(string=u"<h1>Report</h1><p>%s</p>" % data.text)
         root = flametree.file_tree("@memory")
-        weasywriter.write_pdf(root._file("Report.pdf"))
+        weasywriter.write_pdf(root._file("Report.pdf").open('wb'))
         root._file("README.txt").write(
             data.text + " Thanks for ordering your pet with us!")
         zip_data = root._close()

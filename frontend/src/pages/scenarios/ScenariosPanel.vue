@@ -24,8 +24,9 @@ export default {
 
 .box-card {
   width:90%;
-  margin: 0px auto;
-  text-align: center
+  margin: 10px auto 10px;
+  text-align: center;
+
 }
 img {
   height: 80px
