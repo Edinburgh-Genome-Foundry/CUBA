@@ -26,8 +26,7 @@ This comes with the following advantages:
 - Will work on any system, one-line install, one-line deploy, and without any
   clash with your current settings as everything runs inside a container.
 
-Installing and deploying
--------------------------
+## Installing and developing
 
 First you need to install ``docker`` and ``docker-compose`` on your machine. That's the difficult part.
 
@@ -37,19 +36,14 @@ Then install download your CAB application like this:
 git clone CAB.git
 ```
 
-Go to the root folder (the one containing this README and the ``docker-compose.yml``) and type
-
-```
-docker-compose build
-```
-
-This may take some time, especially if it is the first time you build a CAB application on your machine.
-
-To launch your application in development mode, just type
+Go to the root folder (the one containing this README and the ``docker-compose.yml``) and type this to launch your application in development mode
 
 ```
 docker-compose up
 ```
+
+Note that the first time you type this, Docker will need to build the necessary
+containers, which may take a few minutes. Then this command just takes second.
 
 Now you can access the app from your browser on port 8080 of your machine, either
 [http://localhost:8080](http://localhost:8080/) if it is running on your local
@@ -58,9 +52,30 @@ on a distant server.
 
 At this stage, any change you do to your code, back-end or front-end, will be reflected live without you needed to refresh.
 
+## Use in production
+
 
 To run in production mode (this will turn down debug mode in the frontend and backend).
 
 ```
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ```
+
+
+
+
+```
+git remote add production git+ssh:123.456.789.123:
+```
+
+```
+git push production master
+```
+
+Licence
+-------
+
+CAB is an open source software originally written by [Zulko](https://github.com/Zulko)
+at the [Edinburgh Genome Foundry](http://genomefoundry.org/) and released on [Github](#) under the MIT licence (¢ Edinburgh Genome Foundry). Everyone is welcome to contribute.
+
+If you publish an app made with CAB, you can licence your own code under any other licence and copyright,  by placing the terms of the licence on top of each new file you create (this will typically be one file in the frontend and one file in the backend).

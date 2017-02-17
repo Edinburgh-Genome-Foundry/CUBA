@@ -11,7 +11,7 @@ el-row
 </template>
 
 <script>
-import scenarios from './scenarios'
+import scenarios from './scenarios/scenarios.js'
 export default {
   data: () => ({
     scenarios: scenarios.list

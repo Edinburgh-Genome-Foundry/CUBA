@@ -30,28 +30,22 @@ export default {
       return v.toString(16)
     })
   },
-  round: round,
-  nouiformatter: function (format, suffix) {
-    return {
-      to: function (value) {
-        var val = (format.length ? format[parseInt(value)] : round(value, format))
-        return val + suffix
-      },
-      from: function (value) { return value }
+  numerizeValue: function (value, rounding) {
+    if (window.Array.isArray(value)) {
+      var result = []
+      value.forEach(function (val) {
+        result.push(numerizeValue(val, rounding))
+      })
+      return result
     }
-  },
-  extendArray: function (destination, source) {
-    for (var property in source) {
-      destination[property] = source[property]
-    }
-    return destination
-  },
-  valueTracker: {
-    watch: {
-      value: function (val) {
-        console.log(val)
+    var valuefloat = parseFloat(value)
+    if (!isNaN(valuefloat)) {
+      if (!isNaN(parseFloat(rounding))) {
+        valuefloat = round(valuefloat, rounding)
       }
+      return valuefloat
+    } else {
+      return value
     }
-  },
-  numerizeValue: numerizeValue
+  }
 }

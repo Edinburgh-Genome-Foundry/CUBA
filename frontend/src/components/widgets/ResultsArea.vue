@@ -1,9 +1,9 @@
 <template lang='pug'>
 div
-  honeypot(v-model='honeypot')
+  input(type='text', size='25', value='', v-model='honeypot', :style="{display: 'none'}")
   el-button.center(v-if='submitButton && (!polling.inProgress)' @click='submit()') {{submitButtonText }}
   .polling(v-if='polling.inProgress')
-    spinner(:color="spinner.color", :size="spinner.size")
+    spinner(color="#6da5ff" size="12px")
     .polling-message {{polling.message}}
     el-steps(:space='100', :active='progressStage')
       el-step(icon='upload')
@@ -18,13 +18,10 @@ div
 </template>
 
 <script>
-import honeypot from '../../components/widgets/Honeypot'
-import downloadbutton from '../../components/widgets/DownloadButton'
+import downloadbutton from './DownloadButton'
 import spinner from 'vue-spinner/src/PulseLoader'
-import tools from '../../tools.js'
 
 export default {
-  mixins: [tools.valueTracker],
   props: {
     submitButton: {default: true},
     submitButtonText: {default: 'Submit'},
@@ -46,15 +43,10 @@ export default {
         data: ''
       },
       result: {},
-      requestError: '',
-      spinner: {
-        size: '12px',
-        color: '#6da5ff'
-      }
+      requestError: ''
     }
   },
   components: {
-    honeypot,
     downloadbutton,
     spinner
   },

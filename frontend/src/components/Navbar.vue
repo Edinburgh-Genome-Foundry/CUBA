@@ -10,7 +10,7 @@ el-menu(:mode="fullWidth > 500 ? 'horizontal' : 'vertical'" @select="handleSelec
 </template>
 
 <script>
-import scenarios from '../pages/scenarios/scenarios.js'
+import scenarios from './scenarios/scenarios.js'
 console.log(scenarios.list[0].infos)
 export default {
   data: () => ({

@@ -3,7 +3,7 @@ div
   h1 {{infos.title}}
   img.icon(:src='infos.icon')
   p Lets make dinosaurs.
-  learnmore
+  learn-more
     p Bla bla bla
 
   .form
@@ -13,13 +13,10 @@ div
     el-slider(v-model="form.legs", :min='legsRange[0]', :max='legsRange[1]')
     h4 Number of eyes
     el-slider(v-model="form.eyes", :min='eyesRange[0]', :max='eyesRange[1]')
-    resultsarea(:form='form', :backendUrl='infos.backendUrl', :validate_form='validate_form')
+    results-area(:form='form', :backendUrl='infos.backendUrl', :validate_form='validate_form')
 </template>
 
 <script>
-import resultsarea from './ResultsArea'
-import learnmore from '../../components/widgets/LearnMore'
-
 var infos = {
   title: 'Scenario 1',
   navbarTitle: 'Scenario 1',
@@ -41,10 +38,6 @@ export default {
       eyesRange: [0, 10],
       legsRange: [0, 10]
     }
-  },
-  components: {
-    resultsarea,
-    learnmore
   },
   infos: infos,
   methods: {

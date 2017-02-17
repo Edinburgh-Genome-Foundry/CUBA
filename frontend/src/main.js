@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
-import App from './App'
-import Home from './pages/Home'
-import About from './pages/About'
-import Login from './auth/Login'
-import scenarios from './pages/scenarios/scenarios'
 import ElementUI from 'element-ui'
+import App from './App'
+import Home from './components/pages/Home'
+import About from './components/pages/About'
+import Login from './auth/Login'
+import scenarios from './components/scenarios/scenarios'
+import widgets from './components/widgets'
 
 // import auth from './auth'
 // import BootstrapVue from 'bootstrap-vue'
@@ -16,6 +17,7 @@ import ElementUI from 'element-ui'
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(ElementUI)
+Vue.use(widgets)
 
 // Check the users auth status when the app starts
 // auth.checkAuth()

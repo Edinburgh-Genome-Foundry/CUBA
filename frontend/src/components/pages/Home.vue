@@ -9,7 +9,7 @@ div
 </template>
 
 <script>
-import scenariospanel from './scenarios/ScenariosPanel'
+import scenariospanel from '../ScenariosPanel'
 export default {
   components: {
     scenariospanel
