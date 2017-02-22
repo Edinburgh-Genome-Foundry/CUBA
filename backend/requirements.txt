@@ -1,3 +1,4 @@
+git+ssh://git@git.genomefoundry.org:10022/valentin/dnacauldron.git
 redis==2.10.5
 rq==0.6.0
 requests==2.11.1
@@ -11,3 +12,5 @@ flametree==0.1.5
 WeasyPrint==0.34
 gunicorn~=19.3
 watchdog==0.8.3
+bandwagon==0.1.1
+dna_features_viewer==0.1.1

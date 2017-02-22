@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 
 
 .box-card {
@@ -31,9 +31,13 @@ export default {
 img {
   height: 80px
 }
-
-.thumbnail .caption {
+.caption {
   padding: 0px;
+  h3 {
+    height: 50px;
+  }
+
+
 }
 
 .thumbnail-description {

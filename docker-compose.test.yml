@@ -18,6 +18,7 @@ services:
       - redis
     volumes:
       - ./backend:/code
+      - ~/.ssh:/root/.ssh
 
   rqworker:
     restart: always
