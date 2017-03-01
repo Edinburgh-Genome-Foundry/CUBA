@@ -8,7 +8,8 @@ services:
 
   django:
     restart: always
-    build: backend
+    build:
+      context: backend
     command: gunicorn website.wsgi:application -b :8000 --reload
     ports:
       - "8000:8000"

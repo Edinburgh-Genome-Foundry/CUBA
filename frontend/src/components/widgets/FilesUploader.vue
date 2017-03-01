@@ -1,4 +1,28 @@
+# File uploader
+From a recipe from here:
 https://jsfiddle.net/Linusborg/dzfdctv9/
+
+```
+usage:
+file-uploader(v-model='uploadedFiles')
+```
+When the user drops/select files, the variable v-model will contain a list
+of the form
+
+```
+[
+  {
+    name: 'file1.png',
+    content:'data:png64,S0m3GarBaG3dAta...'
+  },
+  {
+    name: 'file2.csv',
+    content:'A1, bla, bli\nA2, ble, blu\n...'
+  },
+  etc.
+]
+```
+
 
 <template lang="pug">
 .dropzone-area(drag-over='handleDragOver', @dragenter='hovering = true',

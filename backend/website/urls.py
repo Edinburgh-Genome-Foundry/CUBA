@@ -21,7 +21,7 @@ import app.views as views
 urlpatterns = [
     url(r'^poll$', views.PollJobView.as_view()),
     url(r'^start/predict_digests$', views.PredictDigestsView.as_view()),
-
+    url(r'^start/simulate_cloning$', views.SimulateCloningView.as_view()),
     url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^django-rq/', include('django_rq.urls')),
     url(r'^admin/', admin.site.urls)

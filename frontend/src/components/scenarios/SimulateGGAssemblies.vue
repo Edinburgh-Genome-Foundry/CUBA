@@ -22,7 +22,7 @@ var infos = {
   navbarTitle: 'Simulate Golden Gate',
   path: 'simulate_gg_assemblies',
   description: '',
-  backendUrl: 'start/simulate_gg_assemblies',
+  backendUrl: 'start/simulate_cloning',
   icon: require('assets/images/assembly.svg')
 }
 
@@ -30,9 +30,7 @@ export default {
   data: function () {
     return {
       form: {
-        ladder: '100-4k',
-        digestions: [],
-        make_report: false,
+        enzyme: 'BsaI',
         files: []
       },
       infos: infos,
