@@ -31,7 +31,7 @@ of the form
     .dropzone-text
       .dropzone-title {{text}}
       .dropzone-info(v-if='help') {{ help }}
-    input(type='file', @change='change', multiple='true')
+    input(type='file', @change='change', :multiple='multiple')
 </template>
 
 <script>
@@ -40,7 +40,8 @@ export default {
     text: {default: 'Drop files here or click to select'},
     help: {default: 'No files too big though :)'},
     filter: {default: () => () => true},
-    value: {default: () => ([])}
+    value: {default: () => ([])},
+    multiple: {default: true}
   },
   data: function () {
     return {

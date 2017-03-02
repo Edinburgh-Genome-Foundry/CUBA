@@ -2,6 +2,9 @@ FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 ENV USING_DOCKER 1
 
+RUN apt-get update
+RUN apt-get install -y libgraphviz-dev graphviz
+
 RUN mkdir /root/.ssh && chmod 700 /root/.ssh
 RUN ssh-keyscan -H -p 10022 git.genomefoundry.org >> /root/.ssh/known_hosts
 RUN ssh-keyscan -H -p 10022 178.62.46.213 >> /root/.ssh/known_hosts

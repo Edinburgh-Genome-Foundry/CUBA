@@ -3,12 +3,22 @@
 div
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.center Submit a backbone and parts. Get the annotated Genbanks of all combinatorial assemblies.
+  p.center.
+    Submit parts and a receptor vector. Get an annotated Genbank of the
+    resulting construct(s).
 
   .form
-    h4.formlabel Provide a backbone
-    sequencesuploader(v-model='form.files', text="Drop a single file (or click to select)", :multiple='false')
-    el-checkbox(v-model='form.make_report') Generate report
+    h4.formlabel Select an enzyme
+    .enzymes-radio
+      el-row(:gutter='40')
+        el-col(v-for='enzyme in enzymes', :md='8', :sm='8', :xs='24')
+          el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
+    //- h4.formlabel Provide a receptor vector
+    //- sequencesuploader(v-model='form.backbone', :multiple='false',
+    //-                   text="Drop a single Genbank/Fasta file (or click to select)")
+    h4.formlabel Provide Parts and a receptor vector
+    sequencesuploader(v-model='form.parts', :multiple='true',
+                      text="Drop multiple Genbank/Fasta (or click to select)")
     results-area(:form='form', :backendUrl='infos.backendUrl')
 </template>
 
@@ -29,9 +39,11 @@ var infos = {
 export default {
   data: function () {
     return {
+      enzymes: ['BsaI', 'BsmBI', 'BbsI'],
       form: {
         enzyme: 'BsaI',
-        files: []
+        parts: [],
+        backbone: null
       },
       infos: infos,
       ladder_options: [
@@ -56,7 +68,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 
 h4.formlabel {
   text-align: center;
@@ -80,8 +92,15 @@ h4.formlabel {
   font-weight: normal;
 }
 
-
 .el-select {
   width: 100%
+}
+
+.enzymes-radio {
+  width: 400px;
+  margin: 0 auto;
+  .el-radio {
+    margin-bottom: 20px;
+  }
 }
 </style>

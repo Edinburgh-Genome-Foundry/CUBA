@@ -92,4 +92,4 @@ ENV/
 
 *.sqlite3
 
-.ssh-deploy-keys/
+.ssh-deploy-keys/*

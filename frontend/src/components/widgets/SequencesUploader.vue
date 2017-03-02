@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   filesuploader(v-model='files', :help='help', :text='text', :multiple='multiple')
-  p.num-files(v-if='files.length') {{files.length}} files selected
+  p.num-files(v-if='files.length') {{files.length}} {{files.length > 1 ? 'files' : 'file'}} selected
   .sequences-list
     el-row(v-for='(file, index) in filesWithLinearities', :key='index', :gutter='40')
       el-col(:span='5')
@@ -17,7 +17,7 @@ export default {
   props: {
     text: {default: 'Drop files here or click to select'},
     help: {default: 'Accepted formats: genbank, fasta'},
-    multiple: {default: () => () => true},
+    multiple: {default: true},
     filter: {default: () => () => true}
   },
   data: function () {
@@ -50,7 +50,7 @@ export default {
       console.log(val)
     },
     filesWithLinearities: function (val) {
-      this.$emit('input', val)
+      this.$emit('input', this.multiple ? val : val[0])
     }
   },
   components: {

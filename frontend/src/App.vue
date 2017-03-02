@@ -81,6 +81,9 @@ img.icon {
   max-width: 100px;
 }
 
+.center {
+  text-align: center;
+}
 
 
 .router-link-active {
