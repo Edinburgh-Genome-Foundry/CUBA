@@ -2,8 +2,7 @@
 
 <template lang="pug">
 div
-  h1 Welcome to the CAB Demo !
-  p CAB is a boilerplate to write applications much like this one, with many perks.
+  h1 The EGF's Collection <br /> of Useful Biological Apps
   h2 Pick a scenario and start playing.
   scenariospanel
 </template>
