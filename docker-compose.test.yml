@@ -9,9 +9,9 @@ services:
   django:
     restart: always
     build: backend
-    command: gunicorn website.wsgi:application -b :8000 --reload
+    command: gunicorn website.wsgi:application -b :8081 --reload
     ports:
-      - "8000:8000"
+      - "8081:8081"
     links:
       - redis
     depends_on:

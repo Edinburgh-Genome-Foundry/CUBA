@@ -1,4 +1,4 @@
 #!/bin/sh
 npm run build
 cd dist
-http-server
+http-server -p 8000
