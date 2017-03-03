@@ -92,4 +92,6 @@ ENV/
 
 *.sqlite3
 
+rqworker_pid
+
 .ssh-deploy-keys/*
