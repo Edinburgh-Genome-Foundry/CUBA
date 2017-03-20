@@ -19,7 +19,18 @@ div
     h4.formlabel Provide Parts and a receptor vector
     sequencesuploader(v-model='form.parts', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
-    results-area(:form='form', :backendUrl='infos.backendUrl')
+
+
+    backend-querier(:form='form', :backendUrl='infos.backendUrl',
+                    :validateForm='validateForm', submitButtonText='Predict final construct(s)',
+                    v-model='queryStatus')
+    el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
+       type="error", :closable="false")
+    .results(v-if='!queryStatus.polling.inProgress')
+      download-button(v-if='queryStatus.result.file',
+                      :filedata='queryStatus.result.file')
+      .results-summary(v-if='queryStatus.result.preview',
+                       v-html="queryStatus.result.preview.html")
 </template>
 
 <script>
@@ -51,7 +62,12 @@ export default {
           label: 'Ladder 100 bp - 4000 bp',
           value: '100-4k'
         }
-      ]
+      ],
+      queryStatus: {
+        polling: {},
+        result: {},
+        requestError: ''
+      }
     }
   },
   components: {
@@ -63,6 +79,13 @@ export default {
   methods: {
     handleSuccess: function (evt) {
       console.log(evt)
+    },
+    validateForm: function () {
+      var errors = []
+      if (this.form.parts.length === 0) {
+        errors.push('Provide at least 2 files: one or more parts and a receptor.')
+      }
+      return errors
     }
   }
 }

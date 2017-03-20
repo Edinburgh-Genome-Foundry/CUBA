@@ -1,4 +1,5 @@
 git+ssh://git@git.genomefoundry.org:10022/valentin/dnacauldron.git
+git+ssh://git@git.genomefoundry.org:10022/valentin/bandwitch.git
 git+https://github.com/networkx/networkx.git
 git+https://github.com/pygraphviz/pygraphviz.git
 

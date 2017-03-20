@@ -1,6 +1,7 @@
 export default {
   list: [
-    require('./PredictDigests'),
+    require('./DigestionPatternPredictor'),
+    require('./DigestionEnzymeSelector'),
     require('./SimulateGGAssemblies')
   ]
 }

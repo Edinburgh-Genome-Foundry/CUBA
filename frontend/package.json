@@ -14,7 +14,7 @@
     "vue-resource": "1.0.3",
     "vue-router": "^2.2.0",
     "downloadjs": "1.4.6",
-    "element-ui": "1.1.6",
+    "element-ui": "1.2.3",
     "vue-spinner": "1.0.2"
   },
   "devDependencies": {
