@@ -14,6 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
+import matplotlib
+matplotlib.use('Agg')
+
 from django.conf.urls import url, include
 from django.contrib import admin
 import app.views as views
@@ -21,9 +24,14 @@ import app.views as views
 urlpatterns = [
     url(r'^poll$', views.PollJobView.as_view()),
 
-    url(r'^start/predict_digests$', views.PredictDigestsView.as_view()),
-    url(r'^start/simulate_cloning$', views.SimulateCloningView.as_view()),
-    url(r'^start/select_digestions$', views.SelectDigestionsView.as_view()),
+    url(r'^start/predict_digests$',
+        views.PredictDigestsView.as_view()),
+    url(r'^start/simulate_cloning$',
+        views.SimulateCloningView.as_view()),
+    url(r'^start/select_digestions$',
+        views.SelectDigestionsView.as_view()),
+    url(r'^start/evaluate_manufacturability$',
+        views.EvaluateManufacturabilityView.as_view()),
 
     url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^django-rq/', include('django_rq.urls')),

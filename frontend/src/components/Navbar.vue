@@ -36,7 +36,6 @@ export default {
 <style lang='scss' scoped>
 .el-menu, .el-submenu {
   background-color: white;
-
   max-width: 90%;
 }
 

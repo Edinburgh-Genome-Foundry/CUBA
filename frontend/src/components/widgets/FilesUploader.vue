@@ -1,11 +1,10 @@
 # File uploader
-From a recipe from here:
-https://jsfiddle.net/Linusborg/dzfdctv9/
 
 ```
 usage:
 file-uploader(v-model='uploadedFiles')
 ```
+
 When the user drops/select files, the variable v-model will contain a list
 of the form
 
@@ -22,6 +21,9 @@ of the form
   etc.
 ]
 ```
+
+From a recipe from here:
+https://jsfiddle.net/Linusborg/dzfdctv9/
 
 
 <template lang="pug">
@@ -88,6 +90,7 @@ export default {
 
 .dropzone-area {
     height: 200px;
+    margin-bottom:20px;
     position: relative;
     border: 2px dashed #CBCBCB;
     &.hovered {

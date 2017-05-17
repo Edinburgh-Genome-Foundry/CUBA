@@ -37,7 +37,6 @@ class worker_class(AsyncWorker):
         self.set_progress_message('Exploring possible digestions...')
 
         data = self.data
-        print (data)
         ladder = LADDERS[data.ladder]
         band_min, band_max = data.bandsRange
 
@@ -89,46 +88,6 @@ class worker_class(AsyncWorker):
             return {
               'digestions': []
             }
-
-
-
-
-
-
-
-        records = []
-        for f in data.files:
-            content = f.content.split("base64,")[1]
-            content = b64decode(content).decode("utf-8")
-            record, fmt = string_to_record(content)
-            record.name = f.name
-            record.linear = not f.circularity
-            records.append(record)
-        print (records)
-        return JobResult(
-            preview_html="Arrived there"
-        )
-
-        # nconstructs, zip_data = full_assembly_report(
-        #     records, target='@memory', enzyme=self.data.enzyme,
-        #     max_assemblies=40, fragments_filters='auto',
-        #     assemblies_prefix='assembly'
-        # )
-        zip_data = ('data:application/zip;base64,' +
-                    b64encode(zip_data).decode("utf-8"))
-        if nconstructs == 0:
-            preview_html = 'No possible construct found, see report for more.'
-        elif nconstructs == 1:
-            preview_html = '1 construct was generated.'
-        else:
-            preview_html = "%d constructs were generated." % nconstructs
-
-        return JobResult(
-            preview_html=preview_html,
-            file_data=zip_data,
-            file_mimetype='application/zip',
-            file_name='asm_report.zip'
-        )
 
 class SelectDigestionsView(StartJobView):
     serializer_class = serializer_class

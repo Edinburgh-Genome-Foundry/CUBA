@@ -32,7 +32,6 @@ class worker_class(AsyncWorker):
             record.name = f.name
             record.linear = not f.circularity
             records.append(record)
-        print (records)
 
         nconstructs, zip_data = full_assembly_report(
             records, target='@memory', enzyme=self.data.enzyme,

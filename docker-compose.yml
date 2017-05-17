@@ -10,9 +10,9 @@ services:
     restart: always
     build:
       context: backend
-    command: gunicorn website.wsgi:application -b :8081 --reload
+    command: gunicorn website.wsgi:application -b :8082 --reload
     ports:
-      - "8081:8081"
+      - "8082:8082"
     links:
       - redis
     depends_on:

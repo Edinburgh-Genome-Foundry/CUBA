@@ -139,7 +139,7 @@ export default {
       if (location[location.length - 5] === ':') {
         location = location.slice(0, location.length - 5)
       }
-      return location + ':8081/'
+      return location + ':8082/'
     }
   }
 }
