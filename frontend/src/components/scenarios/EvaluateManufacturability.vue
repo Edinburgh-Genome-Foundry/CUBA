@@ -19,7 +19,7 @@ div
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Predict final construct(s)',
+                    :validateForm='validateForm', submitButtonText='Evaluate',
                     v-model='queryStatus')
     el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
