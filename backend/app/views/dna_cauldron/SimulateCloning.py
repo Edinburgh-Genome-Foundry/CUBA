@@ -33,6 +33,8 @@ class worker_class(AsyncWorker):
             record.linear = not f.circularity
             records.append(record)
 
+        self.set_progress_message("Generating a report, be patient.")
+
         nconstructs, zip_data = full_assembly_report(
             records, target='@memory', enzyme=self.data.enzyme,
             max_assemblies=40, fragments_filters='auto',
