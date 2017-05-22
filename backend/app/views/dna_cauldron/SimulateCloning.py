@@ -12,11 +12,10 @@ digestion = serializers.ListField(child=serializers.CharField())
 class FileSerializer(serializers.Serializer):
     name = serializers.CharField()
     content = serializers.CharField()
-    circularity = serializers.BooleanField()
+    circularity_seq = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
-    # backbone = FileSerializer()
     parts = serializers.ListField(child=FileSerializer())
 
 class worker_class(AsyncWorker):
