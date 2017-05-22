@@ -51,7 +51,7 @@ class worker_class(AsyncWorker):
                 'data': data,
                 'name': 'manufacturability.pdf',
                 'mimetype': 'application/pdf'
-            },
+            }
         else:
             figures_data = []
             for _file, fig in zip(data.files, figures):

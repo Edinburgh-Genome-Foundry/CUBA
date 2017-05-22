@@ -13,9 +13,7 @@ div
       el-row(:gutter='40')
         el-col(v-for='enzyme in enzymes', :md='8', :sm='8', :xs='24')
           el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
-    //- h4.formlabel Provide a receptor vector
-    //- sequencesuploader(v-model='form.backbone', :multiple='false',
-    //-                   text="Drop a single Genbank/Fasta file (or click to select)")
+
     h4.formlabel Provide Parts and a receptor vector
     sequencesuploader(v-model='form.parts', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
