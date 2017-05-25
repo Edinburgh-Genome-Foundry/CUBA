@@ -10,8 +10,8 @@ div
   .form
     h4.formlabel Select an enzyme
     .enzymes-radio
-      el-row(:gutter='40')
-        el-col(v-for='enzyme in enzymes', :md='8', :sm='8', :xs='24')
+      el-row(:gutter='60')
+        el-col(v-for='enzyme in enzymes', :md='6', :sm='6', :xs='24')
           el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
 
     h4.formlabel Provide Parts and a receptor vector
@@ -48,9 +48,9 @@ var infos = {
 export default {
   data: function () {
     return {
-      enzymes: ['BsaI', 'BsmBI', 'BbsI'],
+      enzymes: ['BsaI', 'BsmBI', 'BbsI', 'Autoselect'],
       form: {
-        enzyme: 'BsaI',
+        enzyme: 'Autoselect',
         parts: [],
         backbone: null
       },

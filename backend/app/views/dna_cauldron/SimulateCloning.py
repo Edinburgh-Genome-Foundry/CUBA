@@ -5,14 +5,14 @@ from base64 import b64decode, b64encode
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
 from ..tools import string_to_record
-from dnacauldron import full_assembly_report
+from dnacauldron import full_assembly_report, autoselect_enzyme
 
 
 digestion = serializers.ListField(child=serializers.CharField())
 class FileSerializer(serializers.Serializer):
     name = serializers.CharField()
     content = serializers.CharField()
-    circularity_seq = serializers.BooleanField()
+    circularity = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
@@ -23,6 +23,7 @@ class worker_class(AsyncWorker):
     def work(self):
         self.set_progress_message("Reading Data...")
         data = self.data
+
         records = []
         for f in data.parts:
             content = f.content.split("base64,")[1]
@@ -31,6 +32,10 @@ class worker_class(AsyncWorker):
             record.name = f.name
             record.linear = not f.circularity
             records.append(record)
+
+        if data.enzyme == "Autoselect":
+            possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
+            data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)
 
         self.set_progress_message("Generating a report, be patient.")
 

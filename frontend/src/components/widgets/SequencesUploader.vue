@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.sequences-uploader(:class='{withfiles: (files.length != 0)}')
   filesuploader(v-model='files', :help='help', :text='text', :multiple='multiple')
   p.num-files(v-if='files.length') {{files.length}} {{files.length > 1 ? 'files' : 'file'}} selected
   .sequences-list
@@ -77,5 +77,14 @@ export default {
 p.num-files {
   font-size: 14px;
   margin-top: 5px
+}
+
+.sequences-uploader {
+  padding:10px;
+}
+.withfiles {
+  background-color: rgba(34, 157, 249, 0.03);
+  border: 0.5px solid #eeeeee;
+  border-radius: 10px;
 }
 </style>

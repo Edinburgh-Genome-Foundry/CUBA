@@ -1,8 +1,9 @@
-git+ssh://git@git.genomefoundry.org:10022/valentin/dnacauldron.git
+git+git://github.com/Edinburgh-Genome-Foundry/DnaCauldron.git
 git+ssh://git@git.genomefoundry.org:10022/valentin/bandwitch.git
 git+ssh://git@git.genomefoundry.org:10022/valentin/dnachisel.git
 git+https://github.com/networkx/networkx.git
 git+https://github.com/pygraphviz/pygraphviz.git
+
 
 redis==2.10.5
 rq==0.6.0
