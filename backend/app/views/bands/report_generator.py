@@ -25,7 +25,7 @@ else:
     StringByteIO = StringIO
 
 def annotate_record(seqrecord, location="full", feature_type="misc_feature",
-                    margin=0, **qualifiers):
+                margin=0, **qualifiers):
     """Add a feature to a Biopython SeqRecord. (also returns that same record)
     """
     if location == "full":

@@ -11,7 +11,7 @@ div
     h4.formlabel Select an enzyme
     .enzymes-radio
       el-row(:gutter='60')
-        el-col(v-for='enzyme in enzymes', :md='6', :sm='6', :xs='24')
+        el-col(v-for='enzyme in enzymes', :md='6', :sm='6', :xs='24', :key='enzyme')
           el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
 
     h4.formlabel Provide Parts and a receptor vector
@@ -29,6 +29,7 @@ div
                       :filedata='queryStatus.result.file')
       .results-summary(v-if='queryStatus.result.preview',
                        v-html="queryStatus.result.preview.html")
+  powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
@@ -42,7 +43,8 @@ var infos = {
   path: 'simulate_gg_assemblies',
   description: '',
   backendUrl: 'start/simulate_cloning',
-  icon: require('assets/images/assembly.svg')
+  icon: require('assets/images/assembly.svg'),
+  poweredby: ['dnacauldron', 'dnafeaturesviewer']
 }
 
 export default {

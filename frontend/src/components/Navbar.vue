@@ -1,17 +1,17 @@
 <template lang="pug">
-el-menu(:mode="fullWidth > 500 ? 'horizontal' : 'vertical'" @select="handleSelect")
-  .logo(v-if='fullWidth > 500')
-    img(src='../assets/images/logo.png')
+el-menu(:mode="fullWidth > 610 ? 'horizontal' : 'vertical'" @select="handleSelect")
+  .logo(v-if='fullWidth > 610')
+    router-link(to='home')
+      img(src='../assets/images/cuba-title.png')
   el-menu-item(index='home') Home
   el-submenu(index='2')
     template(slot='title') Scenarios
-    el-menu-item(v-for='scenario in scenarios', :index="scenario.infos.path") {{scenario.infos.navbarTitle}}
+    el-menu-item(v-for='scenario in scenarios', :index="scenario.infos.path", :key='scenario.infos.path') {{scenario.infos.navbarTitle}}
   el-menu-item(index='about') About
 </template>
 
 <script>
 import scenarios from './scenarios/scenarios.js'
-console.log(scenarios.list[0].infos)
 export default {
   data: () => ({
     scenarios: scenarios.list,
@@ -48,7 +48,7 @@ export default {
   float: left;
   margin-left: 20px;
   margin-right: 20px;
-  height:60px;
+  height:70px;
 }
 
 .logo img {

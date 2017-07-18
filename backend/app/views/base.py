@@ -19,7 +19,7 @@ class ObjectDict(dict):
         dict.__getattribute__(self, key)
 
     def __setattr__(self, key, value):
-        self[key]=value
+        self[key] = value
         self.__dict__[key] = value
 
     @staticmethod
@@ -85,10 +85,7 @@ class PollJobView(SerializerView):
                 success=success,
                 status=job_status,
                 error=error,
-                progress=dict(
-                  data=job.meta.get('progress_data', None),
-                  message=job.meta.get('progress_message', None)
-                ),
+                progress_data=job.meta.get('progress_data', None),
                 result=job.result
             ),
             status=status.HTTP_200_OK
@@ -140,11 +137,16 @@ class AsyncWorker:
         self.data = data
 
     def set_progress_message(self, message):
-        self.job.meta['progress_message'] = message
+        self.update_progress_data(message=message)
+
+    def set_progress_data(self, **new_data):
+        self.job.meta['progress_data'] = new_data
         self.job.save()
 
-    def set_progress_data(self, data):
-        self.job.meta['progress_data'] = data
+    def update_progress_data(self, **new_data):
+        if 'progress_data' not in self.job.meta:
+            self.job.meta['progress_data'] = {}
+        self.job.meta['progress_data'].update(new_data)
         self.job.save()
 
     @classmethod

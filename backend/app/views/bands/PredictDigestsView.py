@@ -1,10 +1,8 @@
 """Bla."""
 
-from base64 import b64decode, b64encode
-
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import string_to_record, LADDERS
+from ..tools import zip_data_to_html_data, records_from_data_file, LADDERS
 from .report_generator import generate_report
 
 
@@ -31,13 +29,12 @@ class worker_class(AsyncWorker):
         data = self.data
         records = []
         for f in data.files:
-            content = f.content.split("base64,")[1]
-            content = b64decode(content).decode("utf-8")
-            record, fmt = string_to_record(content)
-            if record.id == "<unknown id>":
-                record.id = f.name
-                record.linear = not f.circularity
-            records.append(record)
+            recs, fmt = records_from_data_file(f)
+            for i, rec in enumerate(recs):
+                if rec.id == "<unknown id>":
+                    rec.id = f.name + "%03d" % i
+                rec.linear = not f.circularity
+                records.append(rec)
         ladder = LADDERS[data.ladder]
         digestions = data.digestions
 
@@ -48,8 +45,7 @@ class worker_class(AsyncWorker):
                                           group_by="digestions",
                                           full_report=data.make_report)
         if data.make_report:
-            report = ('data:application/zip;base64,' +
-                      b64encode(report).decode("utf-8"))
+            report = zip_data_to_html_data(report)
         return JobResult(
             preview_html='<img src="%s"/>' % preview,
             file_data=report,

@@ -3,7 +3,7 @@
 <template lang="pug">
 div
   h1 The EGF's Collection <br /> of Useful Biological Apps
-  h2 Pick a scenario and start playing.
+  h2 Pick a scenario below.
   scenariospanel
 </template>
 

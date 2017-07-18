@@ -5,12 +5,12 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import string_to_record, matplotlib_figure_to_svg_base64_data
+from ..tools import (records_from_data_file,
+                     matplotlib_figure_to_svg_base64_data)
 from io import BytesIO
-from dnachisel import plot_sequence_manufacturability_difficulties
+from dnachisel.reports import plot_sequence_manufacturability_difficulties
 
 
-digestion = serializers.ListField(child=serializers.CharField())
 class FileSerializer(serializers.Serializer):
     name = serializers.CharField()
     content = serializers.CharField()
@@ -28,13 +28,16 @@ class worker_class(AsyncWorker):
         figures = []
         for f in data.files:
             self.set_progress_message('Processing file %s' % f.name)
-            content = f.content.split("base64,")[1]
-            content = b64decode(content).decode("utf-8")
-            record, fmt = string_to_record(content)
-            seq = str(record.seq).upper()
-            fig = plot_sequence_manufacturability_difficulties(seq)[0].figure
-            fig.suptitle(f.name)
-            figures.append(fig)
+            records, fmt = records_from_data_file(f)
+            for (i, record) in enumerate(records):
+
+                seq = str(record.seq).upper()
+                axes = plot_sequence_manufacturability_difficulties(seq)
+                figure = axes[0].figure
+                name = f.name if (len(records) == 1) else f.name + ("%03d" % i)
+                name = name + "--" + record.name[:40]
+                figure.suptitle(name)
+                figures.append(figure)
 
         self.set_progress_message('Generating the report')
 
@@ -45,7 +48,7 @@ class worker_class(AsyncWorker):
                 for fig in figures:
                     pdf.savefig(fig, bbox_inches="tight")
 
-            data = ('data:application/zip;base64,' +
+            data = ('data:application/pdf;base64,' +
                     b64encode(pdf_io.getvalue()).decode("utf-8"))
             figures_data = {
                 'data': data,

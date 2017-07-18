@@ -1,18 +1,25 @@
 <template lang='pug'>
 .container
-  h1  About this app
-  p.
-    This is the demo App for CAB, the friendly Computational Application Boilerplate.
-    This particular page is the "about" page that you would use to give more infos
-    on your website.
+  h1  About this website
+  img.about-big-logo(src='../../assets/images/cuba-title.png')
+  p
+    |  The Edinburgh Genome Foundry offers DNA assembly and other lab operations as
+    |  a service, and develops software to support DNA design and assembly.
+    |  This website offers some functionalities which we thought may be of interest
+    |  to other foundries or bench scientists. Do not hesitate to&nbsp
+    a(href="mailto:egf-software@ed.ac.uk?subject=[CUBA] Comment or request&body=Hey EGF,") contact us
+    | &nbspfor comments or requests.
 </template>
 
 <style scoped>
 .about-big-logo {
-  width: 300px;
-  max-width: 80%;
+  width: 50%;
+  margin-left: 25%;
 }
 p {
-  text-align: left;
+  text-align: justify;
+  width: 60%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 </style>

@@ -8,14 +8,13 @@ div
   .form
     h4.formlabel Ladder
     el-select(v-model='form.ladder', placeholder='Select')
-      el-option(v-for='item in ladder_options', :label='item.label', :value='item.value')
-    
+      el-option(v-for='item in ladder_options', :label='item.label', :value='item.value', :key='item.value')
+
     h4.formlabel Digestions
     digestionset(v-model='form.digestions')
     h4.formlabel Sequences
     sequencesuploader(v-model='form.files')
     el-checkbox(v-model='form.make_report') Generate report
-
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Predict patterns',
                     v-model='queryStatus')
@@ -26,6 +25,7 @@ div
                       :filedata='queryStatus.result.file')
       .results-summary(v-if='queryStatus.result.preview',
                        v-html="queryStatus.result.preview.html")
+  powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
@@ -39,7 +39,8 @@ var infos = {
   path: 'predict-digests',
   description: '',
   backendUrl: 'start/predict_digests',
-  icon: require('assets/images/predict-icon.svg')
+  icon: require('assets/images/predict-icon.svg'),
+  poweredby: ['bandwagon']
 }
 
 export default {

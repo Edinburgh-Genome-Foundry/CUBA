@@ -4,7 +4,7 @@ div
   el-button.center(v-if='submitButtonText.length > 0' @click='submit()') {{submitButtonText }}
   .polling(v-if='status.polling.inProgress && showProgress')
     spinner(color="#6da5ff" size="12px")
-    .polling-message {{status.polling.message}}
+    .polling-message {{status.polling.data.message}}
     el-steps(:space='100', :active='progressStage')
       el-step(icon='upload')
       el-step(icon='setting')
@@ -35,8 +35,7 @@ export default {
         polling: {
           inProgress: false,
           status: 'queued',
-          message: '',
-          data: ''
+          data: {message: ''}
         },
         result: {},
         requestError: ''
@@ -70,18 +69,18 @@ export default {
       }
     },
     progressStage: function () {
-      return ['queued', 'started', 'finished'].indexOf(this.status.polling.status) + 1
+      return ['sending', 'queued', 'started', 'finished'].indexOf(this.status.polling.status)
     }
   },
   methods: {
     submit: function () {
       var errors = this.validateForm()
-      console.log(errors)
       if (errors.length) {
         this.status.requestError = 'Invalid form: ' + errors.join('   ')
         return false
       }
-      console.log('blablabla')
+      this.status.polling.data.message = 'Contacting the server...'
+      this.status.polling.inProgress = true
       this.$http.post(
         this.backendRoot + this.backendUrl,
         this.form
@@ -93,6 +92,7 @@ export default {
         // FAILURE OF THE JOB STARTING
         console.log('job-start error response', response)
         this.status.requestError = 'Failed with status ' + response.status
+        this.status.polling.inProgress = false
         if (response.status === 400) {
           this.status.requestError = 'Bad Request: ' + window.JSON.stringify(response.body)
         }
@@ -115,24 +115,23 @@ export default {
             self.status.polling.inProgress = false
             clearInterval(jobPoller)
           } else if (data.status === 'queued') {
-            self.status.polling.message = 'Job pending...'
+            self.status.polling.data.message = 'Job pending...'
           } else if (data.status === 'started') {
-            self.status.polling.message = data.progress.message
-            self.status.polling.data = data.progress.data
+            self.status.polling.data = data.progress_data
           } else if (data.status === 'finished') {
-            self.status.polling.message = 'Finished ! sending now'
+            self.status.polling.data.message = 'Finished ! sending now'
             self.status.result = data.result
             self.status.polling.inProgress = false
             clearInterval(jobPoller)
           }
-          this.status.polling.message = data.progress.message
+          this.status.polling.data.message = data.progress_data.message
         }, function (pollResponse) {
           // FAILURE OF THE POLLING
           this.status.polling.inProgress = false
           this.status.requestError = 'Failed with status ' + pollResponse.status
           clearInterval(jobPoller)
         })
-      }.bind(this), 100)
+      }.bind(this), 250)
     },
     computeBackendIP: function () {
       var location = window.location.origin

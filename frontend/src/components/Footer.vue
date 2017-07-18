@@ -7,7 +7,7 @@ footer
 <style scoped>
 footer {
   position: absolute;
-  bottom: -100px;
+  bottom: -50px;
   width: 100%;
   height: 40px;
   background-color: #fbfbfb;

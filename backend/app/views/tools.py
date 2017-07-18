@@ -5,7 +5,7 @@ from Bio.Seq import Seq
 from Bio.Alphabet import DNAAlphabet
 import bandwagon as bw
 import re
-from base64 import b64encode
+from base64 import b64encode, b64decode
 
 PYTHON3 = (sys.version_info > (3, 0))
 if PYTHON3:
@@ -28,10 +28,21 @@ def string_to_record(string):
     for fmt in ("fasta", "genbank"):
         try:
             stringio = StringIO(string)
-            return (SeqIO.read(stringio, fmt), fmt)
+            records = list(SeqIO.parse(stringio, fmt))
+            if len(records) > 0:
+                return (records, fmt)
         except:
             pass
     raise ValueError("Invalid sequence format")
+
+def records_from_data_file(data_file):
+    content = data_file.content.split("base64,")[1]
+    content = b64decode(content).decode("utf-8")
+    records, fmt = string_to_record(content)
+    return records, fmt
+
+def zip_data_to_html_data(zip_data):
+    return 'data:application/zip;base64,' + b64encode(zip_data).decode("utf-8")
 
 LADDERS = {
    "100-4k": bw.ladders.LADDER_100_to_4k

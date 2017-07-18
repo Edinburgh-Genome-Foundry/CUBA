@@ -1,13 +1,12 @@
 git+git://github.com/Edinburgh-Genome-Foundry/DnaCauldron.git
+git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer
 git+ssh://git@git.genomefoundry.org:10022/valentin/bandwitch.git
 git+ssh://git@git.genomefoundry.org:10022/valentin/dnachisel.git
+git+ssh://git@git.genomefoundry.org:10022/valentin/goldenhinges.git
 git+https://github.com/networkx/networkx.git
 git+https://github.com/pygraphviz/pygraphviz.git
 
-
-redis==2.10.5
-rq==0.6.0
-requests==2.11.1
+bandwagon==0.1.1
 django==1.10.5
 djangorestframework==3.5.3
 drfdocs==0.0.11
@@ -15,8 +14,10 @@ drf-tracking==1.0.1
 django-cors-headers==2.0.0
 django_rq==0.9.2
 flametree==0.1.5a
-WeasyPrint==0.34
 gunicorn~=19.3
+jinja2==2.9
+redis==2.10.5
+rq==0.6.0
+requests==2.11.1
 watchdog==0.8.3
-bandwagon==0.1.1
-dna_features_viewer==0.1.2a
+WeasyPrint==0.34

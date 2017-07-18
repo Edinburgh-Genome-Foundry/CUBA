@@ -32,6 +32,10 @@ urlpatterns = [
         views.SelectDigestionsView.as_view()),
     url(r'^start/evaluate_manufacturability$',
         views.EvaluateManufacturabilityView.as_view()),
+    url(r'^start/sculpt_a_sequence$',
+        views.SculptASequenceView.as_view()),
+    url(r'^start/design_overhangs$',
+        views.DesignOverhangsView.as_view()),
 
     url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^django-rq/', include('django_rq.urls')),

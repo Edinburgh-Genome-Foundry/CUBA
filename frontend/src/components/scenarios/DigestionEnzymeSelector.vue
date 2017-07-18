@@ -59,7 +59,7 @@ div
           No solution found :'(
       .center
         img(v-if='queryStatus.result.figure_data', :src='queryStatus.result.figure_data')
-
+  powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
@@ -73,7 +73,8 @@ var infos = {
   path: 'digestion-selector',
   description: '',
   backendUrl: 'start/select_digestions',
-  icon: require('assets/images/select_digestion.svg')
+  icon: require('assets/images/select_digestion.svg'),
+  poweredby: ['bandwitch', 'bandwagon']
 }
 
 export default {

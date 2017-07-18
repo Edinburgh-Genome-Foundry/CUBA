@@ -1,5 +1,4 @@
 <template lang="pug">
-
 div
   h1 {{infos.title}}
   img.icon.center-block(slot='title-img', :src='infos.icon')
@@ -28,7 +27,7 @@ var infos = {
   path: 'separate-constructs',
   description: '',
   backendUrl: 'start/separate_constructs',
-  icon: require('assets/images/separate_constructs.svg')
+  icon: require('assets/images/separate_constructs.svg'),
 }
 
 export default {

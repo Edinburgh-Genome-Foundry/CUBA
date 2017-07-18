@@ -3,6 +3,9 @@ function round (value, precision) {
   return Math.round(value * multiplier) / multiplier
 }
 
+let f = (a, b) => [].concat(...a.map(a => b.map(b => [].concat(a, b))))
+let cartesian = (a, b, ...c) => b ? cartesian(f(a, b), ...c) : a
+
 function numerizeValue (value, rounding) {
   if (window.Array.isArray(value)) {
     var result = []
@@ -47,5 +50,6 @@ export default {
     } else {
       return value
     }
-  }
+  },
+  cartesian: cartesian
 }

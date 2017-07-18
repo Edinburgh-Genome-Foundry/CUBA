@@ -5,6 +5,10 @@ ENV USING_DOCKER 1
 RUN apt-get update
 RUN apt-get install -y libgraphviz-dev graphviz
 
+# The next line enables to build NumberJack (used by GoldenHinges)
+RUN apt-get install -y python-dev swig libxml2-dev zlib1g-dev libgmp-dev
+
+
 RUN mkdir /root/.ssh && chmod 700 /root/.ssh
 RUN ssh-keyscan -H -p 10022 git.genomefoundry.org >> /root/.ssh/known_hosts
 RUN ssh-keyscan -H -p 10022 178.62.46.213 >> /root/.ssh/known_hosts
