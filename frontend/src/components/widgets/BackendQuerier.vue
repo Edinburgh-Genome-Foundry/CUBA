@@ -24,7 +24,8 @@ export default {
     backendIP: {default: 'auto'},
     form: {default: () => ({})},
     validateForm: {default: () => () => ([])},
-    showProgress: {default: true}
+    showProgress: {default: true},
+    submitTrigger: {default: false}
   },
   data: function () {
     console.log(this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP)
@@ -59,6 +60,11 @@ export default {
         this.$emit('input', val)
       },
       deep: true
+    },
+    submitTrigger: function (value) {
+      if (value) {
+        this.submit()
+      }
     }
   },
   computed: {
@@ -79,8 +85,9 @@ export default {
         this.status.requestError = 'Invalid form: ' + errors.join('   ')
         return false
       }
-      this.status.polling.data.message = 'Contacting the server...'
       this.status.polling.inProgress = true
+      this.status.polling.data = {message: 'Contacting the server...'}
+
       this.$http.post(
         this.backendRoot + this.backendUrl,
         this.form
@@ -119,8 +126,11 @@ export default {
           } else if (data.status === 'started') {
             self.status.polling.data = data.progress_data
           } else if (data.status === 'finished') {
-            self.status.polling.data.message = 'Finished ! sending now'
+            self.status.polling.data.message = 'Finished !'
             self.status.result = data.result
+            if (data.result.error) {
+              self.status.requestError = 'Computation error: ' + data.result.error.message
+            }
             self.status.polling.inProgress = false
             clearInterval(jobPoller)
           }

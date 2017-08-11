@@ -30,6 +30,7 @@ class serializer_class(serializers.Serializer):
     auto_overhangs = serializers.BooleanField()
     left_flank_sequence = serializers.CharField(allow_blank=True)
     right_flank_sequence = serializers.CharField(allow_blank=True)
+    allow_edits = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -54,11 +55,14 @@ class worker_class(AsyncWorker):
                 solution = selector.cut_sequence(
                     equal_segments=data.n_fragments, sequence=sequence,
                     max_radius=20,
-                    include_extremities=data.extremities)
+                    include_extremities=data.extremities,
+                    allow_edits=data.allow_edits)
             else:
                 solution = selector.cut_sequence(
-                    sequence=sequence, include_extremities=data.extremities)
-
+                    sequence=sequence,
+                    include_extremities=data.extremities,
+                    allow_edits=data.allow_edits)
+            print("Solution", solution)
             if solution is None:
                 return {
                   'success': False
@@ -84,7 +88,7 @@ class worker_class(AsyncWorker):
                 overhangs = selector.generate_overhangs_set(
                     n_overhangs=None,
                     mandatory_overhangs=data.mandatory_overhangs,
-                    n_cliques=300
+                    n_cliques=30000
                 )
             except ValueError as err:
                 return {

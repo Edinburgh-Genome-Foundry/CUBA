@@ -1,5 +1,6 @@
 import json
 import os
+import traceback
 
 from rest_framework_tracking.mixins import LoggingMixin
 
@@ -79,7 +80,8 @@ class PollJobView(SerializerView):
         success, error = True, ""
         if job_status == "failed":
             success = False
-            error = 'There was an internal error during solving.'
+            error = 'There was an uncaught internal error during solving.'
+            print (job.__dict__)
         return Response(
             dict(
                 success=success,
@@ -151,10 +153,18 @@ class AsyncWorker:
 
     @classmethod
     def run(cls, data):
-        # worker = django_rq.get_worker('default')
         job = rq.get_current_job()
         agent = cls(data, job)
-        result = agent.work()
-        if isinstance(result, JobResult):
-            result = result.as_json()
-        return ObjectDict(result)
+        try:
+            result = agent.work()
+            if isinstance(result, JobResult):
+                result = result.as_json()
+            return ObjectDict(result)
+        except Exception as error:
+            trace = traceback.format_exc()
+            print (trace)
+            return ObjectDict(
+                error={'class': error.__class__.__name__,
+                       'message': str(error),
+                       'trace': trace}
+            )

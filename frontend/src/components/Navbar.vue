@@ -1,12 +1,17 @@
 <template lang="pug">
-el-menu(:mode="fullWidth > 610 ? 'horizontal' : 'vertical'" @select="handleSelect")
+el-menu(:mode="fullWidth > 610 ? 'horizontal' : 'vertical'" @select="handleSelect", :unique-opened='true')
   .logo(v-if='fullWidth > 610')
     router-link(to='home')
       img(src='../assets/images/cuba-title.png')
   el-menu-item(index='home') Home
   el-submenu(index='2')
     template(slot='title') Scenarios
-    el-menu-item(v-for='scenario in scenarios', :index="scenario.infos.path", :key='scenario.infos.path') {{scenario.infos.navbarTitle}}
+    //- el-submenu(:index="'2-' + (index + 1)" v-for='(category, index) in scenarios')
+    //-     span(slot='title') {{category.category}}
+    span(v-for='category in scenarios')
+      el-menu-item(v-for='(scenario, subindex) in category.scenarios',
+                   :index="scenario.infos.path",
+                   :key='scenario.infos.path') {{scenario.infos.navbarTitle}}
   el-menu-item(index='about') About
 </template>
 
@@ -36,7 +41,6 @@ export default {
 <style lang='scss' scoped>
 .el-menu, .el-submenu {
   background-color: white;
-  max-width: 90%;
 }
 
 .el-menu {

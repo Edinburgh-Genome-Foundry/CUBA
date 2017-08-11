@@ -41,6 +41,19 @@ def records_from_data_file(data_file):
     records, fmt = string_to_record(content)
     return records, fmt
 
+def records_from_data_files(data_files):
+    records = []
+    for file_ in data_files:
+        recs, fmt = records_from_data_file(file_)
+        single_record = len(recs) == 1
+        for i, record in enumerate(recs):
+            name = record.id
+            if name in [None, '', "<unknown id>"]:
+                name = file_.name + ('' if single_record else ("%04d" % i))
+            record.id = name
+        records += recs
+    return records
+
 def zip_data_to_html_data(zip_data):
     return 'data:application/zip;base64,' + b64encode(zip_data).decode("utf-8")
 

@@ -4,7 +4,7 @@ from base64 import b64decode, b64encode
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import string_to_record
+from ..tools import  records_from_data_file
 from dnacauldron import full_assembly_report, autoselect_enzyme
 
 
@@ -24,14 +24,13 @@ class worker_class(AsyncWorker):
         self.set_progress_message("Reading Data...")
         data = self.data
 
-        records = []
-        for f in data.parts:
-            content = f.content.split("base64,")[1]
-            content = b64decode(content).decode("utf-8")
-            record, fmt = string_to_record(content)
-            record.name = f.name
-            record.linear = not f.circularity
-            records.append(record)
+        records = [
+            records_from_data_file(f)[0][0]
+            for f in data.parts
+        ]
+        for part, record in zip(data.parts, records):
+            record.linear = not part.circularity
+            record.name = part.name
 
         if data.enzyme == "Autoselect":
             possible_enzymes = ["BsaI", "BsmBI", "BbsI"]

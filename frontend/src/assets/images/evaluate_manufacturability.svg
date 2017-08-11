@@ -15,7 +15,7 @@
    viewBox="0 0 120.26227 138.14743"
    id="svg4672"
    version="1.1"
-   inkscape:version="0.92.1 unknown"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="evaluate_manufacturability.svg">
   <defs
      id="defs4674" />
@@ -27,8 +27,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="44.79977"
-     inkscape:cy="35.636791"
+     inkscape:cx="64.288114"
+     inkscape:cy="94.206906"
      inkscape:document-units="px"
      inkscape:current-layer="g6435"
      showgrid="false"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -44,6 +44,11 @@ var allSoftwareInfos = {
     name: 'Golden Hinges',
     logoSrc: '/static/logos/goldenhinges.png',
     href: '#'
+  },
+  geneblocks: {
+    name: 'Gene Blocks',
+    logoSrc: '/static/logos/geneblocks.png',
+    href: '#'
   }
 }
 export default {

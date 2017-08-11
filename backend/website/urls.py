@@ -36,6 +36,8 @@ urlpatterns = [
         views.SculptASequenceView.as_view()),
     url(r'^start/design_overhangs$',
         views.DesignOverhangsView.as_view()),
+    url(r'^start/find_common_blocks$',
+        views.FindCommonBlocksView.as_view()),
 
     url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^django-rq/', include('django_rq.urls')),

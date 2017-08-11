@@ -34,8 +34,10 @@ const routes = [{
 }
 ]
 
-scenarios.list.forEach(function (scenario) {
-  routes.push({ path: '/' + scenario.infos.path, component: scenario })
+scenarios.list.forEach(function (category) {
+  category.scenarios.forEach(function (scenario) {
+    routes.push({ path: '/' + scenario.infos.path, component: scenario })
+  })
 })
 routes.push({
   path: '*',

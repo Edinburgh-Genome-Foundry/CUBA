@@ -27,14 +27,13 @@ class worker_class(AsyncWorker):
     def work(self):
         self.set_progress_message("Reading Data...")
         data = self.data
-        records = []
-        for f in data.files:
-            recs, fmt = records_from_data_file(f)
-            for i, rec in enumerate(recs):
-                if rec.id == "<unknown id>":
-                    rec.id = f.name + "%03d" % i
-                rec.linear = not f.circularity
-                records.append(rec)
+        records = [
+            records_from_data_file(f)[0][0]
+            for f in data.files
+        ]
+        for f, record in zip(data.files, records):
+            record.linear = not f.circularity
+            record.id = f.name
         ladder = LADDERS[data.ladder]
         digestions = data.digestions
 

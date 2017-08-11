@@ -1,6 +1,7 @@
 <template lang="pug">
 .sequences-uploader(:class='{withfiles: (files.length != 0)}')
-  filesuploader(v-model='files', :help='help', :text='text', :multiple='multiple')
+  filesuploader(v-model='files', :help='help', :text='text', :multiple='multiple',
+                :displaySelected='displaySelected')
   p.num-files(v-if='files.length') {{files.length}} {{files.length > 1 ? 'files' : 'file'}} selected
   .sequences-list
     el-row(v-for='(file, index) in filesWithLinearities', :key='index', :gutter='40')
@@ -18,7 +19,8 @@ export default {
     text: {default: 'Drop files here or click to select'},
     help: {default: 'Accepted formats: genbank, fasta'},
     multiple: {default: true},
-    filter: {default: () => () => true}
+    filter: {default: () => () => true},
+    displaySelected: {default: false}
   },
   data: function () {
     return {

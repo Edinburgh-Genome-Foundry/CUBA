@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss'>
 #app {
   font-family: 'Raleway', 'Source Sans Pro',  Helvetica, Arial, sans-serif;
   font-size:16px;
@@ -66,6 +66,13 @@ body {
 .el-button.center {
   display: block;
   margin: 2em auto;
+}
+
+.el-alert {
+  background-color: white;
+  border-radius: 10px;
+  border: 2px solid red;
+  color: red;
 }
 
 h1, h2 {

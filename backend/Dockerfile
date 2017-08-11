@@ -8,6 +8,8 @@ RUN apt-get install -y libgraphviz-dev graphviz
 # The next line enables to build NumberJack (used by GoldenHinges)
 RUN apt-get install -y python-dev swig libxml2-dev zlib1g-dev libgmp-dev
 
+# The next line installs NCBI BLAST (for GeneBlocks, DNAWeaver, etc.)
+RUN apt-get install -y ncbi-blast+
 
 RUN mkdir /root/.ssh && chmod 700 /root/.ssh
 RUN ssh-keyscan -H -p 10022 git.genomefoundry.org >> /root/.ssh/known_hosts
@@ -23,6 +25,10 @@ RUN mkdir /code
 ADD requirements.txt /code/
 WORKDIR /code
 RUN pip install -r requirements.txt
+
+RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/bandwitch.git
+ARG CACHEBUST=8
+RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/dnachisel.git
 
 # Remove SSH keys
 RUN rm -rf /root/.ssh/

@@ -9,7 +9,9 @@ div
     h4.formlabel Provide an annotated sequence
     filesuploader(v-model='form.file', text="Drop a single Genbank file (or click to select)",
                       :multiple='false', help='')
-    span(v-if='form.file') Selected: <i>{{ form.file.name }}</i>
+    el-checkbox(v-if='Object.keys(form.editedFeatures).length > 0' v-model='form.editFeatures') Edit features
+    featureseditor(v-if='form.editedFeatures && form.editFeatures',
+                      :sequence='form.sequence', v-model='form.editedFeatures')
     backend-querier(v-if='!validateForm().length',
                     :form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Sculpt',
@@ -31,6 +33,9 @@ div
 import learnmore from '../../components/widgets/LearnMore'
 import filesuploader from '../../components/widgets/FilesUploader'
 import digestionset from '../../components/widgets/DigestionSelectorSet'
+import featureseditor from '../../components/widgets/FeaturesEditor/FeaturesEditor'
+
+var bioparsers = require('bio-parsers')
 
 var infos = {
   title: 'Sculpt A Sequence',
@@ -46,7 +51,10 @@ export default {
   data: function () {
     return {
       form: {
-        file: null
+        file: null,
+        editFeatures: false,
+        editedFeatures: {},
+        sequence: ''
       },
       infos: infos,
       queryStatus: {
@@ -59,7 +67,8 @@ export default {
   components: {
     filesuploader,
     learnmore,
-    digestionset
+    digestionset,
+    featureseditor
   },
   infos: infos,
   methods: {
@@ -74,25 +83,55 @@ export default {
       return errors
     }
   },
+  watch: {
+    'form.file.content': function (value) {
+      var genbank = atob(value.split(',')[1])
+      this.form.editedFeatures = {}
+      var self = this
+      bioparsers.genbankToJson(genbank, function (result) {
+        if (result.length === 1) {
+          var parsed = result[0].parsedSequence
+          self.form.sequence = parsed.sequence
+          parsed.features.map(function (feature, id) {
+            console.log(feature)
+            self.form.editedFeatures[id] = {
+              id: id.toString(),
+              start: feature.start,
+              end: feature.end + 1,
+              strand: feature.strand,
+              label: feature.name,
+              selected: false
+            }
+          })
+        }
+      })
+    },
+    'form.editedFeatures': {
+      deep: true,
+      handler: function (value) {
+        console.log(value)
+      }
+    }
+  },
   computed: {
     bars: function () {
       var data = this.queryStatus.polling.data
       if (!data) { return [] }
       return [
         {
-          text: 'Pass',
-          index: data.iteration_ind,
-          total: data.n_iterations
+          text: 'Constraint',
+          index: data.constraint_index,
+          total: data.constraint_total
         },
         {
-          text: 'Failing constraint',
-          index: data.evaluation_ind,
-          total: data.n_evaluations
+          text: 'Objective',
+          index: data.objective_index,
+          total: data.objective_total
         },
         {
-          text: 'Breach',
-          index: data.location_ind,
-          total: data.n_locations
+          text: 'Region',
+          index: data.location_index,
+          total: data.location_total
         }
       ]
     }

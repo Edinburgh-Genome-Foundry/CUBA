@@ -7,7 +7,7 @@ div
 
   .form
 
-    h4.formlabel What do you want to design ?
+    h4.formlabel What do you wish to design ?
 
     el-select(v-model='form.goal', placeholder='Select')
       el-option(v-for='item in goal_options', :label='item.label',
@@ -18,20 +18,18 @@ div
 
         h4.formlabel Sequence
 
-
+        examples-dialog
         filesuploader(v-model='form.sequence', text="Drop a single file (or click to select)",
                       help='Fasta or genbank. No file too large please :)', :multiple='false')
-        p.file-uploaded(v-if='form.sequence') File selected: <b> {{form.sequence.name}} </b>
-
 
         h4.formlabel
-          span Cutting mode
-          helper(help="If the provided sequence has features with a label '#cut',\
+          span Sequence decomposition
+          helper(help='If the provided sequence has features with a label "!cut",\
                        these features can be used as cutting zones. Otherwise the\
-                       sequence will be cut into similar-length fragments")
+                       sequence will be cut into similar-length fragments')
 
         p
-          el-radio(class='radio' v-model='form.cutting_mode' label='equal') Cut equal fragments
+          el-radio(class='radio' v-model='form.cutting_mode' label='equal') Cut similar-length fragments
           el-radio(class='radio' v-model='form.cutting_mode' label='features') Cut in featured zones
 
         p
@@ -39,6 +37,12 @@ div
           helper(help="If this is checked, the overhangs at the suggested cut\
                        positions will also be compatible with the 4 basepairs\
                        at each extremity of the sequence")
+
+        p
+          el-checkbox(v-model='form.allow_edits') Allow sequence edits
+          helper(help='If this is checked, the sequence can be edited to make the\
+                       decomposition possible. You can protect part of the sequence\
+                       with features labeled "@DoNotModify" or "@EnforceTranslation".')
 
         p(v-if="form.cutting_mode === 'equal'")
           span Number of fragments:
@@ -52,16 +56,11 @@ div
       h4.formlabel Overhangs parameters
 
       p.inline(v-if="form.goal === 'overhangs_set'")
-        span Number of overhangs:
+        span How many overhangs ?
         el-input-number.inline(v-show='!form.auto_overhangs'
                                v-model="form.n_overhangs", size="small",
                                :min=1, :max=50)
         el-checkbox.inline(v-model='form.auto_overhangs') as many as possible
-
-      //- p.inline
-      //-   span Overhang size, in nucleotides:
-      //-   el-input-number.inline(v-model="form.overhang_size", size="small",
-      //-                          :min=2, :max=6)
 
       p.inline Differences between overhangs:
         el-input-number.inline(v-model="form.overhangs_differences", size="small",
@@ -93,14 +92,15 @@ div
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Evaluate',
+                    :validateForm='validateForm', submitButtonText='Design',
                     v-show='form.goal', v-model='queryStatus')
     p(v-if='queryStatus.polling.inProgress && queryStatus.polling.data.n_overhangs').center Attempting to find {{queryStatus.polling.data.n_overhangs}} overhangs
+    progress-bars(:bars='bars')
     el-alert(v-show='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
-    p(v-if='!queryStatus.result.success') No solution found 😢. Maybe your parameters are too restrictive ?
+    p.center(v-if='!queryStatus.result.success') No solution found 😢. Maybe your parameters are too restrictive ?
     div(v-if='selected_overhangs')
       p We found a collection of {{ selected_overhangs.length }} overhangs:
       p.selected-overhangs
@@ -147,6 +147,7 @@ export default {
         n_overhangs: 10,
         n_fragments: 1,
         auto_overhangs: true,
+        allow_edits: false,
         extremities: true
       },
       queryStatus: {
@@ -192,6 +193,17 @@ export default {
       } else {
         return this.queryStatus.result.overhangs
       }
+    },
+    bars: function () {
+      var data = this.queryStatus.polling.data
+      if (!data) { return [] }
+      return [
+        {
+          text: 'Cutting Interval',
+          index: data.interval_ind,
+          total: data.n_intervals
+        }
+      ]
     }
   }
 }
@@ -254,10 +266,5 @@ p.selected-overhangs {
     padding: 3px;
     background-color: #eef3ff;
   }
-}
-
-.file-uploaded {
-  font-size: 14px;
-  margin-top: -10px;
 }
 </style>

@@ -27,13 +27,18 @@ https://jsfiddle.net/Linusborg/dzfdctv9/
 
 
 <template lang="pug">
-.dropzone-area(drag-over='handleDragOver', @dragenter='hovering = true',
-               @dragleave='hovering = false', :class="{'hovered': hovering}",
-               :style="{'height': '100px'}")
-    .dropzone-text
-      .dropzone-title {{text}}
-      .dropzone-info(v-if='help') {{ help }}
-    input(type='file', @change='change', :multiple='multiple')
+.files-uploader
+  .dropzone-area(drag-over='handleDragOver', @dragenter='hovering = true',
+                 @dragleave='hovering = false', :class="{'hovered': hovering}",
+                 :style="{'height': '100px'}")
+      .dropzone-text
+        .dropzone-title {{text}}
+        .dropzone-info(v-if='help') {{ help }}
+      input(type='file', @change='change', :multiple='multiple')
+  p.selected(v-if='value && !(value.length === 0)')
+    span Selected:
+    span(v-if='value.name') <b> {{value.name}} </b>
+    span.selected-file(v-for='file in value' v-else) <b>{{file.name}}</b>
 </template>
 
 <script>
@@ -43,6 +48,7 @@ export default {
     help: {default: 'No files too big though :)'},
     filter: {default: () => () => true},
     value: {default: () => ([])},
+    displaySelected: {default: true},
     multiple: {default: true}
   },
   data: function () {
@@ -83,7 +89,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 .el-icon-upload {
   font-size: 20px;
 }
@@ -157,5 +163,17 @@ export default {
       max-width: 100%;
     }
 
+}
+
+p.selected {
+  font-family: 'Inconsolata', Courier;
+  font-size: 14px;
+  margin-top: -10px;
+  .selected-file {
+    margin-right: 1em;
+  }
+}
+span.selected-file {
+  display: inline-block;
 }
 </style>

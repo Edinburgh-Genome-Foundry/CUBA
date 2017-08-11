@@ -4,12 +4,20 @@
 div
   h1 The EGF's Collection <br /> of Useful Biological Apps
   h2 Pick a scenario below.
-  scenariospanel
+  .scenario-category(v-for='category in scenarios', :key='category')
+    h3 {{category.category}}
+    scenariospanel(:scenarios='category.scenarios')
 </template>
 
 <script>
-import scenariospanel from '../ScenariosPanel'
+import scenariospanel from '../widgets/ScenariosPanel'
+import scenarios from '../scenarios/scenarios.js'
 export default {
+  data: function () {
+    return {
+      scenarios: scenarios.list
+    }
+  },
   components: {
     scenariospanel
   }

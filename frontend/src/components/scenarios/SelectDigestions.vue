@@ -24,17 +24,20 @@ div
         helper(help='Bands in the high-band-size-sensitivity zone, between 10% and 90% of the maximal migration distance.')
 
     h4.formlabel Constructs Sequences
-    sequencesuploader(v-model='form.files')
+
+
+    files-uploader(v-model='form.files', help='Fasta or Genbank files')
+    el-checkbox(v-model='form.circularSequences') Sequences are circular
 
     h4.formlabel Ladder
     el-select(v-model='form.ladder', placeholder='Select')
       el-option(v-for='item in ladder_options', :label='item.label',
                 :value='item.value', :key='item.value')
 
-    p.inline Bands precision (%)
-      el-input-number.inline(v-model="form.bandsPrecision", size="small",
-                             :min=1, :max=100)
-      helper(help='Precision in (%) of the total migration distance span. Determines how far away bands should be to get distinguished.')
+    //- p.inline Bands precision (%)
+    //-   el-input-number.inline(v-model="form.bandsPrecision", size="small",
+    //-                          :min=1, :max=100)
+    //-   helper(help='Precision in (%) of the total migration distance span. Determines how far away bands should be to get distinguished.')
 
     h4.formlabel Possible enzymes
 
@@ -44,6 +47,9 @@ div
 
     p.inline Max. enzymes in one digestion
       el-input-number.inline(v-model="form.maxEnzymes", size="small", :min='1', :max='3')
+    p.inline Number of digestions: &nbsp; &nbsp;
+      el-radio(v-model='form.maxDigestions', label='1') 1
+      el-radio(v-model='form.maxDigestions', label='2') 2
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Select digestions',
@@ -84,10 +90,11 @@ export default {
         ladder: '100_to_4k',
         possibleEnzymes: 'EcoRI, XbaI, XhoI',
         maxEnzymes: 1,
-        bandsPrecision: 5,
+        maxDigestions: '1',
         make_report: false,
         goal: 'ideal',
         bandsRange: [3, 5],
+        circularSequences: true,
         files: []
       },
       infos: infos,
@@ -121,13 +128,11 @@ export default {
         requestError: ''
       },
       enzymesPreselection: (
-        'AatII, Acc65I, AccI, AflII, AluI, ApaI, ApaLI, AseI, AvaI, AvaII, ' +
-        'BamHI, BanI, BanII, BclI, BglII, BsmI, Bsp1286I, BssHII, ClaI, DdeI, ' +
-        'DpnI, DraI, EcoRI, EcoRV, FokI, HaeII, HaeIII, HhaI, HincII, ' +
-        'HindIII, HinfI, HpaI, HpaII, KpnI, MboI, MluI, MnlI, MspA1I, MspI, ' +
-        'NaeI, NarI, NciI, NcoI, NdeI, NheI, NruI, NsiI, PspOMI, PstI, PvuI, ' +
-        'PvuII, RsaI, SacI, SacII, SalI, Sau96I, SmaI, SnaBI, SpeI, SphI, ' +
-        'SspI, StuI, StyI, XbaI, XhoI, XmaI'
+        'AccI, AclI, AflII, AflIII, AgeI, ApaLI, AvaI, BlnI, BmtI, BsmI, ' +
+        'BssHII, DdeI, DraI, Eco47III, EcoRI, EcoRV, HindII, HindIII, HinfI, ' +
+        'HpaI, MluI, MspA1I, MunI, NaeI, NciI, NcoI, NdeI, NsiI, PstI, PvuII, ' +
+        'SacI, SacII, SalI, ScaI, SfaNI, SnaBI, SpeI, SphI, SspI, StyI, VspI, ' +
+        'XhoI, XmaI, ZraI'
       )
     }
   },

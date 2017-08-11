@@ -1,5 +1,5 @@
 {
-  "name": "cab-frontend",
+  "name": "cuba-frontend",
   "version": "1.0.0",
   "description": "Frontend for a Computational Application Boilerplate",
   "author": "Zulko <valentin.zulkower@ed.ac.uk>",
@@ -15,7 +15,8 @@
     "vue-router": "2.5.3",
     "downloadjs": "1.4.7",
     "element-ui": "1.3.7",
-    "vue-spinner": "1.0.2"
+    "vue-spinner": "1.0.2",
+    "bio-parsers": "4.2.1"
   },
   "devDependencies": {
       "autoprefixer": "6.7.7",
