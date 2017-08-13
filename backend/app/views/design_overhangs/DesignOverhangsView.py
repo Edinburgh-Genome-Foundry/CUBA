@@ -43,14 +43,14 @@ class worker_class(AsyncWorker):
             differences=data.overhangs_differences,
             forbidden_overhangs=data.forbidden_overhangs,
             time_limit=2, external_overhangs=(),
-            progress_logger=self.update_progress_data
+            progress_logger=self.logger
         )
 
         if data.goal == 'sequence_decomposition':
             records, fmt = records_from_data_file(data.sequence)
             record = records[0]
             sequence = record
-            self.set_progress_message("Decomposing the sequence...")
+            self.logger(message="Decomposing the sequence...")
             if data.cutting_mode == 'equal':
                 solution = selector.cut_sequence(
                     equal_segments=data.n_fragments, sequence=sequence,
@@ -82,7 +82,7 @@ class worker_class(AsyncWorker):
               'success': True
             }
         elif data.goal == 'overhangs_set':
-            self.set_progress_message("Designing a set of overhangs...")
+            self.logger(message="Designing a set of overhangs...")
 
             try:
                 overhangs = selector.generate_overhangs_set(

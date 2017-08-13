@@ -16,7 +16,8 @@ div
                     :form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Sculpt',
                     v-model='queryStatus')
-    progress-bars(:bars='bars')
+    progress-bars(:bars='queryStatus.polling.data.bars', :order="['constraint', 'objective', 'location']"
+                  v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
 
   el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
      type="error", :closable="false")
@@ -111,29 +112,6 @@ export default {
       handler: function (value) {
         console.log(value)
       }
-    }
-  },
-  computed: {
-    bars: function () {
-      var data = this.queryStatus.polling.data
-      if (!data) { return [] }
-      return [
-        {
-          text: 'Constraint',
-          index: data.constraint_index,
-          total: data.constraint_total
-        },
-        {
-          text: 'Objective',
-          index: data.objective_index,
-          total: data.objective_total
-        },
-        {
-          text: 'Region',
-          index: data.location_index,
-          total: data.location_total
-        }
-      ]
     }
   }
 }

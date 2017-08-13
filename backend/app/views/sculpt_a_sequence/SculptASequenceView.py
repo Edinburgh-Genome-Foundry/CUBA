@@ -20,10 +20,11 @@ class worker_class(AsyncWorker):
     def work(self):
 
         data = self.data
+        self.logger(message='Initializing...')
         records, fmt = records_from_data_file(data.file)
         record = records[0]
         problem = DnaOptimizationProblem.from_record(record)
-        problem.progress_logger = self.update_progress_data
+        problem.progress_logger = self.logger
         success, summary, zip_data = optimization_with_report(
             target="@memory", problem=problem, project_name=record.id)
         return {

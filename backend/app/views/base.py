@@ -11,8 +11,10 @@ from rest_framework.renderers import JSONRenderer
 
 import django_rq
 import rq
+from proglog import ProgressBarLogger
 
 class ObjectDict(dict):
+    #  TODO: replace by box ?
 
     def __getattr__(self, key):
         if key in self.__dict__:
@@ -81,7 +83,7 @@ class PollJobView(SerializerView):
         if job_status == "failed":
             success = False
             error = 'There was an uncaught internal error during solving.'
-            print (job.__dict__)
+            # print (job.__dict__)
         return Response(
             dict(
                 success=success,
@@ -92,7 +94,6 @@ class PollJobView(SerializerView):
             ),
             status=status.HTTP_200_OK
         )
-
 
 class StartJobView(SerializerView, LoggingMixin):
     renderer_classes = (JSONRenderer, )
@@ -131,25 +132,32 @@ class JobResult:
                     file=file)
 
 
+class RqWorkerProgressLogger:
+    def __init__(self, job):
+        self.job = job
+        if 'progress_data' not in self.job.meta:
+            self.job.meta['progress_data'] = {}
+            self.job.save()
+
+    def callback(self, **kw):
+        self.job.meta['progress_data'] = self.state
+        self.job.save()
+
+class RqWorkerBarLogger(RqWorkerProgressLogger, ProgressBarLogger):
+
+    def __init__(self, job, init_state=None, bars=None, ignored_bars=()):
+        RqWorkerProgressLogger.__init__(self, job)
+        ProgressBarLogger.__init__(self, init_state=init_state, bars=bars,
+                                   ignored_bars=ignored_bars)
+
+
 class AsyncWorker:
 
     def __init__(self, data, job):
 
         self.job = job
         self.data = data
-
-    def set_progress_message(self, message):
-        self.update_progress_data(message=message)
-
-    def set_progress_data(self, **new_data):
-        self.job.meta['progress_data'] = new_data
-        self.job.save()
-
-    def update_progress_data(self, **new_data):
-        if 'progress_data' not in self.job.meta:
-            self.job.meta['progress_data'] = {}
-        self.job.meta['progress_data'].update(new_data)
-        self.job.save()
+        self.logger = RqWorkerBarLogger(job)
 
     @classmethod
     def run(cls, data):
