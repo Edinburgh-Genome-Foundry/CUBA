@@ -11,7 +11,7 @@ from rest_framework.renderers import JSONRenderer
 
 import django_rq
 import rq
-from proglog import ProgressBarLogger
+from proglog import RqWorkerBarLogger
 
 class ObjectDict(dict):
     #  TODO: replace by box ?
@@ -130,26 +130,6 @@ class JobResult:
                     json=self.json,
                     preview=preview,
                     file=file)
-
-
-class RqWorkerProgressLogger:
-    def __init__(self, job):
-        self.job = job
-        if 'progress_data' not in self.job.meta:
-            self.job.meta['progress_data'] = {}
-            self.job.save()
-
-    def callback(self, **kw):
-        self.job.meta['progress_data'] = self.state
-        self.job.save()
-
-class RqWorkerBarLogger(RqWorkerProgressLogger, ProgressBarLogger):
-
-    def __init__(self, job, init_state=None, bars=None, ignored_bars=()):
-        RqWorkerProgressLogger.__init__(self, job)
-        ProgressBarLogger.__init__(self, init_state=init_state, bars=bars,
-                                   ignored_bars=ignored_bars)
-
 
 class AsyncWorker:
 

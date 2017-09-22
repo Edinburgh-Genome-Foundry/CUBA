@@ -49,10 +49,6 @@ div
           el-input-number.inline(v-model="form.n_fragments", size="small",
                                  :min=2, :max=60)
 
-
-
-
-
       h4.formlabel Overhangs parameters
 
       p.inline(v-if="form.goal === 'overhangs_set'")
@@ -76,20 +72,19 @@ div
 
       h4 Forbidden overhangs
 
-      el-select(v-model='form.forbidden_overhangs',
-                placeholder='Enter any forbidden overhangs e.g. ATGC, GCTA, ...',
-                filterable, :multiple='true')
+      //- el-checkbox(v-model='form.forbidden_overhangs_is_text') Enter as text
+      el-input(type='textarea', :rows='4' v-model='form.forbidden_overhangs',
+               placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+      //- el-select(v-else v-model='form.forbidden_overhangs',
+      //-           placeholder='Enter any forbidden overhangs e.g. ATGC, GCTA, ...',
+      //-           filterable, :multiple='true')
         el-option(v-for='overhang in overhangs', :label='overhang', :value='overhang', :key='overhang')
 
       div(v-show="form.goal === 'overhangs_set'")
-        h4 Mandatory overhangs
-        el-select(v-model='form.mandatory_overhangs',
-                  placeholder='Enter any mandatory overhangs e.g. ATGC, GCTA, ...',
-                  filterable, :multiple='true')
-          el-option(v-for='overhang in overhangs', :label='overhang', :value='overhang', :key='overhang')
-
-
-
+        h4 External overhangs
+        el-input(type='textarea', :rows='4' v-model='form.mandatory_overhangs',
+                 placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+          //- el-option(v-for='overhang in overhangs', :label='overhang', :value='overhang', :key='overhang')
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Design',
@@ -104,7 +99,7 @@ div
     div(v-if='selected_overhangs')
       p We found a collection of {{ selected_overhangs.length }} overhangs:
       p.selected-overhangs
-        span(v-for='overhang in selected_overhangs', :key='overhang') {{overhang}}
+        span(v-for='overhang in selected_overhangs', :key='overhang') {{overhang + ', '}}
     download-button(v-if='queryStatus.result.zip_file',
                     :filedata='queryStatus.result.zip_file')
 
@@ -141,8 +136,11 @@ export default {
         sequence: null,
         left_flank_sequence: '',
         right_flank_sequence: '',
-        mandatory_overhangs: [],
-        forbidden_overhangs: [],
+        mandatory_overhangs: '',
+        forbidden_overhangs: '',
+        forbidden_overhangs_is_text: false,
+        forbidden_overhangs_text: '',
+
         cutting_mode: 'equal',
         n_overhangs: 10,
         n_fragments: 1,

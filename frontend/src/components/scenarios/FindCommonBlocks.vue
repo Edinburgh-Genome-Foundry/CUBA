@@ -13,7 +13,7 @@ div
     p.inline Minimal block size in basepairs:
       el-input-number.inline(v-model="form.min_block_size", size="small",
                              :min=10, :max=5000)
-    p.inline Block selection:
+    p.inline Block selection: 
       el-radio(class='radio' v-model='form.block_selection' label='larger_first') Larger first
       el-radio(class='radio' v-model='form.block_selection' label='most_coverage_first') Most coverage first
 
@@ -24,9 +24,10 @@ div
        type="error", :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result')
-    img.result_image(:src='queryStatus.result.figures_data')
-    //- download-button(v-if='queryStatus.result.zip_file',
-    //-                 :filedata='queryStatus.result.zip_file')
+    download-button(v-if='queryStatus.result.zip_file',
+                    :filedata='queryStatus.result.zip_file')
+    img.result_image(:src='queryStatus.result.figure_data')
+
 
   powered-by(:softwareNames='infos.poweredby')
 </template>

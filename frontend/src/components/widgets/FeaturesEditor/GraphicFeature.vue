@@ -1,9 +1,13 @@
 <template lang='pug'>
 g.graphic-feature
-  path(v-if="shape === 'arrow'", :d='path', @click="$emit('click')" v-bind:class="{ active: isSelected }")
-  rect(v-if="shape === 'rect'", :x='this.featureData.start', :y='this.featureData.level - 0.5 + 0.3',
-       :width='this.featureData.end - this.featureData.start', :height='0.6', :rx='20', :ry='20',
-       @click="$emit('click')" v-bind:class="{ active: isSelected }")
+  path(v-if="shape === 'arrow'", :d='path', @click="$emit('click')" v-bind:class="{ active: isSelected }",
+       :fill='featureData.js_color',
+        @mouseover="$emit('mouseover', featureData.id)",
+        @mouseleave="$emit('mouseover', null)")
+  rect(v-if="shape === 'rect'", :x='featureData.start', :y='featureData.level - 0.5 + 0.3',
+       :width='featureData.end - featureData.start', :height='0.6', :rx='20', :ry='20',
+       @click="$emit('click')" v-bind:class="{ active: isSelected }", :fill='featureData.js_color',
+       @mouseover="$emit('mouseover', featureData.id)", @mouseleave="$emit('mouseover', null)")
 </template>
 <script>
 export default {
@@ -21,7 +25,7 @@ export default {
 
       var middle = this.featureData.level
 
-      var start = this.featureData.start
+      var start = this.featureData.start - 1
       var end = this.featureData.end
       var top = this.featureData.level + 0.3
       var bottom = this.featureData.level - 0.3
@@ -66,7 +70,7 @@ export default {
     }
     stroke: black;
     stroke-width: 0.05px;
-    fill: #aaaaff;
+    // fill: #aaaaff;
   }
 }
 </style>

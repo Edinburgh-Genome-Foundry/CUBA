@@ -11,7 +11,8 @@ div
                       :multiple='false', help='')
     el-checkbox(v-if='Object.keys(form.editedFeatures).length > 0' v-model='form.editFeatures') Edit features
     featureseditor(v-if='form.editedFeatures && form.editFeatures',
-                      :sequence='form.sequence', v-model='form.editedFeatures')
+                      :sequence='form.sequence', v-model='form.editedFeatures',
+                      :featureColor='editorFeatureColor')
     backend-querier(v-if='!validateForm().length',
                     :form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Sculpt',
@@ -82,6 +83,16 @@ export default {
         errors.push('Provide at least one file.')
       }
       return errors
+    },
+    editorFeatureColor: function (feature) {
+      var color = {
+        '@': '#20a0ff',
+        '~': '#ffd520'
+      }[feature.label[0]]
+      if (!color) {
+        color = '#bed6e8'
+      }
+      return color
     }
   },
   watch: {
@@ -95,23 +106,17 @@ export default {
           self.form.sequence = parsed.sequence
           parsed.features.map(function (feature, id) {
             console.log(feature)
-            self.form.editedFeatures[id] = {
+            self.$set(self.form.editedFeatures, id.toString(), {
               id: id.toString(),
-              start: feature.start,
+              start: feature.start + 1,
               end: feature.end + 1,
               strand: feature.strand,
               label: feature.name,
               selected: false
-            }
+            })
           })
         }
       })
-    },
-    'form.editedFeatures': {
-      deep: true,
-      handler: function (value) {
-        console.log(value)
-      }
     }
   }
 }

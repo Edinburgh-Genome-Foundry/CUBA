@@ -5,18 +5,17 @@ from base64 import b64decode, b64encode
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
 from ..tools import  records_from_data_file
+from ..serializers import FileSerializer
 from dnacauldron import full_assembly_report, autoselect_enzyme
 
 
 digestion = serializers.ListField(child=serializers.CharField())
-class FileSerializer(serializers.Serializer):
-    name = serializers.CharField()
-    content = serializers.CharField()
+class SequenceFileSerializer( FileSerializer):
     circularity = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
-    parts = serializers.ListField(child=FileSerializer())
+    parts = serializers.ListField(child=SequenceFileSerializer())
 
 class worker_class(AsyncWorker):
 

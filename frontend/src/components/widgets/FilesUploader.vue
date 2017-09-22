@@ -81,9 +81,11 @@ export default {
     }
   },
   watch: {
-    valueMirror: function (val) {
-      // this.value = val
-      this.$emit('input', this.multiple ? val : val[0])
+    valueMirror: {
+      deep: true,
+      handler: function (val) {
+        this.$emit('input', this.multiple ? val : val[0])
+      }
     }
   }
 }

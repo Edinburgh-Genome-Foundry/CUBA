@@ -3,36 +3,40 @@
   p.label Features minimap
   features-minimap(:featuresData='featuresData', :window='window',
                    :sequenceLength='sequence.length', @drag='updateWindowCenter',
-                   @select='selectFeature')
+                   @select='selectFeature', @mouseover="hoverFeature")
+  p.hoveredFeature
+    span(v-if='hoveredFeature') {{features[hoveredFeature].label}}
   p.label Sequence
   sequence-viewer(:sequence='sequence', :window='window')
   features-viewer(:featuresData='featuresData', :window='window',
                   :sequenceLength='sequence.length',
-                  @select='selectFeature')
-  p.label Feature editor
+                  @drag='shiftWindowCenter'
+                  @select='selectFeature',
+                  @mouseover="hoverFeature")
+
+
+
   .editor
+    p.label Feature editor
     el-row.location
-      el-col(:xs='7', :sm='7', :lg='7')
+      el-col(:xs='12', :sm='8', :lg='8')
         p Start
         el-input-number(v-model='editorFeature.start', size='small')
-      el-col(:xs='7', :sm='7', :lg='7')
+      el-col(:xs='12', :sm='8', :lg='8')
         p End
         el-input-number(v-model='editorFeature.end', size='small')
-      el-col(:xs='5', :sm='5', :lg='5')
+      el-col(:xs='12', :sm='8', :lg='8')
         p Strand
         el-select(v-model='editorFeature.strand', placeholder='Strand', size='small')
-          el-option(label='None', value='0')
-          el-option(label='+', value=1)
-          el-option(label='-', value=-1)
+          el-option(label='None', :value='0')
+          el-option(label='+', :value='1')
+          el-option(label='-', :value='-1')
     p Feature label
     el-input(v-model='editorFeature.label', placeholder='Annotation Label')
     .buttons
       el-button(size='small', icon="plus" @click='newFeature') New
       el-button(v-if='selectedFeature' size='small', icon='edit' @click='updateFeature(selectedFeature.id)') Update
       el-button(v-if='selectedFeature' size='small', icon='delete' @click='deleteFeature(selectedFeature.id)') Delete
-    //- svg(:width='ntWidth*sequence.length', height='maxLines', :viewBox="'0 0 ' + sequence.length + ' ' + maxLines",
-    //-     preserveAspectRatio='xMinYMin meet')
-      text(v-for='nt, i in sequence', :x='i', y='1.1') {{nt}}
 </template>
 <script>
 import sequenceviewer from './SequenceViewer'
@@ -43,7 +47,8 @@ export default {
   name: 'features-editor',
   props: {
     sequence: {default: ''},
-    value: {default: () => ({})}
+    value: {default: () => ({})},
+    featureColor: {default: () => () => '#20a0ff'}
   },
   data () {
     return {
@@ -60,7 +65,8 @@ export default {
         strand: 1,
         label: ''
       },
-      features: Object.assign({}, this.value)
+      features: Object.assign({}, this.value),
+      hoveredFeature: null
       // featuresMirror: this.features
     }
   },
@@ -79,6 +85,7 @@ export default {
           level: self.featureLevels[featureID]
         }, self.features[featureID])
         dict['selected'] = (featureID === self.editorFeature.id)
+        dict['js_color'] = self.featureColor(dict)
         return dict
       })
     },
@@ -101,7 +108,7 @@ export default {
           var f2 = this.features[id2]
           console.log(f1.start, f1.end, f2.start, f2.end)
           if (((f1.start <= f2.start) && (f2.start < f1.end)) ||
-              ((f2.start <= f1.start) && (f2.start < f2.end))) {
+              ((f2.start <= f1.start) && (f1.start < f2.end))) {
             featureOverlaps[id1].push(id2)
             featureOverlaps[id2].push(id1)
           }
@@ -145,8 +152,11 @@ export default {
     handleResize: function () {
       this.clientWidth = this.$el.parentElement.clientWidth
     },
-    updateWindowCenter: function (c) {
-      this.windowCenter = c
+    updateWindowCenter: function (center) {
+      this.windowCenter = center
+    },
+    shiftWindowCenter: function (shift) {
+      this.windowCenter += shift
     },
     selectFeature: function (featureID) {
       console.log('wwwwwww', featureID)
@@ -173,6 +183,10 @@ export default {
     },
     deleteFeature: function (featureID) {
       this.$delete(this.features, featureID)
+    },
+    hoverFeature: function (featureID) {
+      console.log(featureID)
+      this.hoveredFeature = featureID
     }
   },
   mounted: function () {
@@ -185,6 +199,12 @@ export default {
       handler: function (value) {
         this.$emit('change', value)
       }
+    },
+    value: {
+      deep: true,
+      handler: function (value) {
+        this.features = value
+      }
     }
   }
 }
@@ -194,8 +214,10 @@ export default {
 <style lang='scss' scoped>
 .features-editor {
   width: 100%;
+
+  margin-top: 2em;
   border-radius: 5px;
-  border: 5px solid #eef;
+  border: 2px solid #f4faff;
   /*padding: 8px;*/
 
   p.label {
@@ -203,9 +225,17 @@ export default {
     margin-bottom: 0;
     font-weight: bold;
   }
+  p.hoveredFeature {
+    font-size: 14px;
+    font-family: 'Inconsolata';
+    text-align: center;
+    height: 1em;
+    width: 90%;
+    margin-left: 5%;
+  }
   .editor {
-    padding: 8px;
-    background-color: #fafaff;
+    padding: 5px;
+    background-color: #fbfdff;
     .buttons {
       font-size: 16px;
       padding: 3px;

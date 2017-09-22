@@ -6,6 +6,8 @@ from Bio.Alphabet import DNAAlphabet
 import bandwagon as bw
 import re
 from base64 import b64encode, b64decode
+from matplotlib.backends.backend_pdf import PdfPages
+
 
 PYTHON3 = (sys.version_info > (3, 0))
 if PYTHON3:
@@ -77,3 +79,16 @@ def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
         return result
     else:
         return "data:image/svg+xml;base64," + b64encode(svg_txt)
+
+def figures_to_pdf_report_data(figures, filename='report.pdf'):
+    pdf_io = BytesIO()
+
+    with PdfPages(pdf_io) as pdf:
+        for fig in figures:
+            pdf.savefig(fig, bbox_inches="tight")
+    return {
+        'data': ('data:application/pdf;base64,' +
+                 b64encode(pdf_io.getvalue()).decode("utf-8")),
+        'name': filename,
+        'mimetype': 'application/pdf'
+    }

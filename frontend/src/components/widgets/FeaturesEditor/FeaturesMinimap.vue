@@ -3,15 +3,17 @@
     svg(width='600', :height='15 * (maxLevel + 2)',
         preserveAspectRatio="none",
         :viewBox="viewBox",
-        @mouseover="startDrag", @touchstart="startDrag",
+        @mousedown="startDrag", @touchstart="startDrag",
         @mousemove="onDrag", @touchmove="onDrag",
         @mouseup="stopDrag", @touchend="stopDrag",
         @mouseleave="stopDrag")
       path(:d="'M 0 0 L ' + sequenceLength + ' 0'" stroke='black', stroke-width='0.05px')
       rect.focus(:x='window.start', :y='-1', :width='window.end - window.start', :height='maxLevel + 2')
-      el-tooltip(v-for='featureData, i in featuresData', :content='featureData.label', :key='i')
-        graphic-feature(:featureData='featureData', :isSelected='featureData.selected',
-                        @click="$emit('select', featureData.id)", :shape="'rect'")
+      //- el-tooltip(v-for='featureData, i in featuresData', :content='featureData.label', :key='i')
+      graphic-feature(v-for='featureData, i in featuresData', :key='i',
+                      :featureData='featureData', :isSelected='featureData.selected',
+                      @click="$emit('select', featureData.id)", :shape="'rect'",
+                      @mouseover="function (v) {$emit('mouseover', v)}")
 
 </template>
 <script>
@@ -41,22 +43,9 @@ export default {
       return result
     },
     viewBox: function () {
-      return [
-        0,
-        -1,
-        this.sequenceLength,
-        this.maxLevel + 2
-      ].join(' ')
+      return [0, -1, this.sequenceLength, this.maxLevel + 2].join(' ')
     }
   },
-  // watch: {
-  //   featuresData: {
-  //     deep: true,
-  //     handler: function () {
-  //       this.$forceUpdate()
-  //     }
-  //   }
-  // },
   methods: {
     startDrag: function (evt) {
       // var e = evt.target
@@ -74,6 +63,9 @@ export default {
     },
     stopDrag: function (evt) {
       this.dragging = false
+    },
+    featureMouseover: function (evt) {
+      console.log(evt)
     }
   }
 }

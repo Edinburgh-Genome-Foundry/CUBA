@@ -1,6 +1,7 @@
 git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer
 git+git://github.com/Edinburgh-Genome-Foundry/DnaCauldron.git
 git+git://github.com/Edinburgh-Genome-Foundry/BandWagon.git
+git+git://github.com/Edinburgh-Genome-Foundry/Geneblocks.git
 
 git+ssh://git@git.genomefoundry.org:10022/valentin/bandwitch.git
 git+ssh://git@git.genomefoundry.org:10022/valentin/dnachisel.git

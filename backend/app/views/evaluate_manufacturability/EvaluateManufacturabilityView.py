@@ -27,7 +27,8 @@ class worker_class(AsyncWorker):
         PDF_REPORT = (data.report == "pdf_report")
         figures = []
         for f in data.files:
-            self.set_progress_message('Processing file %s' % f.name)
+            self.logger(message='Processing file %s' % f.name)
+            # self.set_progress_message('Processing file %s' % f.name)
             records, fmt = records_from_data_file(f)
             for (i, record) in enumerate(records):
 
@@ -39,7 +40,7 @@ class worker_class(AsyncWorker):
                 figure.suptitle(name)
                 figures.append(figure)
 
-        self.set_progress_message('Generating the report')
+        self.logger(message='Generating report')
 
         if PDF_REPORT:
             pdf_io = BytesIO()

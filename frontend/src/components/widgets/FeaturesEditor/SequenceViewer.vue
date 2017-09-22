@@ -1,8 +1,11 @@
 <template lang='pug'>
 .sequence-viewer
     svg(width='600', :viewBox="viewBox")
-      text.nucl(v-for='nt, i in sequence', :x='i + 0.5', y='1', :key='i') {{nt}}
-      text.ruler(v-for='nt, i in sequence', :x='i + 0.5', y='2', :key='i' v-if='!(i % 10)') {{i}}
+      text.nucl(v-for='nt, i in sequence.slice(window.start, window.end)',
+               :x='i + window.start + 1 + 0.5', y='1', :key='i') {{nt}}
+      text.ruler(v-for='nt, i in sequence.slice(window.start, window.end)',
+                 :x='i +  window.start + 1 + 0.5', y='2', :key='i'
+                 v-if='!((i +  window.start + 1) % 10)') {{i +  window.start + 1}}
 </template>
 <script>
 import graphicfeature from './GraphicFeature'
@@ -22,7 +25,7 @@ export default {
   computed: {
     viewBox: function () {
       return [
-        this.window.start,
+        this.window.start + 1,
         0,
         this.window.end - this.window.start,
         2.5

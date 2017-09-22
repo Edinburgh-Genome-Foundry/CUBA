@@ -1,10 +1,16 @@
 <template lang='pug'>
 .features-viewer
-    svg(width='600', :height='30*(maxLevel + 2)', :viewBox="viewBox", preserveAspectRatio="none")
+    svg(width='600', :height='30*(maxLevel + 2)', :viewBox="viewBox",
+        preserveAspectRatio="none",
+        @mousedown="startDrag", @touchstart="startDrag",
+        @mousemove="onDrag", @touchmove="onDrag",
+        @mouseup="stopDrag", @touchend="stopDrag",
+        @mouseleave="stopDrag")
       path(:d="'M 0 0 L ' + sequenceLength + ' 0'" stroke='black', stroke-width='0.05px')
       graphic-feature(v-for='featureData, i in featuresData', :featureData='featureData',
                       :isSelected='featureData.selected',
-                      :key='i', @click="$emit('select', featureData.id)")
+                      :key='i', @click="$emit('select', featureData.id)",
+                      @mouseover="function (v) {$emit('mouseover', v)}")
 </template>
 <script>
 import graphicfeature from './GraphicFeature'
@@ -17,6 +23,8 @@ export default {
   },
   data () {
     return {
+      dragging: false,
+      originalX: null
     }
   },
   components: {
@@ -37,6 +45,27 @@ export default {
         this.window.end - this.window.start,
         this.maxLevel + 2
       ].join(' ')
+    }
+  },
+  methods: {
+    startDrag: function (evt) {
+      // var e = evt.target
+      var dim = this.$el.getBoundingClientRect()
+      this.originalX = Math.round(Number((this.window.end - this.window.start) * (evt.clientX - dim.left) / (dim.right - dim.left)))
+      this.dragging = true
+    },
+    onDrag: function (evt) {
+      if (this.dragging) {
+        var dim = this.$el.getBoundingClientRect()
+        // var windowCenter = Math.round(Number(this.window * (evt.clientX - dim.left) / (dim.right - dim.left)))
+        this.newX = Math.round(Number((this.window.end - this.window.start) * (evt.clientX - dim.left) / (dim.right - dim.left)))
+        this.$emit('drag', this.originalX - this.newX)
+        // console.log()
+        this.originalX = this.newX
+      }
+    },
+    stopDrag: function (evt) {
+      this.dragging = false
     }
   }
 }

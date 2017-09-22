@@ -26,10 +26,11 @@ ADD requirements.txt /code/
 WORKDIR /code
 RUN pip install -r requirements.txt
 
-RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/bandwitch.git
-ARG CACHEBUST=12
-RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/dnachisel.git
-RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/geneblocks.git
+ARG CACHEBUST=29
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Geneblocks.git
+# RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/geneblocks.git
+# RUN pip install --upgrade git+ssh://git@git.genomefoundry.org:10022/valentin/goldenhinges.git
+
 
 # Remove SSH keys
 RUN rm -rf /root/.ssh/

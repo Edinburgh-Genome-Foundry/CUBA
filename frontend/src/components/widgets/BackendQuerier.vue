@@ -129,7 +129,7 @@ export default {
             self.status.polling.data.message = 'Finished !'
             self.status.result = data.result
             if (data.result.error) {
-              self.status.requestError = 'Computation error: ' + data.result.error.message
+              self.status.requestError = 'Program error: ' + data.result.error.message
             }
             self.status.polling.inProgress = false
             clearInterval(jobPoller)

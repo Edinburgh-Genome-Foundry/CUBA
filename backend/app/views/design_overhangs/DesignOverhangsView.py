@@ -3,15 +3,9 @@
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_file, zip_data_to_html_data)
+from ..serializers import FileSerializer
 from goldenhinges import OverhangsSelector
 from goldenhinges.reports import write_report_for_cutting_solution
-
-
-class FileSerializer(serializers.Serializer):
-    """Serializer for files."""
-
-    name = serializers.CharField()
-    content = serializers.CharField()
 
 
 class serializer_class(serializers.Serializer):
@@ -21,8 +15,10 @@ class serializer_class(serializers.Serializer):
     goal = serializers.CharField()
     overhangs_differences = serializers.IntegerField()
     gc_content = serializers.ListField(child=serializers.IntegerField())
-    mandatory_overhangs = serializers.ListField(child=serializers.CharField())
-    forbidden_overhangs = serializers.ListField(child=serializers.CharField())
+    # mandatory_overhangs = serializers.ListField(child=serializers.CharField())
+    # forbidden_overhangs = serializers.ListField(child=serializers.CharField())
+    mandatory_overhangs = serializers.CharField(allow_blank=True)
+    forbidden_overhangs = serializers.CharField(allow_blank=True)
     cutting_mode = serializers.CharField()
     extremities = serializers.BooleanField()
     n_overhangs = serializers.IntegerField()
@@ -36,13 +32,20 @@ class worker_class(AsyncWorker):
 
     def work(self):
         data = self.data
+        data.forbidden_overhangs = [] if (data.forbidden_overhangs == '') else [
+            s.strip() for s in data.forbidden_overhangs.split(',')
+        ]
+        data.mandatory_overhangs = [] if (data.mandatory_overhangs == '') else [
+            s.strip() for s in data.mandatory_overhangs.split(',')
+        ]
 
         selector = OverhangsSelector(
             gc_min=1.0 * data.gc_content[0] / 100,
             gc_max=1.0 * data.gc_content[1] / 100,
             differences=data.overhangs_differences,
             forbidden_overhangs=data.forbidden_overhangs,
-            time_limit=2, external_overhangs=(),
+            external_overhangs=data.mandatory_overhangs,
+            time_limit=2,
             progress_logger=self.logger
         )
 
@@ -87,20 +90,24 @@ class worker_class(AsyncWorker):
             try:
                 overhangs = selector.generate_overhangs_set(
                     n_overhangs=None,
-                    mandatory_overhangs=data.mandatory_overhangs,
+                    # mandatory_overhangs=data.mandatory_overhangs,
                     n_cliques=30000
                 )
+                print ("FOUND %s" % "-".join(sorted(overhangs)))
             except ValueError as err:
                 return {
                   'success': False,
                   'message': " ".join(err.args)
                 }
 
-            overhangs = selector.generate_overhangs_set(
+            new_overhangs = selector.generate_overhangs_set(
                 n_overhangs=None if data.auto_overhangs else data.n_overhangs,
-                start_at=len(overhangs),
-                mandatory_overhangs=data.mandatory_overhangs,
+                start_at=len(overhangs)
             )
+            if (new_overhangs is not None):
+                overhangs = new_overhangs
+
+            overhangs = sorted(overhangs)
 
             if overhangs is None:
                 return {
