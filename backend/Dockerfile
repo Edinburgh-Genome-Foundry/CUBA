@@ -26,7 +26,7 @@ ADD requirements.txt /code/
 WORKDIR /code
 RUN pip install -r requirements.txt
 
-ARG CACHEBUST=31
+ARG CACHEBUST=32
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Geneblocks.git
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaChisel.git
 
