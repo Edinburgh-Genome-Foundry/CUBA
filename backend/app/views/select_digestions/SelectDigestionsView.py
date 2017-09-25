@@ -34,7 +34,7 @@ class worker_class(AsyncWorker):
 
     def work(self):
 
-        self.set_progress_message('Exploring possible digestions...')
+        self.logger(message='Exploring possible digestions...')
 
         data = self.data
         ladder = LADDERS[data.ladder]
@@ -45,7 +45,7 @@ class worker_class(AsyncWorker):
             for record in records_from_data_files(data.files)
         ])
         # print (sequences)
-        self.set_progress_message("Initializing...")
+        self.logger(message="Initializing...")
         if (data.goal == 'ideal'):
 
             mini, maxi = data.bandsRange
@@ -57,13 +57,12 @@ class worker_class(AsyncWorker):
                 max_enzymes_per_digestion=data.maxEnzymes
             )
         else:
-            print(enzymes)
             problem = SeparatingDigestionsProblem(
                  sequences=sequences, enzymes=enzymes, ladder=ladder,
                  linear=not data.circularSequences,
                  max_enzymes_per_digestion=data.maxEnzymes
             )
-        self.set_progress_message('Selecting digestions...')
+        self.logger(message='Selecting digestions...')
         score, selected_digestions = problem.select_digestions(
             max_digestions=data.maxDigestions, search='full')
         axes = problem.plot_digestions(

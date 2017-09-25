@@ -47,11 +47,11 @@ class worker_class(AsyncWorker):
             sequences, block_selection=data.block_selection,
             min_block_size=data.min_block_size
         )
-
         blocks_finder = BlocksFinder(sequences)
 
 
         self.logger(message='Generating the report')
+
         root = flametree.file_tree("@memory")
 
         axes = blocks_finder.plot_common_blocks()
@@ -61,11 +61,16 @@ class worker_class(AsyncWorker):
         figure.savefig(root._file('report.pdf').open('wb'), format='pdf',
                     bbox_inches='tight')
 
-        genbank_dir = root._dir('blocks_genbanks')
-        for record in blocks_finder.common_blocks_records():
-            print (record.id)
-            SeqIO.write(record, genbank_dir._file(record.id + '.gb').open('w'),
-                        'genbank')
+        blocks_gb_dir = root._dir('blocks_genbanks')
+        for rec in blocks_finder.common_blocks_records():
+            gb_file = blocks_gb_dir._file(rec.id + '.gb')
+            SeqIO.write(rec, gb_file.open('w'), 'genbank')
+        seq_gb_dir = root._dir('sequences_genbanks')
+        seq_records = blocks_finder.sequences_with_annotated_blocks()
+        for recname, rec in seq_records.items():
+            gb_file = seq_gb_dir._file("%s.gb" % recname)
+            rec.id = recname
+            SeqIO.write(rec, gb_file.open('w'), 'genbank')
         zip_data = root._close()
 
         return {
