@@ -2,7 +2,9 @@
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import zip_data_to_html_data, records_from_data_file, LADDERS
+from ..tools import zip_data_to_html_data, records_from_data_file
+from bandwitch import LADDERS
+import bandwagon
 from .report_generator import generate_report
 
 
@@ -25,7 +27,7 @@ class worker_class(AsyncWorker):
     generate_preview = True
 
     def work(self):
-        self.set_progress_message("Reading Data...")
+        self.logger(message="Reading Data...")
         data = self.data
         records = [
             records_from_data_file(f)[0][0]
@@ -34,10 +36,11 @@ class worker_class(AsyncWorker):
         for f, record in zip(data.files, records):
             record.linear = not f.circularity
             record.id = f.name
-        ladder = LADDERS[data.ladder]
+        ladder = bandwagon.custom_ladder(None, LADDERS[data.ladder].bands)
         digestions = data.digestions
 
-        self.set_progress_message("Generating report...")
+
+        self.logger(message="Generating report...")
         preview, report = generate_report(records=records,
                                           digestions=digestions,
                                           ladder=ladder,

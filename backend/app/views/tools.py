@@ -60,7 +60,7 @@ def zip_data_to_html_data(zip_data):
     return 'data:application/zip;base64,' + b64encode(zip_data).decode("utf-8")
 
 LADDERS = {
-   "100-4k": bw.ladders.LADDER_100_to_4k
+   "100_to_4k": bw.ladders.LADDER_100_to_4k
 }
 
 def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
@@ -82,7 +82,6 @@ def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
 
 def figures_to_pdf_report_data(figures, filename='report.pdf'):
     pdf_io = BytesIO()
-
     with PdfPages(pdf_io) as pdf:
         for fig in figures:
             pdf.savefig(fig, bbox_inches="tight")

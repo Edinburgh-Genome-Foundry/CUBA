@@ -47,7 +47,7 @@ export default {
   data: function () {
     return {
       form: {
-        ladder: '100-4k',
+        ladder: '100_to_4k',
         digestions: [],
         make_report: false,
         files: []
@@ -56,7 +56,15 @@ export default {
       ladder_options: [
         {
           label: 'Ladder 100 bp - 4000 bp',
-          value: '100-4k'
+          value: '100_to_4k'
+        },
+        {
+          label: 'Ladder 35 bp - 5 kbp (AATI)',
+          value: '35_to_5k'
+        },
+        {
+          label: 'Ladder 75 bp - 15 kbp (AATI)',
+          value: '75_to_15k'
         }
       ],
       queryStatus: {
