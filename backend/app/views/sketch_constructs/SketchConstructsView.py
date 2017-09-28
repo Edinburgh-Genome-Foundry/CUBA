@@ -27,7 +27,7 @@ class worker_class(AsyncWorker):
         constructs_dict = data.sketchesData
         for cst in constructs_dict['constructs']:
             for part in cst['parts']:
-                part['bg_color'] = part['bgColor']
+                part['bg_color'] = part.get('bgColor', None)
         constructs_dict.update(dict(
             font=data.font,
             orientation=data.orientation,
