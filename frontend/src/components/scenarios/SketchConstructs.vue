@@ -32,7 +32,7 @@ div
 
 
   backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                  :validateForm='validateForm', submitButtonText='Get PDF',
+                  :validateForm='validateForm', submitButtonText='Render',
                   v-model='queryStatus')
   el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
      type="error", :closable="false")

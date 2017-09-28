@@ -39,7 +39,7 @@ class worker_class(AsyncWorker):
             file_mimetype = 'application/pdf'
             file_name = constructs.title + '.pdf'
         else:
-            ext = format.lower()
+            ext = data.format.lower()
             img_data = constructs.to_image(outfile=None, extension=ext)
             file_data = ('data:application/%s;base64,' % ext +
                          b64encode(img_data).decode("utf-8"))
