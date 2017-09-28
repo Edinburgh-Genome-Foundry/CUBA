@@ -180,7 +180,7 @@ $categories: (ATG CDS DNA-binding-element five-prime-overhang homology-arm
   position: relative;
   margin-right: -0.3em;
   margin-left: -0.3em;
-  min-width:6em;
+  min-width:8em;
   max-width:15em;
   height:16em;
   font-size: 14px;
@@ -222,8 +222,9 @@ $categories: (ATG CDS DNA-binding-element five-prime-overhang homology-arm
     // display: inline;
   }
   .symbol {
+    position: absolute !important;
      font-size: 1em !important;
-     position: absolute !important;
+
      top: 5.5em !important;
      left: 0;
      bottom: 0 !important;
