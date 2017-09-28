@@ -38,6 +38,8 @@ urlpatterns = [
         views.DesignOverhangsView.as_view()),
     url(r'^start/find_common_blocks$',
         views.FindCommonBlocksView.as_view()),
+    url(r'^start/sketch_constructs$',
+        views.SketchConstructsView.as_view()),
 
     url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^django-rq/', include('django_rq.urls')),

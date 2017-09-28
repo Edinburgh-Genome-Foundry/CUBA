@@ -5,7 +5,8 @@ export default {
       scenarios: [
         require('./SculptASequence.vue'),
         require('./DesignOverhangs.vue'),
-        require('./SimulateGGAssemblies')
+        require('./SimulateGGAssemblies'),
+        require('./SketchConstructs')
       ]
     },
     {

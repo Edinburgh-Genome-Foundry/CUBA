@@ -32,6 +32,7 @@ class worker_class(AsyncWorker):
 
     def work(self):
         data = self.data
+
         data.forbidden_overhangs = [] if (data.forbidden_overhangs == '') else [
             s.strip() for s in data.forbidden_overhangs.split(',')
         ]

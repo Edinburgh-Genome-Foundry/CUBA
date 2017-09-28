@@ -20,7 +20,7 @@ class serializer_class(serializers.Serializer):
 class worker_class(AsyncWorker):
 
     def work(self):
-        self.set_progress_message("Reading Data...")
+        self.logger(message="Reading Data...")
         data = self.data
 
         records = [
@@ -35,7 +35,7 @@ class worker_class(AsyncWorker):
             possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
             data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)
 
-        self.set_progress_message("Generating a report, be patient.")
+        self.logger(message="Generating a report, be patient.")
 
         nconstructs, zip_data = full_assembly_report(
             records, target='@memory', enzyme=self.data.enzyme,

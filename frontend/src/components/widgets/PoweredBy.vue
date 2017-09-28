@@ -48,7 +48,12 @@ var allSoftwareInfos = {
   geneblocks: {
     name: 'Gene Blocks',
     logoSrc: '/static/logos/geneblocks.png',
-    href: '#'
+    href: 'https://github.com/Edinburgh-Genome-Foundry/Geneblocks'
+  },
+  caravagene: {
+    name: 'Caravagene',
+    logoSrc: '/static/logos/caravagene.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/Caravagene'
   }
 }
 export default {

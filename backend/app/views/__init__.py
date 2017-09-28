@@ -6,3 +6,4 @@ from .evaluate_manufacturability import EvaluateManufacturabilityView
 from .sculpt_a_sequence import SculptASequenceView
 from .design_overhangs import DesignOverhangsView
 from .find_common_blocks import FindCommonBlocksView
+from .sketch_constructs import SketchConstructsView

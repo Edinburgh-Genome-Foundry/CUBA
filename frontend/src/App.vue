@@ -32,6 +32,12 @@ export default {
 </script>
 
 <style lang='scss'>
+
+@import './assets/css/animate.css';
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata);
+@import url(https://fonts.googleapis.com/css?family=Raleway); 
+
 #app {
   font-family: 'Raleway', 'Source Sans Pro',  Helvetica, Arial, sans-serif;
   font-size:16px;
