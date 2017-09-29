@@ -15,10 +15,13 @@ div
       el-radio(v-model='form.format' label='PDF') PDF
       el-radio(v-model='form.format' label='jpeg') JPEG
       el-radio(v-model='form.format' label='PNG') PNG
-    .form-group
+    .form-group(v-if="form.format === 'PDF'")
       .form-title Orientation:
       el-radio(v-model='form.orientation' label='portrait') &#x1f5b9; Portrait
       el-radio(v-model='form.orientation' label='landscape') <div class='landscape'>&#x1f5b9;</div> Landscape
+    .form-group(v-else)
+      .form-title Page width:
+      el-input-number(v-model='form.width', :min='50', :max='1000' size='small')
     .form-group
       .form-title Font:
       el-radio.open-sans(v-model='form.font' label='Open Sans') Open Sans
@@ -64,6 +67,7 @@ export default {
         format: 'PDF',
         orientation: 'portrait',
         fontsize: 14,
+        width: 600,
         font: 'Raleway',
         sketchesData: {
           title: '',
