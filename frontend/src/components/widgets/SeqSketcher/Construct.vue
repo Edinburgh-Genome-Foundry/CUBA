@@ -5,11 +5,11 @@
                 :class="{'construct-hover-only': (constructData.note.length === 0)}")
 
   .controls.construct-hover-only
-    .control(@click="$emit('delete')") &#x1f5d1; Delete
-    .control(@click="$emit('new')") &#x2795; Insert new
-    .control(@click="$emit('duplicate')") &#x1f5cd; Duplicate
-    .control(@click="$emit('moveUp')") &#x21e7; Move up
-    .control(@click="$emit('moveDown')") &#x21e9; Move down
+    .control(@click="$emit('delete')") <icon name='trash-o'></icon> Delete
+    .control(@click="$emit('new')") <icon name='plus-circle'></icon> Insert new
+    .control(@click="$emit('duplicate')") <icon name='files-o'></icon> Duplicate
+    .control(@click="$emit('moveUp')") <icon name='arrow-up'></icon> Move up
+    .control(@click="$emit('moveDown')") <icon name='arrow-down'></icon> Move down
   .parts
     part-adder(@click="addPart(0)")
     span(v-for='part, i in constructData.parts', :key="part.id")

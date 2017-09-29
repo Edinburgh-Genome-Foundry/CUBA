@@ -2,8 +2,8 @@
 .seq-sketcher
   .file-operations
     //- el-button(icon='document' size='mini' @click='downloadExcel').file-link Download Excel
-    el-button(icon='document' size='mini' @click='downloadJson').file-link Download JSON
-    el-button.file-link(icon='upload2' size='mini' @click='showFileDialog=true') Upload Sketches
+    el-button.file-link(size='mini' @click='downloadJson') <icon name='file-text-o'></icon> Download JSON
+    el-button.file-link(size='mini' @click='showFileDialog=true') <icon name='upload'></icon> Upload Sketches
     el-dialog.part-selector(title="Upload a schema", :visible.sync="showFileDialog", size='small')
       files-uploader(v-model='file', :showSelected='false', :multiple='false')
   textarea.title(v-model='sketchesData.title', type="textarea" rows=1, placeholder='(Enter a title here)')

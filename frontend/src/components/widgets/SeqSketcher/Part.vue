@@ -25,13 +25,14 @@
     //-   .color-choices
     //-     .color-choice(v-for='color in colorChoices', :style="{'background-color': color}", :key='color',
     //-                 @click='partData.bgColor = color; popover2Visible = false')
-    span.control(@click='partData.reversed = !partData.reversed' title='reverse') &#8635;
-    span.control(@click="$emit('delete')" title='remove') &#128465;
+    span.control(@click="$emit('delete')" title='remove') <icon name='trash-o'></icon>
+    span.control(@click='partData.reversed = !partData.reversed' title='reverse') <icon name='undo'></icon>
+
     el-tooltip(:enterable='true', effect='light', v-model='popover2Visible', :manual='true', title='color')
       .color-choices(slot='content')
         .color-choice(v-for='color in colorChoices', :style="{'background-color': color}", :key='color',
                     @click='partData.bgColor = color; popover2Visible = false')
-      span.control(@click='popover2Visible = !popover2Visible') &#128397;
+      span.control(@click='popover2Visible = !popover2Visible') <icon name='paint-brush'></icon>
   <el-button :class="[{reversed: partData.reversed}, partData.category, 'symbol']" v-popover:popover1></el-button>
 </template>
 

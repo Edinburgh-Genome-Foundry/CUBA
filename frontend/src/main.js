@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import Icon from 'vue-awesome/components/Icon'
+import 'vue-awesome/icons'
 import ElementUI from 'element-ui'
 import App from './App'
 import Home from './components/pages/Home'
@@ -18,6 +20,7 @@ Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.use(widgets)
+Vue.component('icon', Icon)
 
 // Check the users auth status when the app starts
 // auth.checkAuth()

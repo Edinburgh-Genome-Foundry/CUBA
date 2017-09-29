@@ -17,8 +17,8 @@ div
       el-radio(v-model='form.format' label='PNG') PNG
     .form-group(v-if="form.format === 'PDF'")
       .form-title Orientation:
-      el-radio(v-model='form.orientation' label='portrait') &#x1f5b9; Portrait
-      el-radio(v-model='form.orientation' label='landscape') <div class='landscape'>&#x1f5b9;</div> Landscape
+      el-radio(v-model='form.orientation' label='portrait') <icon name="file-text-o"></icon> Portrait
+      el-radio(v-model='form.orientation' label='landscape') <icon name="file-text-o" class='landscape'></icon> Landscape
     .form-group(v-else)
       .form-title Page width:
       el-input-number(v-model='form.width', :min='50', :max='1000' size='small')
