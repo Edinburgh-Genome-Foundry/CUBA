@@ -11,5 +11,3 @@ services:
 
   vue:
     command: ./production_server.sh
-    ports:
-      - "80:80"
