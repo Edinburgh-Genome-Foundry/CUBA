@@ -23,7 +23,7 @@ var allSoftwareInfos = {
   bandwitch: {
     name: 'BandWitch',
     logoSrc: '/static/logos/bandwitch.png',
-    href: '#'
+    href: 'https://github.com/Edinburgh-Genome-Foundry/BandWitch'
   },
   dnacauldron: {
     name: 'DNA Cauldron',
@@ -33,7 +33,7 @@ var allSoftwareInfos = {
   dnachisel: {
     name: 'DNA Chisel',
     logoSrc: '/static/logos/dnachisel.png',
-    href: '#'
+    href: 'https://github.com/Edinburgh-Genome-Foundry/DnaChisel'
   },
   dnafeaturesviewer: {
     name: 'DNA Features Viewer',
@@ -43,7 +43,7 @@ var allSoftwareInfos = {
   goldenhinges: {
     name: 'Golden Hinges',
     logoSrc: '/static/logos/goldenhinges.png',
-    href: '#'
+    href: 'https://github.com/Edinburgh-Genome-Foundry/GoldenHinges'
   },
   geneblocks: {
     name: 'Gene Blocks',

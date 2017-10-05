@@ -86,6 +86,7 @@
 
       "pug": "2.0.0-beta6",
       "sass-loader": "5.0.0",
+      "jstransformer-markdown-it": "2.0.0",
       "node-sass": "4.5.0"
   },
   "engines": {

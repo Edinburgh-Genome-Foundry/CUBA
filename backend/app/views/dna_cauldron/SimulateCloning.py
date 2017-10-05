@@ -16,6 +16,7 @@ class SequenceFileSerializer( FileSerializer):
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
     parts = serializers.ListField(child=SequenceFileSerializer())
+    connectors = serializers.ListField(child=SequenceFileSerializer())
 
 class worker_class(AsyncWorker):
 
@@ -30,6 +31,15 @@ class worker_class(AsyncWorker):
         for part, record in zip(data.parts, records):
             record.linear = not part.circularity
             record.name = part.name
+        connector_records = [
+            records_from_data_file(f)[0][0]
+            for f in data.connectors
+        ]
+        for part, record in zip(data.connectors, connector_records):
+            record.linear = not part.circularity
+            record.name = part.name
+
+
 
         if data.enzyme == "Autoselect":
             possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
@@ -38,9 +48,14 @@ class worker_class(AsyncWorker):
         self.logger(message="Generating a report, be patient.")
 
         nconstructs, zip_data = full_assembly_report(
-            records, target='@memory', enzyme=self.data.enzyme,
+            records,
+            connector_records=connector_records,
+            target='@memory',
+            enzyme=self.data.enzyme,
             max_assemblies=40, fragments_filters='auto',
-            assemblies_prefix='assembly'
+            assemblies_prefix='assembly',
+            include_fragments=False,
+
         )
         zip_data = ('data:application/zip;base64,' +
                     b64encode(zip_data).decode("utf-8"))

@@ -51,5 +51,5 @@ RUN rm -rf /root/.ssh/
 
 ADD . /code/
 
-ARG CACHEBUST=43
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Caravagene.git
+ARG CACHEBUST=45
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaCauldron.git

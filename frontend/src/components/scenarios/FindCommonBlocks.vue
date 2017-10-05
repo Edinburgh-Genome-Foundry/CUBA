@@ -3,6 +3,9 @@ div
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center Find sets of compatible overhangs for your assembly problem.
+  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Find common regions between different DNA sequences:",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   learnmore Bla bla bla
 
   .form
@@ -13,7 +16,7 @@ div
     p.inline Minimal block size in basepairs:
       el-input-number.inline(v-model="form.min_block_size", size="small",
                              :min=10, :max=5000)
-    p.inline Block selection: 
+    p.inline Block selection:
       el-radio(class='radio' v-model='form.block_selection' label='larger_first') Larger first
       el-radio(class='radio' v-model='form.block_selection' label='most_coverage_first') Most coverage first
 

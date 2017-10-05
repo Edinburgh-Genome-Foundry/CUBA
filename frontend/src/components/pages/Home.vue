@@ -1,8 +1,10 @@
 <!-- src/components/Home.vue -->
-
 <template lang="pug">
-div
+.home
   h1 The EGF's Collection <br /> of Useful Biological Apps
+  web-links(mailSubject='[CUBA] Some user feedback',
+            tweetMessage="The Edinburgh Genome Foundry's Collection of Useful Bio Apps",
+            tweetUrl='http://cuba.genomefoundry.org')
   h2 Pick a scenario below.
   .scenario-category(v-for='category in scenarios', :key='category')
     h3 {{category.category}}
@@ -25,7 +27,10 @@ export default {
 </script>
 
 <style scoped>
-h2 {margin-bottom: 60px}
+h2 {
+  margin-bottom: 2em;
+  margin-top: 1.5em;
+}
 p {
   font-size: 18px;
 }

@@ -7,4 +7,5 @@ export default function install (Vue) {
   Vue.component('powered-by', require('./PoweredBy'))
   Vue.component('files-uploader', require('./FilesUploader'))
   Vue.component('examples-dialog', require('./ExamplesDialog'))
+  Vue.component('web-links', require('./WebLinks'))
 }

@@ -3,6 +3,9 @@ div
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center Optimize a sequence with annotations representing constraints and objectives.
+  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Optimize DNA sequences online",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   learnmore Bla bla bla
 
   .form
@@ -29,6 +32,7 @@ div
                     :filedata='queryStatus.result.zip_file')
 
   powered-by(:softwareNames='infos.poweredby')
+
 </template>
 
 <script>

@@ -5,6 +5,9 @@ div
   p.center.
     Submit parts and a receptor vector. Get an annotated Genbank of the
     resulting construct(s).
+  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Simple online cloning simulator for Golden Gate:",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 
   .form
     h4.formlabel Select an enzyme
@@ -16,6 +19,13 @@ div
     h4.formlabel Provide Parts and a receptor vector
     sequencesuploader(v-model='form.parts', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
+    h4.formlabel (Optional) Provide connectors
+    .select-connectors
+        p.
+          Only the connector parts necessary to obtain assemblies will be
+          selected and added to the other parts.
+        sequencesuploader(v-model='form.connectors', :multiple='true',
+                          text="Drop multiple Genbank/Fasta (or click to select)")
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
@@ -53,7 +63,7 @@ export default {
       form: {
         enzyme: 'Autoselect',
         parts: [],
-        backbone: null
+        connectors: []
       },
       infos: infos,
       ladder_options: [

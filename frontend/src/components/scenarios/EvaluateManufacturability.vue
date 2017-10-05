@@ -5,6 +5,9 @@ div
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center.
     Submit a sequence(s), get plots of patterns impacting synthesis and assembly difficulty.
+  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Find patterns that can impact your sequence's manufacturability",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 
   .form
 
@@ -33,6 +36,7 @@ div
           h4 {{fig.filename}}
           img(:src='fig.img_data')
 
+  powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
@@ -46,7 +50,8 @@ var infos = {
   path: 'evaluate_manufacturability',
   description: '',
   backendUrl: 'start/evaluate_manufacturability',
-  icon: require('assets/images/evaluate_manufacturability.svg')
+  icon: require('assets/images/evaluate_manufacturability.svg'),
+  poweredby: ['dnachisel']
 }
 
 export default {

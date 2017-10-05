@@ -4,7 +4,9 @@ div
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center.
     Sketch one or several assemblies below, then export as PDF or PNG.
-
+  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Simple online DNA construct sketcher:",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   hr(style="margin-top:5em")
   sketcher(v-model='form.sketchesData')
   hr
