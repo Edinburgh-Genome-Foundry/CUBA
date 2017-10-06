@@ -3,7 +3,7 @@ div
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center Find sets of compatible overhangs for your assembly problem.
-  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find common regions between different DNA sequences:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   learnmore Bla bla bla

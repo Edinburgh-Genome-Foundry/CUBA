@@ -6,7 +6,7 @@ div
   p.center.
     Find the best enzymes to digest your constructs, for verification or
     identification purposes.
-    web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+    web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
               tweetMessage="Get enzyme suggestions for your restriction digests:",
               :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 

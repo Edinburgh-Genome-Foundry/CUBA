@@ -6,7 +6,7 @@ div
 
   p.center Find sets of compatible overhangs for your assembly problem.
 
-  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Design Golden Gate overhangs online:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 

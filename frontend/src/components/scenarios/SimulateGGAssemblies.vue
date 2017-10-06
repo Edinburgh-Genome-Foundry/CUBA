@@ -5,7 +5,7 @@ div
   p.center.
     Submit parts and a receptor vector. Get an annotated Genbank of the
     resulting construct(s).
-  web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Simple online cloning simulator for Golden Gate:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 

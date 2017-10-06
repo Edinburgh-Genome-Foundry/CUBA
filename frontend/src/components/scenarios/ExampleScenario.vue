@@ -16,7 +16,7 @@ div
     Duplicate me to get started !
 
   //- This widget provides links to tweet the page or give feedback
-  web-links(:mailSubject="'[CUBA] Feedback on: ' + infos.title",
+  web-links(:emailSubject="'[CUBA] Feedback on: ' + infos.title",
             tweetMessage="Pre-written message for your tweets !",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 

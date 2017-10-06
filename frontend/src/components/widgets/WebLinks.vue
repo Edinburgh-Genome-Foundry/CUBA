@@ -1,7 +1,7 @@
 <template lang='pug'>
 .weblinks-bar
   a(v-if='tweetMessage', :href='twitterHref') <icon name='twitter' scale='1.5'></icon> Tweet
-  a(v-if='mailSubject', :href='emailHref') <icon name='envelope' scale='1.3'></icon> Send feedback
+  a(v-if='emailSubject', :href='emailHref') <icon name='envelope' scale='1.3'></icon> Send feedback
 </template>
 
 
@@ -9,7 +9,7 @@
 export default {
   name: 'web-links',
   props: {
-    mailSubject: {default: () => null},
+    emailSubject: {default: () => null},
     tweetMessage: {default: () => null},
     tweetUrl: {default: () => ''}
   },
@@ -17,10 +17,10 @@ export default {
   },
   computed: {
     emailHref: function () {
-      return ('mailto:egf-software@ed.ac.uk' +
-              '&cc=hille.tekotte@ed.ac.uk;valentin.zulkower@ed.ac.uk' +
+      return ('mailto:egf-software@ed.ac.uk?' +
+              '&cc=hille.tekotte@ed.ac.uk, valentin.zulkower@ed.ac.uk' +
               '&body=Hello EGF team !' +
-              '&subject=' + this.mailSubject)
+              '&subject=' + this.emailSubject)
     },
     twitterHref: function () {
       return ('https://twitter.com/intent/tweet?' +

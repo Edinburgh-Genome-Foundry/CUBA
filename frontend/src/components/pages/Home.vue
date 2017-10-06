@@ -2,7 +2,7 @@
 <template lang="pug">
 .home
   h1 The EGF's Collection <br /> of Useful Biological Apps
-  web-links(mailSubject='[CUBA] Some user feedback',
+  web-links(emailSubject='[CUBA] Some user feedback',
             tweetMessage="The Edinburgh Genome Foundry's Collection of Useful Bio Apps",
             tweetUrl='http://cuba.genomefoundry.org')
   h2 Pick a scenario below.
