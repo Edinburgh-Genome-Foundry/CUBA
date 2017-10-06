@@ -6,7 +6,7 @@ div
   p.center.
     Submit a sequence(s), get plots of patterns impacting synthesis and assembly difficulty.
   web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-            tweetMessage="Find patterns that can impact your sequence's manufacturability",
+            tweetMessage="Find patterns that can impact your sequence's manufacturability:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 
   .form

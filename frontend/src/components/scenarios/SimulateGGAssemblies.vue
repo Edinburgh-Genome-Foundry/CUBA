@@ -28,11 +28,15 @@ div
                           text="Drop multiple Genbank/Fasta (or click to select)")
 
 
-    backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Predict final construct(s)',
+    backend-querier(:form='form',
+                    :backendUrl='infos.backendUrl',
+                    :validateForm='validateForm',
+                    submitButtonText='Predict final construct(s)',
                     v-model='queryStatus')
-    el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
-       type="error", :closable="false")
+    el-alert(v-if='queryStatus.requestError && !queryStatus.polling.inProgress',
+             :title="queryStatus.requestError",
+             type="error",
+             :closable="false")
     .results(v-if='!queryStatus.polling.inProgress')
       download-button(v-if='queryStatus.result.file',
                       :filedata='queryStatus.result.file')

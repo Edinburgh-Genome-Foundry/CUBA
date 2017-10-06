@@ -1,11 +1,15 @@
 <template lang="pug">
 div
   h1  {{ infos.title }}
+
   img.icon.center-block(slot='title-img', :src='infos.icon')
+
   p.center Find sets of compatible overhangs for your assembly problem.
+
   web-links(:mailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-            tweetMessage="Design Golden Gate overhangs online",
+            tweetMessage="Design Golden Gate overhangs online:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+
   learnmore Bla bla bla
 
   .form
@@ -15,6 +19,7 @@ div
     el-select(v-model='form.goal', placeholder='Select')
       el-option(v-for='item in goal_options', :label='item.label',
                 :value='item.value', :key='item.value')
+
     div(v-show='form.goal')
       div(v-show="form.goal === 'sequence_decomposition'")
 
@@ -22,8 +27,11 @@ div
         h4.formlabel Sequence
 
         examples-dialog
-        filesuploader(v-model='form.sequence', text="Drop a single file (or click to select)",
-                      help='Fasta or genbank. No file too large please :)', :multiple='false')
+
+        filesuploader(v-model='form.sequence',
+                      text="Drop a single file (or click to select)",
+                      help='Fasta or genbank. No file too large please :)',
+                      :multiple='false')
 
         h4.formlabel
           span Sequence decomposition
@@ -32,8 +40,13 @@ div
                        sequence will be cut into similar-length fragments')
 
         p
-          el-radio(class='radio' v-model='form.cutting_mode' label='equal') Cut similar-length fragments
-          el-radio(class='radio' v-model='form.cutting_mode' label='features') Cut in featured zones
+          el-radio(class='radio'
+                   v-model='form.cutting_mode'
+                   label='equal') Cut similar-length fragments
+
+          el-radio(class='radio'
+                   v-model='form.cutting_mode'
+                   label='features') Cut in featured zones
 
         p
           el-checkbox(v-model='form.extremities') Consider overhangs on extremities
@@ -49,7 +62,8 @@ div
 
         p(v-if="form.cutting_mode === 'equal'")
           span Number of fragments:
-          el-input-number.inline(v-model="form.n_fragments", size="small",
+          el-input-number.inline(v-model="form.n_fragments",
+                                 size="small",
                                  :min=2, :max=60)
 
       h4.formlabel Overhangs parameters
@@ -75,34 +89,45 @@ div
 
       h4 Forbidden overhangs
 
-      //- el-checkbox(v-model='form.forbidden_overhangs_is_text') Enter as text
-      el-input(type='textarea', :rows='4' v-model='form.forbidden_overhangs',
+      el-input(type='textarea',
+               :rows='4'
+               v-model='form.forbidden_overhangs',
                placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
-      //- el-select(v-else v-model='form.forbidden_overhangs',
-      //-           placeholder='Enter any forbidden overhangs e.g. ATGC, GCTA, ...',
-      //-           filterable, :multiple='true')
-        el-option(v-for='overhang in overhangs', :label='overhang', :value='overhang', :key='overhang')
 
       div(v-show="form.goal === 'overhangs_set'")
         h4 External overhangs
-        el-input(type='textarea', :rows='4' v-model='form.mandatory_overhangs',
+        el-input(type='textarea',
+                 :rows='4',
+                 v-model='form.mandatory_overhangs',
                  placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
-          //- el-option(v-for='overhang in overhangs', :label='overhang', :value='overhang', :key='overhang')
 
-    backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Design',
-                    v-show='form.goal', v-model='queryStatus')
-    p(v-if='queryStatus.polling.inProgress && queryStatus.polling.data.n_overhangs').center Attempting to find {{queryStatus.polling.data.n_overhangs}} overhangs
+    backend-querier(:form='form',
+                    :backendUrl='infos.backendUrl',
+                    :validateForm='validateForm',
+                    submitButtonText='Design',
+                    v-show='form.goal',
+                    v-model='queryStatus')
+
+    p(v-if='queryStatus.polling.inProgress && queryStatus.polling.data.n_overhangs').center.
+      Attempting to find {{queryStatus.polling.data.n_overhangs}} overhangs
+
     progress-bars(:bars='bars')
-    el-alert(v-show='queryStatus.requestError', :title="queryStatus.requestError",
-       type="error", :closable="false")
+
+    el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',
+             :title="queryStatus.requestError",
+             type="error",
+             :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
-    p.center(v-if='!queryStatus.result.success') No solution found 😢. Maybe your parameters are too restrictive ?
+
+    p.center(v-if='!queryStatus.result.success').
+      No solution found 😢. Maybe your parameters are too restrictive ?
+
     div(v-if='selected_overhangs')
       p We found a collection of {{ selected_overhangs.length }} overhangs:
       p.selected-overhangs
         span(v-for='overhang in selected_overhangs', :key='overhang') {{overhang + ', '}}
+
     download-button(v-if='queryStatus.result.zip_file',
                     :filedata='queryStatus.result.zip_file')
 
