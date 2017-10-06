@@ -102,7 +102,7 @@ url(r'^api/start/example_scenario$',
 
 6. That's it. You now have a new app with frontend and backend !
 
-### Deploying the app on the web
+### Deploying the website on the web
 
 The next steps will put your website on the web. Note that many other deployment
 workflows are possible.
