@@ -22,26 +22,26 @@ from django.contrib import admin
 import app.views as views
 
 urlpatterns = [
-    url(r'^poll$', views.PollJobView.as_view()),
+    url(r'^api/poll$', views.PollJobView.as_view()),
 
-    url(r'^start/predict_digests$',
+    url(r'^api/start/predict_digests$',
         views.PredictDigestsView.as_view()),
-    url(r'^start/simulate_cloning$',
+    url(r'^api/start/simulate_cloning$',
         views.SimulateCloningView.as_view()),
-    url(r'^start/select_digestions$',
+    url(r'^api/start/select_digestions$',
         views.SelectDigestionsView.as_view()),
-    url(r'^start/evaluate_manufacturability$',
+    url(r'^api/start/evaluate_manufacturability$',
         views.EvaluateManufacturabilityView.as_view()),
-    url(r'^start/sculpt_a_sequence$',
+    url(r'^api/start/sculpt_a_sequence$',
         views.SculptASequenceView.as_view()),
-    url(r'^start/design_overhangs$',
+    url(r'^api/start/design_overhangs$',
         views.DesignOverhangsView.as_view()),
-    url(r'^start/find_common_blocks$',
+    url(r'^api/start/find_common_blocks$',
         views.FindCommonBlocksView.as_view()),
-    url(r'^start/sketch_constructs$',
+    url(r'^api/start/sketch_constructs$',
         views.SketchConstructsView.as_view()),
 
-    url(r'^docs/', include('rest_framework_docs.urls')),
-    url(r'^django-rq/', include('django_rq.urls')),
-    url(r'^admin/', admin.site.urls)
+    url(r'^api/docs/', include('rest_framework_docs.urls')),
+    url(r'^api/django-rq/', include('django_rq.urls')),
+    url(r'^api/admin/', admin.site.urls)
 ]

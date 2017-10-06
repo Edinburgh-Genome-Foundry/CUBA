@@ -11,8 +11,6 @@ services:
     build:
       context: backend
     command: gunicorn website.wsgi:application -b :8082 --reload
-    ports:
-      - "8082:8082"
     links:
       - redis
     depends_on:
@@ -37,8 +35,6 @@ services:
     restart: always
     build: frontend
     command: npm run dev
-    ports:
-      - "8080:8080"
     volumes:
       - ./frontend:/code
       - /code/node_modules
