@@ -1,10 +1,10 @@
 # CUBA - The EGF Collection of Useful Biological Apps
 
-This repository contains the source code of [cuba.genomefoundry.org](cuba.genomefoundry.org),
+This repository contains the source code of [cuba.genomefoundry.org](http://cuba.genomefoundry.org/),
 a website of the Edinburgh Genome Foundry enabling anyone to use some of the EGF's
 biological software.
 
-
+![screenshots](https://github.com/Edinburgh-Genome-Foundry/CUBA/raw/master/docs/imgs/screenshots.png)
 
 
 
@@ -22,7 +22,7 @@ CAB only uses techologies that are versatile and fun to work with:
 - Vue.js in the frontend, one of the easiest frameworks to learn and maintain.
 - Docker-compose for deploying your app anywhere in just a few lines.
 
-![](docker organization)
+![docker-organization](https://github.com/Edinburgh-Genome-Foundry/CUBA/blob/master/docs/imgs/plan.png)
 
 This comes with the following advantages:
 
@@ -75,7 +75,7 @@ The next steps will add a new app to the CUBA project.
 
 1. Go to ``frontend/src/components/scenarios`` and create a new scenario view
    with a form, for instance by duplicating the file
-   [ExampleScenario.vue](ExampleScenario.vue).
+   [ExampleScenario.vue](https://github.com/Edinburgh-Genome-Foundry/CUBA/blob/master/frontend/src/components/scenarios/ExampleScenario.vue).
 
 2. Register your scenario in file ``scenarios.js`` (in the same folder)
    by adding ``require('./ExampleScenario')`` under the category you want.
@@ -84,7 +84,7 @@ The next steps will add a new app to the CUBA project.
 
 3. Next we will add some backend computations to process the form and return a
    result. First go to ``backend/app/views`` and create a new folder
-   on the model of [``/example_scenario``](backend/app/views/example_scenario).
+   on the model of [``/example_scenario``](https://github.com/Edinburgh-Genome-Foundry/CUBA/tree/master/backend/app/views/example_scenario).
 
 4. Register the scenario in ``backend/app/views/__init__.py`` by adding
 
