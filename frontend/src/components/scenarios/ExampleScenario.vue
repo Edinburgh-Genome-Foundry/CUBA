@@ -6,7 +6,7 @@ Example scenario
 
 
 <template lang="pug">
-div
+.page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
 
@@ -16,28 +16,32 @@ div
     Duplicate me to get started !
 
   //- This widget provides links to tweet the page or give feedback
-  web-links(:emailSubject="'[CUBA] Feedback on: ' + infos.title",
+  web-links(:emailSubject="'[CAB] Feedback on: ' + infos.title",
             tweetMessage="Pre-written message for your tweets !",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'http://CAB.genomefoundry.org/' + infos.path")
 
   //- This is the form, where all the use input goes ! Notice that the v-model
   //- for each form component is of the form ```form.XXXX``
   .form
 
-    h4.formlabel Provide some files to do whatever
-    filesuploader(v-model='form.files', :multiple='true',
+    h4.formlabel Provide some files
+    files-uploader(v-model='form.files', :multiple='true',
                   text="Drop multiple files here (or click to select)")
 
-    h4.formlabel Provide some files to do whatever
-    el-input(v-model='inputText')
+    h4.formlabel Provide some text:
+    el-input(v-model='form.text')
 
   //- This widget provides the "Submit" button, and manages the request to the
   //- backend. Super important !
   backend-querier(:form='form',
                   :backendUrl='infos.backendUrl',
                   :validateForm='validateForm',
-                  submitButtonText='Predict final construct(s)',
+                  submitButtonText='Start Computations',
                   v-model='queryStatus')
+  //- If the backend uses the logger to store progress bars, they can be
+  progress-bars(:bars='queryStatus.polling.data.bars',
+                :order="['loop', 'subloop']",
+                v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
 
   //- An error message appears if anything goes wrong.
   el-alert(v-if='queryStatus.requestError && !queryStatus.polling.inProgress',
@@ -48,13 +52,11 @@ div
   //- The results section appears when the request returned interesting results.
   .results(v-if='!queryStatus.polling.inProgress')
     //- Download button for the file produced by the backend
-    download-button(v-if='queryStatus.result.file',
-                    :filedata='queryStatus.result.file')
+    p <b>The server's computations yielded the following result:</b>
+    p {{queryStatus.result.answer_text}}
+
     .results-summary(v-if='queryStatus.result.preview',
                      v-html="queryStatus.result.preview.html")
-
-  //- This widget advertizes for the backend software used in this particular page.
-  powered-by(:softwareNames='infos.poweredby')
 </template>
 
 
@@ -62,16 +64,14 @@ div
 
 
 <script>
-
-//- Infos on this scenario.
+// Infos on this scenario.
 var infos = {
   title: 'Example Scenario',
   navbarTitle: 'Example Scenario',
   path: 'example_scenario',
   description: '',
   backendUrl: 'start/example_scenario',
-  icon: require('assets/images/assembly.svg'),
-  poweredby: ['dnacauldron', 'dnafeaturesviewer']
+  icon: require('assets/images/black_white_logo.svg')
 }
 
 export default {
@@ -80,7 +80,7 @@ export default {
       infos: infos,
       form: {
         files: [],
-        textInput: ''
+        text: ''
       },
       queryStatus: {
         polling: {},
@@ -94,9 +94,9 @@ export default {
     validateForm: function () {
       var errors = []
       if (this.form.files.length === 0) {
-        errors.push('Provide at least 2 files: one or more parts and a receptor.')
+        errors.push('Provide at least 1 file.')
       }
-      if (this.form.inputText.length === 0) {
+      if (this.form.text.length === 0) {
         errors.push('Provide some text input.')
       }
       return errors

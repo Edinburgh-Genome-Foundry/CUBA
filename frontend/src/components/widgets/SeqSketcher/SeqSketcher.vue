@@ -97,7 +97,7 @@ export default {
     },
     deleteConstruct: function (i) {
       var newConstructs = this.sketchesData.constructs.slice()
-      newConstructs.splice(i - 1, 1)
+      newConstructs.splice(i, 1)
       this.$set(this.sketchesData, 'constructs', newConstructs)
       console.log('delete', i)
     },

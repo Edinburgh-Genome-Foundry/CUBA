@@ -1,5 +1,6 @@
 <template lang='pug'>
 .construct.animated.flipInX
+  hr
   textarea.name(v-model='constructData.name', placeholder='(Name this construct)' rows=1)
   textarea.note(v-model='constructData.note', placeholder='(Add a note)',
                 :class="{'construct-hover-only': (constructData.note.length === 0)}")
@@ -89,6 +90,9 @@ export default {
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 .construct {
+  hr {
+    border: 1px solid #eee;
+  }
   margin-top: 4em;
   .name {
     font-size: 1.5em;

@@ -1,18 +1,18 @@
 <template lang="pug">
-
-div
-  h1 Digestion Selector
+.page
+  h1 {{infos.title}}
   img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
   p.center.
     Find the best enzymes to digest your constructs, for verification or
     identification purposes.
-    web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-              tweetMessage="Get enzyme suggestions for your restriction digests:",
-              :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
-
   p.
     If no single digestion works for all constructs,
     2 or 3 digestions that collectively cover all constructs will be suggested.
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Get enzyme suggestions for your restriction digests:",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+
+
 
   .form
     h4.formlabel The digestions should produce
@@ -36,11 +36,6 @@ div
     el-select(v-model='form.ladder', placeholder='Select')
       el-option(v-for='item in ladder_options', :label='item.label',
                 :value='item.value', :key='item.value')
-
-    //- p.inline Bands precision (%)
-    //-   el-input-number.inline(v-model="form.bandsPrecision", size="small",
-    //-                          :min=1, :max=100)
-    //-   helper(help='Precision in (%) of the total migration distance span. Determines how far away bands should be to get distinguished.')
 
     h4.formlabel Possible enzymes
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center Find sets of compatible overhangs for your assembly problem.

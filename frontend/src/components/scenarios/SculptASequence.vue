@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center Optimize a sequence with annotations representing constraints and objectives.
@@ -32,7 +32,6 @@ div
                     :filedata='queryStatus.result.zip_file')
 
   powered-by(:softwareNames='infos.poweredby')
-
 </template>
 
 <script>

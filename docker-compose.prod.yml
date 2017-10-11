@@ -11,3 +11,7 @@ services:
 
   vue:
     command: ./production_server.sh
+
+  nginx:
+    environment:
+      - BUFFERING=on

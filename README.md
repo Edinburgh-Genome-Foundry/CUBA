@@ -108,7 +108,7 @@ The next steps will put your website on the web. Note that many other deployment
 workflows are possible.
 
 1. Get a hosting server (for instance from Amazon Web Services or Digital Ocean).
-   Get the IP address of this server (we'll assume it is 123.12.123.123).
+   Get the IP address of this server (we'll assume it is ``123.12.123.123``).
 
 2. Log in this server (``ssh root@123.12.123.123``) and install Docker and
    Docker-Compose (some Digital Ocean servers come with these already installed).

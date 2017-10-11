@@ -1,8 +1,8 @@
 <template lang='pug'>
-  #app
-    .container
+  #website
+    .page
       navbar
-      router-view
+    router-view
     footersection
 </template>
 
@@ -36,9 +36,9 @@ export default {
 @import './assets/css/animate.css';
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 @import url(https://fonts.googleapis.com/css?family=Inconsolata);
-@import url(https://fonts.googleapis.com/css?family=Raleway); 
+@import url(https://fonts.googleapis.com/css?family=Raleway);
 
-#app {
+#website {
   font-family: 'Raleway', 'Source Sans Pro',  Helvetica, Arial, sans-serif;
   font-size:16px;
   -webkit-font-smoothing: antialiased;
@@ -59,7 +59,7 @@ body {
   margin-bottom: 60px;
 }
 
-.container {
+.page, .navbar {
   width:850px;
   max-width:95%;
   margin: 0px auto;

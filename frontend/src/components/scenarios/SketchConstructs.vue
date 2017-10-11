@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.center.
@@ -7,9 +7,8 @@ div
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Simple online DNA construct sketcher:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
-  hr(style="margin-top:5em")
-  sketcher(v-model='form.sketchesData')
-  hr
+  .sketcher
+    sketcher(v-model='form.sketchesData')
 
   .form
     .form-group
@@ -43,6 +42,7 @@ div
      type="error", :closable="false")
   .results(v-if='!queryStatus.polling.inProgress')
     download-button(v-if='queryStatus.result.file',
+                    text='Download',
                     :filedata='queryStatus.result.file')
     .results-summary(v-if='queryStatus.result.preview',
                      v-html="queryStatus.result.preview.html")
@@ -134,6 +134,10 @@ export default {
 
 <style lang='scss' scoped>
 
+.page {
+  width: 1500px;
+}
+
 h4.formlabel {
   text-align: center;
   text-transform: uppercase;
@@ -158,8 +162,11 @@ h4.formlabel {
   .raleway {font-family: 'Raleway'}
   .open-sans {font-family: 'Open Sans'}
   .cabin-sketch {font-family: 'Cabin Sketch'}
-
-
+}
+.sketcher {
+  margin-top: 2em;
+  padding: 0.5em;
+  padding-top: 1em;
 }
 
 .title-img {
@@ -174,7 +181,7 @@ h4.formlabel {
 }
 
 .el-select {
-  width: 100%
+  width: 99%
 }
 
 .enzymes-radio {
