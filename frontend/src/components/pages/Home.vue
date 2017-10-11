@@ -1,6 +1,6 @@
 <!-- src/components/Home.vue -->
 <template lang="pug">
-.home.app
+.home.page
   h1 The EGF's Collection <br /> of Useful Biological Apps
   web-links(emailSubject='[CUBA] Some user feedback',
             tweetMessage="The Edinburgh Genome Foundry's Collection of Useful Bio Apps",
