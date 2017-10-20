@@ -20,7 +20,8 @@ export default {
       category: 'Quality Control',
       scenarios: [
         require('./DigestionPatternPredictor'),
-        require('./SelectDigestions')
+        require('./SelectDigestions'),
+        require('./AnalyzeDigests')
       ]
     }
   ]

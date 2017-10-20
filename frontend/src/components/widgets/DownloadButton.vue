@@ -7,7 +7,7 @@ var download = require('downloadjs')
 export default {
   props: {
     text: {
-      default: 'Submit'
+      default: 'Download'
     },
     filedata: {}
   },

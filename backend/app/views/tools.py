@@ -7,6 +7,7 @@ import bandwagon as bw
 import re
 from base64 import b64encode, b64decode
 from matplotlib.backends.backend_pdf import PdfPages
+import flametree
 
 
 PYTHON3 = (sys.version_info > (3, 0))
@@ -37,6 +38,27 @@ def string_to_record(string):
             pass
     raise ValueError("Invalid sequence format")
 
+def file_to_filelike_object(file_):
+    content = file_.content.split("base64,")[1]
+    return StringByteIO(b64decode(content))
+
+def records_from_zip_file(zip_file):
+    zip_file = flametree.file_tree(file_to_filelike_object(zip_file))
+    records = []
+    for f in zip_file._all_files:
+        if f._extension.lower() in ['gb', 'fa']:
+            new_records, fmt = string_to_record(f.read().decode('utf-8'))
+            single_record = len(new_records) == 1
+            for i, record in enumerate(new_records):
+                name = record.id
+                if name in [None, '', "<unknown id>"]:
+                    number = ('' if single_record else ("%04d" % i))
+                    name = f._name_no_extension + number
+                record.id = name
+            records += new_records
+    return records
+
+
 def records_from_data_file(data_file):
     content = data_file.content.split("base64,")[1]
     content = b64decode(content).decode("utf-8")
@@ -46,6 +68,10 @@ def records_from_data_file(data_file):
 def records_from_data_files(data_files):
     records = []
     for file_ in data_files:
+        print ('FIIIIIIILE', file_.name)
+        if file_.name.lower().endswith('zip'):
+            records += records_from_zip_file(file_)
+            continue
         recs, fmt = records_from_data_file(file_)
         single_record = len(recs) == 1
         for i, record in enumerate(recs):

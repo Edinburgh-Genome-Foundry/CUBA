@@ -12,8 +12,9 @@
     h4.formlabel Provide an annotated sequence
     filesuploader(v-model='form.file', text="Drop a single Genbank file (or click to select)",
                       :multiple='false', help='')
-    el-checkbox(v-if='Object.keys(form.editedFeatures).length > 0' v-model='form.editFeatures') Edit features
-    featureseditor(v-if='form.editedFeatures && form.editFeatures',
+    el-checkbox.animated.fadeIn(v-if='Object.keys(form.editedFeatures).length > 0',
+                                v-model='form.editFeatures') Edit features
+    featureseditor.animated.fadeIn(v-if='form.editedFeatures && form.editFeatures',
                       :sequence='form.sequence', v-model='form.editedFeatures',
                       :featureColor='editorFeatureColor')
     backend-querier(v-if='!validateForm().length',

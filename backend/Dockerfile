@@ -51,5 +51,6 @@ RUN rm -rf /root/.ssh/
 
 ADD . /code/
 
-ARG CACHEBUST=45
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaCauldron.git
+ARG CACHEBUST=51
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo.git

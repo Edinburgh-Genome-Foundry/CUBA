@@ -35,7 +35,7 @@ https://jsfiddle.net/Linusborg/dzfdctv9/
         .dropzone-title {{text}}
         .dropzone-info(v-if='help') {{ help }}
       input(type='file', @change='change', :multiple='multiple')
-  p.selected(v-if='value && !(value.length === 0)')
+  p.selected(v-if='value && ((value.name && !(multiple)) || (value.length && !(value.length === 0)))')
     span Selected:
     span(v-if='value.name') <b> {{value.name}} </b>
     span.selected-file(v-for='file in value' v-else) <b>{{file.name}}</b>

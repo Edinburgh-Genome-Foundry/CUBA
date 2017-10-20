@@ -6,6 +6,7 @@ export default function install (Vue) {
   Vue.component('helper', require('./Helper'))
   Vue.component('powered-by', require('./PoweredBy'))
   Vue.component('files-uploader', require('./FilesUploader'))
-  Vue.component('examples-dialog', require('./ExamplesDialog'))
+  Vue.component('collapsible', require('./Collapsible'))
+  Vue.component('file-example', require('./FileExample'))
   Vue.component('web-links', require('./WebLinks'))
 }

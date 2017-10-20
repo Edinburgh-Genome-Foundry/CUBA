@@ -19,7 +19,7 @@ import spinner from 'vue-spinner/src/PulseLoader'
 export default {
   name: 'backend-querier',
   props: {
-    submitButtonText: {default: ''},
+    submitButtonText: {default: 'Submit'},
     value: {default: () => ({})},
     backendUrl: {default: ''},
     backendIP: {default: 'auto'},

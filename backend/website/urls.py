@@ -40,6 +40,8 @@ urlpatterns = [
         views.FindCommonBlocksView.as_view()),
     url(r'^api/start/sketch_constructs$',
         views.SketchConstructsView.as_view()),
+    url(r'^api/start/analyze_digests$',
+        views.AnalyzeDigestsView.as_view()),
 
     url(r'^api/docs/', include('rest_framework_docs.urls')),
     url(r'^api/django-rq/', include('django_rq.urls')),
