@@ -6,14 +6,8 @@ export default {
         require('./SculptASequence.vue'),
         require('./DesignOverhangs.vue'),
         require('./SimulateGGAssemblies'),
+        require('./SwapDonorVectorPart'),
         require('./SketchConstructs')
-      ]
-    },
-    {
-      category: 'Sequence analysis',
-      scenarios: [
-        require('./EvaluateManufacturability.vue'),
-        require('./FindCommonBlocks.vue')
       ]
     },
     {
@@ -22,6 +16,13 @@ export default {
         require('./DigestionPatternPredictor'),
         require('./SelectDigestions'),
         require('./AnalyzeDigests')
+      ]
+    },
+    {
+      category: 'Sequence analysis',
+      scenarios: [
+        require('./EvaluateManufacturability.vue'),
+        require('./FindCommonBlocks.vue')
       ]
     }
   ]

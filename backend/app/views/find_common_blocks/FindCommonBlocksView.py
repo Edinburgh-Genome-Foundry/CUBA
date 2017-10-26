@@ -6,7 +6,7 @@ import flametree
 from geneblocks import BlocksFinder
 
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_file, zip_data_to_html_data,
+from ..tools import (records_from_data_file, data_to_html_data,
                      matplotlib_figure_to_svg_base64_data,
                      figures_to_pdf_report_data)
 
@@ -75,7 +75,7 @@ class worker_class(AsyncWorker):
 
         return {
           'zip_file': {
-              'data': zip_data_to_html_data(zip_data),
+              'data': data_to_html_data(zip_data, 'zip'),
               'name': 'optimization_report.zip',
               'mimetype': 'application/zip'
           },

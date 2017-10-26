@@ -8,3 +8,4 @@ from .design_overhangs import DesignOverhangsView
 from .find_common_blocks import FindCommonBlocksView
 from .sketch_constructs import SketchConstructsView
 from .analyze_digests import AnalyzeDigestsView
+from .swap_donor_vector_part import SwapDonorVectorPartView

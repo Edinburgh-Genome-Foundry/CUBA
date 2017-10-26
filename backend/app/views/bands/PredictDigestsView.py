@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import zip_data_to_html_data, records_from_data_file
+from ..tools import data_to_html_data, records_from_data_file
 from bandwitch import LADDERS
 import bandwagon
 from .report_generator import generate_report
@@ -47,7 +47,7 @@ class worker_class(AsyncWorker):
                                           group_by="digestions",
                                           full_report=data.make_report)
         if data.make_report:
-            report = zip_data_to_html_data(report)
+            report = data_to_html_data(report, 'zip')
         return JobResult(
             preview_html='<img src="%s"/>' % preview,
             file_data=report,

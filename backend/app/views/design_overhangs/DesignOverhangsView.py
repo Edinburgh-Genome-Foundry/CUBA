@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_file, zip_data_to_html_data)
+from ..tools import (records_from_data_file, data_to_html_data)
 from ..serializers import FileSerializer
 from goldenhinges import OverhangsSelector
 from goldenhinges.reports import write_report_for_cutting_solution
@@ -79,7 +79,7 @@ class worker_class(AsyncWorker):
             )
             return {
               'zip_file': {
-                  'data': zip_data_to_html_data(zip_data),
+                  'data': data_to_html_data(zip_data, 'zip'),
                   'name': 'sequence_decomposition_report.zip',
                   'mimetype': 'application/zip'
               },

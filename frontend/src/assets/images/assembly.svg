@@ -15,7 +15,7 @@
    viewBox="0 0 120.26227 138.14743"
    id="svg4672"
    version="1.1"
-   inkscape:version="0.91 r"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="assembly.svg">
   <defs
      id="defs4674" />
@@ -27,18 +27,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="94.071394"
-     inkscape:cy="17.911991"
+     inkscape:cx="-199.70391"
+     inkscape:cy="-17.245595"
      inkscape:document-units="px"
-     inkscape:current-layer="g114445-0"
+     inkscape:current-layer="g4536"
      showgrid="false"
      fit-margin-top="0.5"
      fit-margin-left="0.5"
      fit-margin-bottom="0.5"
      fit-margin-right="0.5"
-     inkscape:window-width="2495"
-     inkscape:window-height="1416"
-     inkscape:window-x="65"
+     inkscape:window-width="3759"
+     inkscape:window-height="2136"
+     inkscape:window-x="81"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
@@ -149,7 +149,6 @@
              style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:47.36740494;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
           <path
              transform="matrix(0.5116448,0.85919706,-0.85919706,0.5116448,0,0)"
-             sodipodi:open="true"
              d="m -4745.5915,1297.6801 a 305.82019,305.82019 0 0 1 9.2298,-152.151"
              sodipodi:end="3.4540514"
              sodipodi:start="2.9503097"
@@ -159,7 +158,8 @@
              sodipodi:cx="-4445.3491"
              sodipodi:type="arc"
              id="path4220-5-0"
-             style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:47.36740494;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+             style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:47.36740494;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             sodipodi:open="true" />
           <path
              transform="matrix(-0.46292705,0.88639638,-0.88639638,-0.46292705,0,0)"
              sodipodi:open="true"

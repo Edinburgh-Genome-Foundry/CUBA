@@ -4,7 +4,7 @@ from collections import OrderedDict
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_files, zip_data_to_html_data,
+from ..tools import (records_from_data_files, data_to_html_data,
                      file_to_filelike_object)
 from ..serializers import FileSerializer
 
@@ -93,8 +93,6 @@ class worker_class(AsyncWorker):
 
         # CREATE A ZIP WITH VALIDATION REPORTS
 
-
-
         zip_root = flametree.file_tree('@memory')
         self.logger(message="Generating the validation report...")
         zip_root._file('validations.pdf').write(
@@ -110,12 +108,12 @@ class worker_class(AsyncWorker):
         ax = clones_observations.plot_validations_plate_map(validations)
         ax.figure.savefig(zip_root._file('success_map.pdf').open('wb'),
                           format='pdf', bbox_inches='tight')
-        
+
         self.logger(message="All done !")
 
         return {
           'zip_file': {
-              'data': zip_data_to_html_data(zip_root._close()),
+              'data': data_to_html_data(zip_root._close(), 'zip'),
               'name': 'validation_report.zip',
               'mimetype': 'application/zip'
           },

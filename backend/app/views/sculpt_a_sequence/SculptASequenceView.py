@@ -8,8 +8,7 @@ from dnachisel import (DnaOptimizationProblem, sequence_to_biopython_record,
 
 
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_file,
-                     zip_data_to_html_data)
+from ..tools import (records_from_data_file, data_to_html_data)
 
 
 class LabeledFeatureSerializer(serializers.Serializer):
@@ -49,7 +48,7 @@ class worker_class(AsyncWorker):
             target="@memory", problem=problem, project_name=record.id)
         return {
           'zip_file': {
-              'data': zip_data_to_html_data(zip_data),
+              'data': data_to_html_data(zip_data, 'zip'),
               'name': 'optimization_report.zip',
               'mimetype': 'application/zip'
           },

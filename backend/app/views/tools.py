@@ -68,7 +68,6 @@ def records_from_data_file(data_file):
 def records_from_data_files(data_files):
     records = []
     for file_ in data_files:
-        print ('FIIIIIIILE', file_.name)
         if file_.name.lower().endswith('zip'):
             records += records_from_zip_file(file_)
             continue
@@ -82,8 +81,16 @@ def records_from_data_files(data_files):
         records += recs
     return records
 
-def zip_data_to_html_data(zip_data):
-    return 'data:application/zip;base64,' + b64encode(zip_data).decode("utf-8")
+def data_to_html_data(data, datatype):
+    datatype = {
+        'zip': 'application/zip',
+        'genbank': 'application/genbank'
+
+    }.get(datatype, datatype)
+    return 'data:%s;base64,%s' % (datatype, b64encode(data).decode("utf-8"))
+
+def zip_data_to_html_data(data):
+    return data_to_html_data(data, 'application/zip')
 
 LADDERS = {
    "100_to_4k": bw.ladders.LADDER_100_to_4k
