@@ -27,21 +27,35 @@ Vue.component('icon', Icon)
 
 const routes = [{
   path: '/home',
-  component: Home
+  component: Home,
+  meta: {
+    title: 'EGF CUBA',
+    description: 'The Collection of Useful SynBio apps'
+  }
 }, {
   path: '/about',
-  component: About
+  component: About,
+  meta: {title: 'About EGF\'s CUBA'}
 }, {
   path: '/login',
-  component: Login
+  component: Login,
+  meta: {title: 'CUBA - Login'}
 }
 ]
 
 scenarios.list.forEach(function (category) {
   category.scenarios.forEach(function (scenario) {
-    routes.push({ path: '/' + scenario.infos.path, component: scenario })
+    routes.push({
+      path: '/' + scenario.infos.path,
+      component: scenario,
+      meta: {
+        title: scenario.infos.title + '- CUBA',
+        description: 'From the EGF\'s Collection of useful (Syn)Bio Apps}'
+      }
+    })
   })
 })
+
 routes.push({
   path: '*',
   component: Home
@@ -52,6 +66,10 @@ console.log(routes)
 const router = new VueRouter({
   routes,
   mode: 'history'
+})
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
 })
 
 /* eslint-disable no-new */

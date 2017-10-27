@@ -36,8 +36,9 @@ services:
     build: frontend
     command: npm run dev
     volumes:
-      # - ./frontend:/code
+      - ./frontend:/code
       - /code/node_modules
+      - /code/dist
 
   nginx:
     restart: always

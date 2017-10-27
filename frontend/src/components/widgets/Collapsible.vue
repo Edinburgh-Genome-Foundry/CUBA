@@ -1,8 +1,6 @@
 <template lang="pug">
 .collapsible
-  //- el-button.examples(type='text', @click='dialogVisible = true') Examples
-  //- el-dialog(:visible.sync='dialogVisible', size='small')
-  el-collapse(slot='Examples-paragr')
+  el-collapse
     el-collapse-item(:title='title', name='1')
       slot
 </template>
