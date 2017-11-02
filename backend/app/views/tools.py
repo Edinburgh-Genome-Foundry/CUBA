@@ -51,10 +51,11 @@ def records_from_zip_file(zip_file):
             single_record = len(new_records) == 1
             for i, record in enumerate(new_records):
                 name = record.id
-                if name in [None, '', "<unknown id>"]:
+                if name in [None, '', "<unknown id>", '.', ' ']:
                     number = ('' if single_record else ("%04d" % i))
                     name = f._name_no_extension + number
                 record.id = name
+                record.name = name
             records += new_records
     return records
 
@@ -68,16 +69,22 @@ def records_from_data_file(data_file):
 def records_from_data_files(data_files):
     records = []
     for file_ in data_files:
+        circular = ('circular' not in file_) or file_.circular
+
         if file_.name.lower().endswith('zip'):
             records += records_from_zip_file(file_)
             continue
         recs, fmt = records_from_data_file(file_)
         single_record = len(recs) == 1
         for i, record in enumerate(recs):
-            name = record.id
-            if name in [None, '', "<unknown id>"]:
-                name = file_.name + ('' if single_record else ("%04d" % i))
-            record.id = name
+            record.circular = circular
+            record.linear = not circular
+            name_no_extension = "".join(file_.name.split('.')[:-1])
+            name = name_no_extension + ('' if single_record else ("%04d" % i))
+            if str(record.id).strip() in ['None', '', "<unknown id>", '.']:
+                record.id = name
+            if str(record.name).strip() in ['None', '', "<unknown id>", '.']:
+                record.name = name
         records += recs
     return records
 

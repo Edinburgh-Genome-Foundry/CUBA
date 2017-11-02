@@ -19,13 +19,16 @@
     h4.formlabel Provide Parts and a receptor vector
     sequencesuploader(v-model='form.parts', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
-    h4.formlabel (Optional) Provide connectors
-    .select-connectors
-        p.
-          Only the connector parts necessary to obtain assemblies will be
-          selected and added to the other parts.
-        sequencesuploader(v-model='form.connectors', :multiple='true',
-                          text="Drop multiple Genbank/Fasta (or click to select)")
+
+    el-checkbox(v-model='form.select_connectors') Autoselect connectors
+    .select-connectors(v-if='form.select_connectors')
+      h4.formlabel Provide connectors
+        helper(help="Only the connector parts necessary to obtain assemblies will be selected and added to the other parts.")
+
+      sequencesuploader(v-model='form.connectors', :multiple='true',
+                        text="Drop multiple Genbank/Fasta (or click to select)")
+    div
+        el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
 
 
     backend-querier(:form='form',
@@ -67,7 +70,9 @@ export default {
       form: {
         enzyme: 'Autoselect',
         parts: [],
-        connectors: []
+        connectors: [],
+        select_connectors: false,
+        include_fragments: false
       },
       infos: infos,
       ladder_options: [

@@ -4,7 +4,7 @@ from base64 import b64decode, b64encode
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import  records_from_data_file
+from ..tools import records_from_data_files
 from ..serializers import FileSerializer
 from dnacauldron import full_assembly_report, autoselect_enzyme
 
@@ -17,6 +17,7 @@ class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
     parts = serializers.ListField(child=SequenceFileSerializer())
     connectors = serializers.ListField(child=SequenceFileSerializer())
+    include_fragments = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -24,20 +25,9 @@ class worker_class(AsyncWorker):
         self.logger(message="Reading Data...")
         data = self.data
 
-        records = [
-            records_from_data_file(f)[0][0]
-            for f in data.parts
-        ]
-        for part, record in zip(data.parts, records):
-            record.linear = not part.circularity
-            record.name = part.name
-        connector_records = [
-            records_from_data_file(f)[0][0]
-            for f in data.connectors
-        ]
-        for part, record in zip(data.connectors, connector_records):
-            record.linear = not part.circularity
-            record.name = part.name
+        records = records_from_data_files(data.parts)
+        connector_records = records_from_data_files(data.connectors)
+
 
 
 
@@ -54,7 +44,8 @@ class worker_class(AsyncWorker):
             enzyme=self.data.enzyme,
             max_assemblies=40, fragments_filters='auto',
             assemblies_prefix='assembly',
-            include_fragments=False,
+            include_fragments=data.include_fragments,
+            include_parts=data.include_fragments
 
         )
         zip_data = ('data:application/zip;base64,' +

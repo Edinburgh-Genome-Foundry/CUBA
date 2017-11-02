@@ -40,7 +40,8 @@ class worker_class(AsyncWorker):
         for insert in inserts:
             record = swap_donor_vector_part(donor_vector, insert, data.enzyme)
             record.id = insert.id
-            SeqIO.write(record, zip_root._file(insert.id + '.gb'), 'genbank')
+            print ("record id", record.id)
+            SeqIO.write(record, zip_root._file(record.id + '.gb'), 'genbank')
 
         if len(inserts) == 1:
             f = zip_root._all_files[0]
