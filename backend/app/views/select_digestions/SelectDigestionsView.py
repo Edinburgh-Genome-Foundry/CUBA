@@ -29,6 +29,7 @@ class serializer_class(serializers.Serializer):
     maxEnzymes = serializers.IntegerField()
     circularSequences = serializers.BooleanField()
     possibleEnzymes = ComaSeparatedList()
+    showBandsSizes = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -65,9 +66,14 @@ class worker_class(AsyncWorker):
         self.logger(message='Selecting digestions...')
         score, selected_digestions = problem.select_digestions(
             max_digestions=data.maxDigestions, search='full')
+        bands_props = None if not data.showBandsSizes else dict(
+            label='=size',
+            label_fontdict=dict(size=6)
+        )
         axes = problem.plot_digestions(
             selected_digestions,
-            patterns_props={'label_fontdict': {'rotation': 35}}
+            patterns_props={'label_fontdict': {'rotation': 35}},
+            bands_props=bands_props
         )
         figure_data = matplotlib_figure_to_svg_base64_data(
             axes[0].figure, bbox_inches='tight'

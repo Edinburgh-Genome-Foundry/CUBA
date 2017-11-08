@@ -24,8 +24,8 @@ import app.views as views
 urlpatterns = [
     url(r'^api/poll$', views.PollJobView.as_view()),
 
-    url(r'^api/start/predict_digests$',
-        views.PredictDigestsView.as_view()),
+    url(r'^api/start/predict_digestions$',
+        views.PredictDigestionsView.as_view()),
     url(r'^api/start/simulate_cloning$',
         views.SimulateCloningView.as_view()),
     url(r'^api/start/select_digestions$',

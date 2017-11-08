@@ -20,7 +20,8 @@ class serializer_class(serializers.Serializer):
         child=serializers.ListField(
             child=serializers.CharField()))
     files = serializers.ListField(child=FileSerializer())
-    make_report = serializers.BooleanField()
+    makeReport = serializers.BooleanField()
+    showBandsSizes = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
     generate_report = True
@@ -39,14 +40,14 @@ class worker_class(AsyncWorker):
         ladder = bandwagon.custom_ladder(None, LADDERS[data.ladder].bands)
         digestions = data.digestions
 
-
         self.logger(message="Generating report...")
         preview, report = generate_report(records=records,
                                           digestions=digestions,
                                           ladder=ladder,
                                           group_by="digestions",
-                                          full_report=data.make_report)
-        if data.make_report:
+                                          full_report=data.makeReport,
+                                          show_band_sizes=data.showBandsSizes)
+        if data.makeReport:
             report = data_to_html_data(report, 'zip')
         return JobResult(
             preview_html='<img src="%s"/>' % preview,
@@ -56,6 +57,6 @@ class worker_class(AsyncWorker):
         )
 
 
-class PredictDigestsView(StartJobView):
+class PredictDigestionsView(StartJobView):
     serializer_class = serializer_class
     worker_class = worker_class

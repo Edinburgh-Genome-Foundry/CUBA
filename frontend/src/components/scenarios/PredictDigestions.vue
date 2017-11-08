@@ -10,14 +10,16 @@
 
   .form
     h4.formlabel Ladder
-    el-select(v-model='form.ladder', placeholder='Select')
-      el-option(v-for='item in ladder_options', :label='item.label', :value='item.value', :key='item.value')
+    ladderselector(v-model='form.ladder')
 
     h4.formlabel Digestions
     digestionset(v-model='form.digestions')
     h4.formlabel Sequences
     sequencesuploader(v-model='form.files')
-    el-checkbox(v-model='form.make_report') Generate report
+    p
+      el-checkbox(v-model='form.makeReport') Generate report
+    p
+      el-checkbox(v-model='form.showBandsSizes') Show band sizes in plot.
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Predict patterns',
                     v-model='queryStatus')
@@ -35,13 +37,14 @@
 import learnmore from '../../components/widgets/LearnMore'
 import sequencesuploader from '../../components/widgets/SequencesUploader'
 import digestionset from '../../components/widgets/DigestionSelectorSet'
+import ladderselector from '../../components/widgets/LadderSelector'
 
 var infos = {
   title: 'Predict Digestions',
-  navbarTitle: 'Predict Digests',
-  path: 'predict-digests',
+  navbarTitle: 'Predict Digestions',
+  path: 'predict-digestions',
   description: '',
-  backendUrl: 'start/predict_digests',
+  backendUrl: 'start/predict_digestions',
   icon: require('assets/images/predict-icon.svg'),
   poweredby: ['bandwagon']
 }
@@ -52,24 +55,11 @@ export default {
       form: {
         ladder: '100_to_4k',
         digestions: [],
-        make_report: false,
-        files: []
+        makeReport: false,
+        files: [],
+        showBandsSizes: false
       },
       infos: infos,
-      ladder_options: [
-        {
-          label: 'Ladder 100 bp - 4000 bp',
-          value: '100_to_4k'
-        },
-        {
-          label: 'Ladder 35 bp - 5 kbp (AATI)',
-          value: '35_to_5k'
-        },
-        {
-          label: 'Ladder 75 bp - 15 kbp (AATI)',
-          value: '75_to_15k'
-        }
-      ],
       queryStatus: {
         polling: {},
         result: {},
@@ -80,7 +70,8 @@ export default {
   components: {
     sequencesuploader,
     learnmore,
-    digestionset
+    digestionset,
+    ladderselector
   },
   infos: infos,
   methods: {

@@ -145,7 +145,7 @@ def plot_record_digestion(record_digestion, ladder,
 
 
 def generate_report(records, digestions, ladder, group_by="digestions",
-                    full_report=True):
+                    show_band_sizes=False, full_report=True):
     """Yeah !"""
 
     files_contents = []
@@ -186,6 +186,12 @@ def generate_report(records, digestions, ladder, group_by="digestions",
     fig, axes = plt.subplots(Y, 1, figsize=(0.9 * X, 3 * Y))
     if Y == 1:
         axes = [axes]
+    bands_props = {"band_thickness": 2.5}
+    if show_band_sizes:
+        bands_props.update(dict(
+            label='=size',
+            label_fontdict=dict(size=6)
+        ))
     for ax, (cat1, cat2s) in zip(axes, sorted(all_patterns.items())):
         pattern_set = bw.BandsPatternsSet(
             patterns=[
@@ -194,7 +200,7 @@ def generate_report(records, digestions, ladder, group_by="digestions",
                     ladder=ladder,
                     label=cat2 if (ax == axes[0]) else None,
                     label_fontdict=dict(rotation=70),
-                    global_bands_props={"band_thickness": 2.5})
+                    global_bands_props=bands_props)
                 for cat2, _bands in cat2s.items()
             ],
             ladder=ladder,

@@ -33,9 +33,7 @@
     el-checkbox(v-model='form.circularSequences') Sequences are circular
 
     h4.formlabel Ladder
-    el-select(v-model='form.ladder', placeholder='Select')
-      el-option(v-for='item in ladder_options', :label='item.label',
-                :value='item.value', :key='item.value')
+    ladderselector(v-model='form.ladder')
 
     h4.formlabel Possible enzymes
 
@@ -48,6 +46,8 @@
     p.inline Number of digestions: &nbsp; &nbsp;
       el-radio(v-model='form.maxDigestions', label='1') 1
       el-radio(v-model='form.maxDigestions', label='2') 2
+
+    el-checkbox(v-model='form.showBandsSizes') Show bands sizes in plot.
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Select digestions',
@@ -70,6 +70,7 @@
 import learnmore from '../../components/widgets/LearnMore'
 import sequencesuploader from '../../components/widgets/SequencesUploader'
 import digestionset from '../../components/widgets/DigestionSelectorSet'
+import ladderselector from '../../components/widgets/LadderSelector'
 
 var infos = {
   title: 'Select Digestions',
@@ -93,23 +94,10 @@ export default {
         goal: 'ideal',
         bandsRange: [3, 5],
         circularSequences: true,
+        showBandsSizes: false,
         files: []
       },
       infos: infos,
-      ladder_options: [
-        {
-          label: 'Ladder 100 bp - 4000 bp',
-          value: '100_to_4k'
-        },
-        {
-          label: 'Ladder 35 bp - 5 kbp (AATI)',
-          value: '35_to_5k'
-        },
-        {
-          label: 'Ladder 75 bp - 15 kbp (AATI)',
-          value: '75_to_15k'
-        }
-      ],
       goal_options: [
         {
           label: 'Good patterns for all constructs',
@@ -137,7 +125,8 @@ export default {
   components: {
     sequencesuploader,
     learnmore,
-    digestionset
+    digestionset,
+    ladderselector
   },
   infos: infos,
   methods: {
