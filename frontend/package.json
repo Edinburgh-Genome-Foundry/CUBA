@@ -16,7 +16,11 @@
     "downloadjs": "1.4.7",
     "element-ui": "1.4.7",
     "vue-spinner": "1.0.2",
-    "bio-parsers": "4.2.1",
+    
+    "bio-parsers": "4.2.4",
+    "ve-sequence-utils": "3.2.3",
+    "ve-range-utils": "2.3.3",
+
     "xlsx": "0.11.4",
     "vue-awesome": "2.3.3"
   },
