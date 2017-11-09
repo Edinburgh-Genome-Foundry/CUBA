@@ -18,6 +18,11 @@ else:
     from StringIO import StringIO
     StringByteIO = StringIO
 
+def fix_ice_genbank(genbank_txt):
+    lines = genbank_txt.splitlines()
+    lines[0] += max(0, 80 - len(lines[0])) * ' '
+    return '\n'.join(lines)
+
 def string_to_record(string):
     """Convert a string of a fasta, genbank... into a simple ATGC string.
 
@@ -29,6 +34,8 @@ def string_to_record(string):
         return SeqRecord(Seq(string, DNAAlphabet()), "ATGC")
 
     for fmt in ("fasta", "genbank"):
+        if fmt == 'genbank':
+            string = fix_ice_genbank(string)
         try:
             stringio = StringIO(string)
             records = list(SeqIO.parse(stringio, fmt))

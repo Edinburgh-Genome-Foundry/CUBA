@@ -58,7 +58,11 @@ scenarios.list.forEach(function (category) {
 
 routes.push({
   path: '*',
-  component: Home
+  component: Home,
+  meta: {
+    title: 'EGF CUBA',
+    description: 'The Collection of Useful SynBio apps'
+  }
 })
 
 console.log(routes)
