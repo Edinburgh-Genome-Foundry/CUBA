@@ -54,6 +54,11 @@ var allSoftwareInfos = {
     name: 'Caravagene',
     logoSrc: '/static/logos/caravagene.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Caravagene'
+  },
+  primavera: {
+    name: 'Primavera',
+    logoSrc: '/static/logos/primavera.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/Primavera'
   }
 }
 export default {

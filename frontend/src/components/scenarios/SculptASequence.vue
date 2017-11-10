@@ -46,7 +46,7 @@ var bioparsers = require('bio-parsers')
 var infos = {
   title: 'Sculpt A Sequence',
   navbarTitle: 'Sculpt A Sequence',
-  path: 'sculpt-a-sequence',
+  path: 'sculpt_a_sequence',
   description: '',
   backendUrl: 'start/sculpt_a_sequence',
   icon: require('assets/images/sculpt_a_sequence.svg'),

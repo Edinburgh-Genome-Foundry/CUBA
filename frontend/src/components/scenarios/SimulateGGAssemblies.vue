@@ -58,7 +58,7 @@ var infos = {
   navbarTitle: 'Simulate Golden Gate',
   path: 'simulate_gg_assemblies',
   description: '',
-  backendUrl: 'start/simulate_cloning',
+  backendUrl: 'start/simulate_gg_assemblies',
   icon: require('assets/images/assembly.svg'),
   poweredby: ['dnacauldron', 'dnafeaturesviewer']
 }

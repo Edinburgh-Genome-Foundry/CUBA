@@ -64,6 +64,6 @@ class worker_class(AsyncWorker):
             file_name='asm_report.zip'
         )
 
-class SimulateCloningView(StartJobView):
+class SimulateGGAssembliesView(StartJobView):
     serializer_class = serializer_class
     worker_class = worker_class

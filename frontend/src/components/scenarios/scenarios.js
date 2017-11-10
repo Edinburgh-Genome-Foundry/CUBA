@@ -15,7 +15,8 @@ export default {
       scenarios: [
         require('./PredictDigestions'),
         require('./SelectDigestions'),
-        require('./AnalyzeDigests')
+        require('./AnalyzeDigests'),
+        require('./SelectPrimers')
       ]
     },
     {

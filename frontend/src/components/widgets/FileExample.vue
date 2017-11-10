@@ -20,10 +20,10 @@
 export default {
   name: 'file-example',
   props: {
-    fileHref: {default: ''},
-    imgSrc: {default: null},
-    description: {default: null},
-    filename: {default: null}
+    fileHref: {default: () => ''},
+    imgSrc: {default: () => null},
+    description: {default: () => null},
+    filename: {default: () => null}
   },
   data: function () {
     return {

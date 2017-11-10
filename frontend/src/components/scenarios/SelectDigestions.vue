@@ -75,7 +75,7 @@ import ladderselector from '../../components/widgets/LadderSelector'
 var infos = {
   title: 'Select Digestions',
   navbarTitle: 'Select digestions',
-  path: 'digestion-selector',
+  path: 'select_digestions',
   description: '',
   backendUrl: 'start/select_digestions',
   icon: require('assets/images/select_digestion.svg'),
