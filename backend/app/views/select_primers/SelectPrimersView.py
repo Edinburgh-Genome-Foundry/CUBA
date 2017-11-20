@@ -18,6 +18,9 @@ class serializer_class(serializers.Serializer):
     constructs = serializers.ListField(child=FileSerializer())
     availablePrimers = serializers.ListField(child=FileSerializer())
     circularSequences = serializers.BooleanField()
+    readRange = serializers.ListField(child=serializers.IntegerField())
+    tmRange = serializers.ListField(child=serializers.IntegerField())
+
 
 class worker_class(AsyncWorker):
 
@@ -37,28 +40,30 @@ class worker_class(AsyncWorker):
         ]
 
         # SELECT THE BEST PRIMERS
-        selector = PrimerSelector(read_range=(150, 800), tm_range=(55, 70),
+        #(150, 800)
+        #(55, 70)
+        selector = PrimerSelector(read_range=data.readRange,
+                                  tm_range=data.tmRange,
                                   logger=self.logger)
         selected_primers = selector.select_primers(
             records, available_primers)
 
-
-        # PLOT THE PREDICTED SEQUENCING COVERAGE FOR EACH CONSTRUCT
-
-        selector.plot_coverage(
+        zip_data = selector.write_multifile_report(
             records=records,
             selected_primers=selected_primers,
-            pdf_path=zip_root._file('coverages_plots.pdf').open('wb'))
-
-        # WRITE ALL PRIMERS IN A CSV FILE (PRIMERS TO ORDER ARE FIRST)
-        selector.write_primers_table(
-            primers=selected_primers,
+            target='@memory'
+        )
+        df = selector.write_primers_table(
+            selected_primers=selected_primers,
             csv_path=zip_root._file('primers_list.csv')
         )
-        n_new, n_available = 1, 2
+
+        n_available = df['available'].sum()
+        n_new = len(df) - n_available
+
         return {
             'zip_file': {
-                'data': data_to_html_data(zip_root._close(), 'zip'),
+                'data': data_to_html_data(zip_data, 'zip'),
                 'name': 'selected_primers.zip',
                 'mimetype': 'application/zip'
             },

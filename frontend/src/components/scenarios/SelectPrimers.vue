@@ -21,10 +21,7 @@
                 :value='item.value', :key='item.value')
 
     h4.formlabel Constructs Sequences
-    p.
-      The sequences should be Genbanks with features annotated "cover" for the
-      zones to be covered (it can be one big zone covering the full sequence),
-      or "no_primer" to forbid primers in certain zones.
+      helper(:help='helpText')
     collapsible(title='Examples')
       file-example(filename='20_random_constructs.zip',
                    fileHref='/static/file_examples/select_primers/20_random_constructs.zip',
@@ -46,6 +43,15 @@
           Unzip the file and drag the genbank files into the file upload area.
 
     files-uploader(v-model='form.availablePrimers', help='Fasta or Genbank files')
+
+    h4.formlabel Primers properties
+
+    p.inline Ideal read range: from <b>{{ form.readRange[0] }}bp</b> after primer annealing to <b>{{ form.readRange[1] }}bp</b>
+      el-slider(range v-if="" v-model='form.readRange',
+                :min='0', :max='2000', :step='50')
+    p.inline Primer melting temperatures from <b>{{ form.tmRange[0] }}C</b> to <b>{{ form.tmRange[1] }}C</b>
+      el-slider(range v-if="" v-model='form.tmRange',
+                :min='20', :max='100', :step='1')
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Select primers',
@@ -86,6 +92,8 @@ export default {
         goal: 'sanger_sequencing',
         circularSequences: true,
         constructs: [],
+        readRange: [150, 800],
+        tmRange: [55, 70],
         availablePrimers: []
       },
       infos: infos,
@@ -103,7 +111,10 @@ export default {
         polling: {},
         result: {},
         requestError: ''
-      }
+      },
+      helpText: ('The sequences should be Genbanks with features annotated "cover" for the' +
+                 'zones to be covered (it can be one big zone covering the full sequence)' +
+                 'or "no_primer" to forbid primers in certain zones.')
     }
   },
   components: {
