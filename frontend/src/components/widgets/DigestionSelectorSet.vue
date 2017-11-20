@@ -19,7 +19,7 @@ export default {
     }
   },
   watch: {
-    value: function (val) {
+    value (val) {
       this.$emit('input', val)
     }
   },

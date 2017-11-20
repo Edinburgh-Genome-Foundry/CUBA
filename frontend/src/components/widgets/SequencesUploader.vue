@@ -22,7 +22,7 @@ export default {
     filter: {default: () => () => true},
     displaySelected: {default: false}
   },
-  data: function () {
+  data () {
     return {
       files: [],
       circularities: [],
@@ -30,7 +30,7 @@ export default {
     }
   },
   computed: {
-    filesWithLinearities: function () {
+    filesWithLinearities () {
       var result = []
       var self = this
       this.files.forEach(function (f, i) {
@@ -41,17 +41,17 @@ export default {
     }
   },
   watch: {
-    files: function (val) {
+    files (val) {
       var self = this
       self.circularities = []
       val.forEach(function (f) {
         self.circularities.push(true)
       })
     },
-    circularities: function (val) {
+    circularities (val) {
       console.log(val)
     },
-    filesWithLinearities: function (val) {
+    filesWithLinearities (val) {
       this.$emit('input', this.multiple ? val : val[0])
     }
   },

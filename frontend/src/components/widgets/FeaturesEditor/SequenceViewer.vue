@@ -23,7 +23,7 @@ export default {
     'graphic-feature': graphicfeature
   },
   computed: {
-    viewBox: function () {
+    viewBox () {
       return [
         this.window.start + 1,
         0,

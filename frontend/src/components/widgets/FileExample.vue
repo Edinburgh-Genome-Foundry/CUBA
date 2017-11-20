@@ -25,14 +25,14 @@ export default {
     description: {default: () => null},
     filename: {default: () => null}
   },
-  data: function () {
+  data () {
     return {
       defaultImgSrc: null,
       dataFilename: this.filename
     }
   },
   methods: {
-    change: function (evt) {
+    change (evt) {
       var files = evt.target.files
       var self = this
       self.valueMirror = []
@@ -55,7 +55,7 @@ export default {
     }
   },
   watch: {
-    valueMirror: function (val) {
+    valueMirror (val) {
       // this.value = val
       this.$emit('input', this.multiple ? val : val[0])
     }

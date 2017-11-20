@@ -9,16 +9,16 @@ export default {
       default: () => ''
     }
   },
-  data: function () {
+  data () {
     return {
       innervalue: this.value
     }
   },
   watch: {
-    value: function (val) {
+    value (val) {
       this.innervalue = val
     },
-    innervalue: function (val) {
+    innervalue (val) {
       this.$emit('input', val)
     }
   }

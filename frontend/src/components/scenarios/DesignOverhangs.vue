@@ -150,7 +150,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       overhangs: tools.cartesian(['A', 'T', 'G', 'C'],
                                  ['A', 'T', 'G', 'C'],
@@ -199,10 +199,10 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (!this.form.goal) {
         errors.push('Provide a goal !')
@@ -213,14 +213,14 @@ export default {
     }
   },
   computed: {
-    selected_overhangs: function () {
+    selected_overhangs () {
       if (!this.queryStatus.result) {
         return null
       } else {
         return this.queryStatus.result.overhangs
       }
     },
-    bars: function () {
+    bars () {
       var data = this.queryStatus.polling.data
       if (!data) { return [] }
       return [

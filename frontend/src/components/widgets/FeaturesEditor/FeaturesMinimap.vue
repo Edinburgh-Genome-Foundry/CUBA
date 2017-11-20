@@ -34,7 +34,7 @@ export default {
     'graphic-feature': graphicfeature
   },
   computed: {
-    maxLevel: function () {
+    maxLevel () {
       console.log(this.featuresData)
       if (this.featuresData.length === 0) {
         return 1
@@ -42,29 +42,29 @@ export default {
       var result = Math.max.apply(1, this.featuresData.map((f) => f.level))
       return result
     },
-    viewBox: function () {
+    viewBox () {
       return [0, -1, this.sequenceLength, this.maxLevel + 2].join(' ')
     }
   },
   methods: {
-    startDrag: function (evt) {
+    startDrag (evt) {
       // var e = evt.target
       var dim = this.$el.getBoundingClientRect()
       var windowCenter = Math.round(Number(this.sequenceLength * (evt.clientX - dim.left) / (dim.right - dim.left)))
       this.dragging = true
       this.$emit('drag', windowCenter)
     },
-    onDrag: function (evt) {
+    onDrag (evt) {
       if (this.dragging) {
         var dim = this.$el.getBoundingClientRect()
         var windowCenter = Math.round(Number(this.sequenceLength * (evt.clientX - dim.left) / (dim.right - dim.left)))
         this.$emit('drag', windowCenter)
       }
     },
-    stopDrag: function (evt) {
+    stopDrag (evt) {
       this.dragging = false
     },
-    featureMouseover: function (evt) {
+    featureMouseover (evt) {
       console.log(evt)
     }
   }

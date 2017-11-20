@@ -48,7 +48,7 @@ export default {
       ]
     })}
   },
-  data: function () {
+  data () {
     return {
       constructData: this.value,
       counter: 5
@@ -59,7 +59,7 @@ export default {
     'part-adder': partAdder
   },
   methods: {
-    addPart: function (i) {
+    addPart (i) {
       var newPartsData = this.constructData.parts.slice()
       this.counter++
       newPartsData.splice(i, 0, {
@@ -70,7 +70,7 @@ export default {
       this.$set(this.constructData, 'parts', newPartsData)
       console.log('add', i)
     },
-    deletePart: function (i) {
+    deletePart (i) {
       var newPartsData = this.constructData.parts.slice()
       newPartsData.splice(i - 1, 1)
       this.$set(this.constructData, 'parts', newPartsData)
@@ -80,7 +80,7 @@ export default {
   watch: {
     constructData: {
       deep: true,
-      handler: function (newval) {
+      handler (newval) {
         this.$emit('input', newval)
       }
     }

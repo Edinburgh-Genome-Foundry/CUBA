@@ -16,13 +16,13 @@ export default {
   data: {
   },
   computed: {
-    emailHref: function () {
+    emailHref () {
       return ('mailto:egf-software@ed.ac.uk?' +
               '&cc=hille.tekotte@ed.ac.uk, valentin.zulkower@ed.ac.uk' +
               '&body=Hello EGF team !' +
               '&subject=' + this.emailSubject)
     },
-    twitterHref: function () {
+    twitterHref () {
       return ('https://twitter.com/intent/tweet?' +
               'hashtags=synbio,software' +
               '&text=' + this.tweetMessage +

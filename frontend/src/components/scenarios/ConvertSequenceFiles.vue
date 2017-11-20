@@ -3,22 +3,23 @@
 .page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.center.
-    Submit a sequence(s), get plots of patterns impacting synthesis and assembly difficulty.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-            tweetMessage="Find patterns that can impact your sequence's manufacturability:",
+            tweetMessage="Convert sequences formats to Genbank or Fasta",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
 
   .form
 
-    h4.formlabel Sequence(s) to analyze
+    h4.formlabel Sequence(s) to convert
     filesuploader(v-model='form.files', :multiple='true',
-                      text="Drop multiple Genbank/Fasta (or click to select)")
-    .files-number(v-if='form.files.length > 0')
-      p {{ form.files.length }} file{{ form.files.length > 1 ? 's' : '' }}  selected
+                      text="Drop Genbank/Fasta/Snapgene files (or click to select)")
+
+    h4.formlabel Desired format
     .report-radio
-        el-radio(v-model='form.report', class="radio", label='quick_view') Quick view
-        el-radio(v-model='form.report', class="radio", label='pdf_report') PDF report
+      el-radio(v-model='form.format', class="radio", label='genbank') Genbank
+      el-radio(v-model='form.format', class="radio", label='fasta') Fasta
+    .checkbox
+      el-checkbox(v-if="(form.files.length > 1) && (form.format === 'fasta')"
+                  v-model='form.inSingleFile') All sequences in a single file
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
@@ -27,30 +28,20 @@
     el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
     .results(v-if='!queryStatus.polling.inProgress')
-      download-button(v-if='queryStatus.result.pdf_report',
-                      :filedata='queryStatus.result.pdf_report')
-      .results-summary(v-if='queryStatus.result.preview',
-                       v-html="queryStatus.result.preview.html")
-      .figures-preview(v-if='queryStatus.result.figures_data')
-        .figure-preview(v-for='fig in queryStatus.result.figures_data')
-          h4 {{fig.filename}}
-          img(:src='fig.img_data')
-
-  powered-by(:softwareNames='infos.poweredby')
+      download-button(v-if='queryStatus.result.file',
+                      :filedata='queryStatus.result.file')
 </template>
 
 <script>
-import learnmore from '../../components/widgets/LearnMore'
 import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
-  title: 'Evaluate Manufacturability',
-  navbarTitle: 'Evaluate Manufacturability',
-  path: 'evaluate_manufacturability',
+  title: 'Convert Sequence Files',
+  navbarTitle: 'Convert Sequence Files',
+  path: 'convert_sequence_files',
   description: '',
-  backendUrl: 'start/evaluate_manufacturability',
-  icon: require('assets/images/evaluate_manufacturability.svg'),
-  poweredby: ['dnachisel']
+  backendUrl: 'start/convert_sequence_files',
+  icon: require('assets/images/convert_sequence_files.svg')
 }
 
 export default {
@@ -58,7 +49,8 @@ export default {
     return {
       enzymes: ['BsaI', 'BsmBI', 'BbsI'],
       form: {
-        report: 'quick_view',
+        format: 'genbank',
+        inSingleFile: false,
         files: []
       },
       infos: infos,
@@ -76,8 +68,7 @@ export default {
     }
   },
   components: {
-    filesuploader,
-    learnmore
+    filesuploader
   },
   infos: infos,
   methods: {
@@ -129,6 +120,10 @@ h4.formlabel {
   .el-radio {
     margin-bottom: 20px;
   }
+}
+
+.checkbox {
+  text-align: center;
 }
 
 .files-number p {

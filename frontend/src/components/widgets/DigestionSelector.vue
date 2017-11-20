@@ -12,14 +12,14 @@ export default {
       default: () => ([])
     }
   },
-  data: function () {
+  data () {
     return {
       enzymes: enzymes,
       value: this.originalValue
     }
   },
   watch: {
-    value: function (val) {
+    value (val) {
       this.$emit('input', val)
     }
   }

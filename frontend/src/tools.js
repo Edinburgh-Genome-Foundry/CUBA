@@ -26,14 +26,14 @@ function numerizeValue (value, rounding) {
 }
 
 export default {
-  generateRandomID: function () {
+  generateRandomID () {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = Math.random() * 16 | 0
       var v = c === 'x' ? r : (r & 0x3 | 0x8)
       return v.toString(16)
     })
   },
-  numerizeValue: function (value, rounding) {
+  numerizeValue (value, rounding) {
     if (window.Array.isArray(value)) {
       var result = []
       value.forEach(function (val) {

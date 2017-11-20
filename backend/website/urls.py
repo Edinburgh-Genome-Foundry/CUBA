@@ -26,6 +26,8 @@ urlpatterns = [
 
     url(r'^api/start/analyze_digests$',
         views.AnalyzeDigestsView.as_view()),
+    url(r'^api/start/convert_sequence_files$',
+        views.ConvertSequenceFilesView.as_view()),
     url(r'^api/start/design_overhangs$',
         views.DesignOverhangsView.as_view()),
     url(r'^api/start/evaluate_manufacturability$',

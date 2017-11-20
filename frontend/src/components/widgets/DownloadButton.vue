@@ -12,7 +12,7 @@ export default {
     filedata: {}
   },
   methods: {
-    downloadContent: function () {
+    downloadContent () {
       // console.log(this.filedata.mimetype, download)
       download(this.filedata.data, this.filedata.name, this.filedata.mimetype)
     }

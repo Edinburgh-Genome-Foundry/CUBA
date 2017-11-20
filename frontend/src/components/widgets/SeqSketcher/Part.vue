@@ -52,7 +52,7 @@ export default {
       })
     }
   },
-  data: function () {
+  data () {
     return {
       partData: Object.assign({
         category: 'user-defined',
@@ -100,13 +100,13 @@ export default {
     }
   },
   computed: {
-    partStyle: function () {
+    partStyle () {
       return {
         'background-color': this.partData.bgColor,
         'width': this.maxWidth
       }
     },
-    maxWidth: function () {
+    maxWidth () {
       var longest = Math.max(
         this.partData.label.length,
         this.partData.sublabel.length,
@@ -118,7 +118,7 @@ export default {
   watch: {
     partData: {
       deep: true,
-      handler: function (newval) {
+      handler (newval) {
         this.$emit('input', newval)
       }
     }

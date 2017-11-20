@@ -51,14 +51,14 @@ export default {
     displaySelected: {default: true},
     multiple: {default: true}
   },
-  data: function () {
+  data () {
     return {
       hovering: false,
       valueMirror: this.value
     }
   },
   methods: {
-    change: function (evt) {
+    change (evt) {
       var files = evt.target.files
       var self = this
       self.valueMirror = []
@@ -83,7 +83,7 @@ export default {
   watch: {
     valueMirror: {
       deep: true,
-      handler: function (val) {
+      handler (val) {
         this.$emit('input', this.multiple ? val : val[0])
       }
     }

@@ -19,7 +19,7 @@ export default {
     shape: {default: 'arrow'}
   },
   computed: {
-    path: function () {
+    path () {
       console.log(this.useShape)
       var points = []
 

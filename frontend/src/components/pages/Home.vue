@@ -15,7 +15,7 @@
 import scenariospanel from '../widgets/ScenariosPanel'
 import scenarios from '../scenarios/scenarios.js'
 export default {
-  data: function () {
+  data () {
     return {
       scenarios: scenarios.list
     }

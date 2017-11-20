@@ -31,7 +31,7 @@ export default {
     form: {default: () => ({})},
     validate_form: {default: () => () => ([])}
   },
-  data: function () {
+  data () {
     console.log(this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP)
     return {
       honeypot: '',
@@ -52,32 +52,32 @@ export default {
   },
   watch: {
     form: {
-      handler: function (val) {
+      handler (val) {
         console.log(val)
         this.$emit('input', val)
       },
       deep: true
     },
     value: {
-      handler: function (val) {
+      handler (val) {
         this.form = val
       },
       deep: true
     }
   },
   computed: {
-    fulldata: function () {
+    fulldata () {
       return {
         data: this.form,
         honeypot: this.honeypot
       }
     },
-    progressStage: function () {
+    progressStage () {
       return ['queued', 'started', 'finished'].indexOf(this.polling.status) + 1
     }
   },
   methods: {
-    submit: function () {
+    submit () {
       var errors = this.validate_form()
       if (errors.length) {
         this.requestError = 'Invalid form: ' + errors.join('   ')
@@ -99,7 +99,7 @@ export default {
         }
       })
     },
-    startPolling: function (jobId) {
+    startPolling (jobId) {
       this.polling.inProgress = true
       var jobPoller = setInterval(function () {
         this.$http.post(
@@ -134,7 +134,7 @@ export default {
         })
       }.bind(this), 100)
     },
-    computeBackendIP: function () {
+    computeBackendIP () {
       var location = window.location.origin
       if (location[location.length - 5] === ':') {
         location = location.slice(0, location.length - 5)

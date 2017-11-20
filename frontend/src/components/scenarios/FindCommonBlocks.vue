@@ -50,7 +50,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       infos: infos,
       form: {
@@ -81,7 +81,7 @@ export default {
   },
   infos: infos,
   methods: {
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (!this.form.files.length) {
         errors.push('Provide files !')

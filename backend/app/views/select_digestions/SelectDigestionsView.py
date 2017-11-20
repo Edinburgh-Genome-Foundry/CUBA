@@ -39,6 +39,7 @@ class worker_class(AsyncWorker):
 
         data = self.data
         ladder = LADDERS[data.ladder]
+        print ('------', LADDERS, data.ladder, ladder)
         enzymes = data.possibleEnzymes
 
         sequences = OrderedDict([
@@ -50,7 +51,7 @@ class worker_class(AsyncWorker):
         if (data.goal == 'ideal'):
 
             mini, maxi = data.bandsRange
-
+            print ("-------------------", ladder)
             problem = IdealDigestionsProblem(
                 sequences=sequences, enzymes=enzymes, ladder=ladder,
                 linear=not data.circularSequences,

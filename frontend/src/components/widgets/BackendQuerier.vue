@@ -14,7 +14,6 @@ div
 
 <script>
 import downloadbutton from './DownloadButton'
-import spinner from 'vue-spinner/src/PulseLoader'
 
 export default {
   name: 'backend-querier',
@@ -28,7 +27,7 @@ export default {
     showProgress: {default: true},
     submitTrigger: {default: false}
   },
-  data: function () {
+  data () {
     console.log(this.backendIP === 'auto' ? this.computeBackendIP() : this.backendIP)
     return {
       honeypot: '',
@@ -45,42 +44,41 @@ export default {
     }
   },
   components: {
-    downloadbutton,
-    spinner
+    downloadbutton
   },
   watch: {
     value: {
-      handler: function (val) {
+      handler (val) {
         this.status = val
       },
       deep: true
     },
     status: {
-      handler: function (val) {
+      handler (val) {
         console.log(val)
         this.$emit('input', val)
       },
       deep: true
     },
-    submitTrigger: function (value) {
+    submitTrigger (value) {
       if (value) {
         this.submit()
       }
     }
   },
   computed: {
-    fulldata: function () {
+    fulldata () {
       return {
         data: this.form,
         honeypot: this.honeypot
       }
     },
-    progressStage: function () {
+    progressStage () {
       return ['sending', 'queued', 'started', 'finished'].indexOf(this.status.polling.status)
     }
   },
   methods: {
-    submit: function () {
+    submit () {
       var errors = this.validateForm()
       if (errors.length) {
         this.status.requestError = 'Invalid form: ' + errors.join('   ')
@@ -106,7 +104,7 @@ export default {
         }
       })
     },
-    startPolling: function (jobId) {
+    startPolling (jobId) {
       var self = this
       this.status.polling.inProgress = true
       var jobPoller = setInterval(function () {
@@ -144,7 +142,7 @@ export default {
         })
       }.bind(this), 250)
     },
-    computeBackendIP: function () {
+    computeBackendIP () {
       var location = window.location.origin
       if (location[location.length - 5] === ':') {
         location = location.slice(0, location.length - 5)

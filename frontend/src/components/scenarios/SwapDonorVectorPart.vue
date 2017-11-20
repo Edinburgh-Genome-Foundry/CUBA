@@ -63,7 +63,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       enzymes: ['BsaI', 'BsmBI', 'BbsI', 'Autoselect'],
       form: {
@@ -92,10 +92,10 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (this.form.inserts.length === 0) {
         errors.push('Provide at least 1 insert.')

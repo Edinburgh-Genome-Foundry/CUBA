@@ -54,7 +54,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       form: {
         file: null,
@@ -78,17 +78,17 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (!this.form.file) {
         errors.push('Provide at least one file.')
       }
       return errors
     },
-    editorFeatureColor: function (feature) {
+    editorFeatureColor (feature) {
       var color = {
         '@': '#20a0ff',
         '~': '#ffd520'
@@ -100,7 +100,7 @@ export default {
     }
   },
   watch: {
-    'form.file.content': function (value) {
+    'form.file.content' (value) {
       var genbank = atob(value.split(',')[1])
       this.form.editedFeatures = {}
       var self = this

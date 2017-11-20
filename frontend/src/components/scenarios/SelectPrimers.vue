@@ -80,7 +80,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       form: {
         goal: 'sanger_sequencing',
@@ -114,10 +114,10 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (this.form.constructs.length < 1) {
         errors.push('Provide at least one construct !')

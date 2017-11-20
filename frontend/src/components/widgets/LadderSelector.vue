@@ -9,7 +9,7 @@ export default {
   props: {
     value: {default: '100_to_10k'}
   },
-  data: function () {
+  data () {
     return {
       ladder: this.value,
       ladder_options: [
@@ -41,8 +41,8 @@ export default {
     }
   },
   watch: {
-    ladder: function () {
-      this.emit('input', this.ladder)
+    ladder () {
+      this.$emit('input', this.ladder)
     }
   }
 }

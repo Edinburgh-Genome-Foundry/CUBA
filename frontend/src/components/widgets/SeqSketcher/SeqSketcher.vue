@@ -54,7 +54,7 @@ export default {
       })
     }
   },
-  data: function () {
+  data () {
     return {
       sketchesData: this.value,
       constructIdCounter: 0,
@@ -66,10 +66,10 @@ export default {
     construct
   },
   methods: {
-    downloadJson: function () {
+    downloadJson () {
       download(JSON.stringify(this.sketchesData, null, ' '), 'design.json')
     },
-    newConstruct: function (i) {
+    newConstruct (i) {
       var newConstructs = this.sketchesData.constructs.slice()
       this.constructIdCounter++
       newConstructs.splice(i + 1, 0, {
@@ -86,7 +86,7 @@ export default {
       })
       this.$set(this.sketchesData, 'constructs', newConstructs)
     },
-    duplicateConstruct: function (i) {
+    duplicateConstruct (i) {
       this.constructIdCounter++
       var newConstructs = this.sketchesData.constructs.slice()
       var newConstruct = Object.assign({}, JSON.parse(JSON.stringify(newConstructs[i])),
@@ -95,13 +95,13 @@ export default {
       newConstructs.splice(i + 1, 0, newConstruct)
       this.$set(this.sketchesData, 'constructs', newConstructs)
     },
-    deleteConstruct: function (i) {
+    deleteConstruct (i) {
       var newConstructs = this.sketchesData.constructs.slice()
       newConstructs.splice(i, 1)
       this.$set(this.sketchesData, 'constructs', newConstructs)
       console.log('delete', i)
     },
-    moveUpConstruct: function (i) {
+    moveUpConstruct (i) {
       if (i === 0) {
         return
       }
@@ -111,7 +111,7 @@ export default {
       newConstructs.splice(i - 1, 0, construct)
       this.$set(this.sketchesData, 'constructs', newConstructs)
     },
-    moveDownConstruct: function (i) {
+    moveDownConstruct (i) {
       if (i === this.sketchesData.constructs.length - 1) {
         return
       }
@@ -121,7 +121,7 @@ export default {
   watch: {
     'file.content': {
       deep: true,
-      handler: function (newval) {
+      handler (newval) {
         this.showFileDialog = false
         if (newval) {
           var json = JSON.parse(atob(newval.split(',')[1]))
@@ -131,7 +131,7 @@ export default {
     },
     'sketchesData': {
       deep: true,
-      handler: function (newval) {
+      handler (newval) {
         this.$emit('input', newval)
       }
     }

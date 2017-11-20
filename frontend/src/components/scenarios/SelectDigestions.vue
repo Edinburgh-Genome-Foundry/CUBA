@@ -83,7 +83,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       form: {
         ladder: '100_to_4k',
@@ -130,10 +130,10 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (this.form.possibleEnzymes.length < 2) {
         errors.push('Provide at least two different restriction enzymes.')

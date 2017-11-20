@@ -64,7 +64,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       form: {
         format: 'PDF',
@@ -122,10 +122,10 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       return errors
     }

@@ -76,7 +76,7 @@ export default {
     'features-minimap': featuresminimap
   },
   computed: {
-    featuresData: function () {
+    featuresData () {
       console.log('recomputing', this.features)
       var self = this
       return Object.keys(this.features).map(function (featureID) {
@@ -89,10 +89,10 @@ export default {
         return dict
       })
     },
-    selectedFeature: function () {
+    selectedFeature () {
       return this.features[this.editorFeature.id]
     },
-    featureLevels: function () {
+    featureLevels () {
       var self = this
       var featureOverlaps = {}
       var featureIDs = Object.keys(this.features)
@@ -131,7 +131,7 @@ export default {
       })
       return levels
     },
-    window: function () {
+    window () {
       var windowSize = Math.floor(this.clientWidth / this.zoomFactor)
       windowSize = windowSize + (windowSize % 2)
       var window = {
@@ -149,20 +149,20 @@ export default {
     }
   },
   methods: {
-    handleResize: function () {
+    handleResize () {
       this.clientWidth = this.$el.parentElement.clientWidth
     },
-    updateWindowCenter: function (center) {
+    updateWindowCenter (center) {
       this.windowCenter = center
     },
-    shiftWindowCenter: function (shift) {
+    shiftWindowCenter (shift) {
       this.windowCenter += shift
     },
-    selectFeature: function (featureID) {
+    selectFeature (featureID) {
       console.log('wwwwwww', featureID)
       this.editorFeature = Object.assign({}, this.features[featureID])
     },
-    newFeature: function () {
+    newFeature () {
       var newID = 0
       while (this.features[newID]) {
         newID++
@@ -177,32 +177,32 @@ export default {
       })
       this.selectFeature(newID)
     },
-    updateFeature: function (featureID) {
+    updateFeature (featureID) {
       console.log('update', featureID)
       this.features[featureID] = Object.assign({}, this.editorFeature)
     },
-    deleteFeature: function (featureID) {
+    deleteFeature (featureID) {
       this.$delete(this.features, featureID)
     },
-    hoverFeature: function (featureID) {
+    hoverFeature (featureID) {
       console.log(featureID)
       this.hoveredFeature = featureID
     }
   },
-  mounted: function () {
+  mounted () {
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
   },
   watch: {
     features: {
       deep: true,
-      handler: function (value) {
+      handler (value) {
         this.$emit('change', value)
       }
     },
     value: {
       deep: true,
-      handler: function (value) {
+      handler (value) {
         this.features = value
       }
     }

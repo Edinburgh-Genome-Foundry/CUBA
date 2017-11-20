@@ -18,19 +18,21 @@ el-menu(:mode="fullWidth > 610 ? 'horizontal' : 'vertical'" @select="handleSelec
 <script>
 import scenarios from './scenarios/scenarios.js'
 export default {
-  data: () => ({
-    scenarios: scenarios.list,
-    fullWidth: 0
-  }),
+  data () {
+    return {
+      scenarios: scenarios.list,
+      fullWidth: 0
+    }
+  },
   methods: {
-    handleSelect: function (key, keyPath) {
+    handleSelect (key, keyPath) {
       this.$router.push(key)
     },
-    handleResize: function (event) {
+    handleResize (event) {
       this.fullWidth = document.documentElement.clientWidth
     }
   },
-  mounted: function () {
+  mounted () {
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
   }

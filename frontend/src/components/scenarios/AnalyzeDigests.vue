@@ -119,7 +119,7 @@ var infos = {
 }
 
 export default {
-  data: function () {
+  data () {
     return {
       form: {
         constructsMap: null,
@@ -175,10 +175,10 @@ export default {
   },
   infos: infos,
   methods: {
-    handleSuccess: function (evt) {
+    handleSuccess (evt) {
       console.log(evt)
     },
-    validateForm: function () {
+    validateForm () {
       var errors = []
       if (this.form.constructsSequences.length < 1) {
         errors.push('Provide constructs sequences')

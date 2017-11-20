@@ -31,14 +31,14 @@ export default {
     'graphic-feature': graphicfeature
   },
   computed: {
-    maxLevel: function () {
+    maxLevel () {
       if (this.featuresData.length === 0) {
         return 1
       }
       var result = Math.max.apply(1, this.featuresData.map((f) => f.level))
       return result
     },
-    viewBox: function () {
+    viewBox () {
       return [
         this.window.start,
         -0.5,
@@ -48,13 +48,13 @@ export default {
     }
   },
   methods: {
-    startDrag: function (evt) {
+    startDrag (evt) {
       // var e = evt.target
       var dim = this.$el.getBoundingClientRect()
       this.originalX = Math.round(Number((this.window.end - this.window.start) * (evt.clientX - dim.left) / (dim.right - dim.left)))
       this.dragging = true
     },
-    onDrag: function (evt) {
+    onDrag (evt) {
       if (this.dragging) {
         var dim = this.$el.getBoundingClientRect()
         // var windowCenter = Math.round(Number(this.window * (evt.clientX - dim.left) / (dim.right - dim.left)))
@@ -64,7 +64,7 @@ export default {
         this.originalX = this.newX
       }
     },
-    stopDrag: function (evt) {
+    stopDrag (evt) {
       this.dragging = false
     }
   }

@@ -66,7 +66,7 @@ export default {
     softwareNames: {default: () => ([])}
   },
   computed: {
-    softwareInfos: function () {
+    softwareInfos () {
       return this.softwareNames.map(function (name) { return allSoftwareInfos[name] })
     }
   }

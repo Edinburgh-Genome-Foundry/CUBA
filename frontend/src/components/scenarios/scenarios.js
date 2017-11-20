@@ -7,7 +7,8 @@ export default {
         require('./DesignOverhangs.vue'),
         require('./SimulateGGAssemblies'),
         require('./SwapDonorVectorPart'),
-        require('./SketchConstructs')
+        require('./SketchConstructs'),
+        require('./ConvertSequenceFiles')
       ]
     },
     {

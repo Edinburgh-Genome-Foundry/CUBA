@@ -1,22 +1,17 @@
 import sys
+from io import StringIO, BytesIO
+import re
+from base64 import b64encode, b64decode
+
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.Alphabet import DNAAlphabet
-import bandwagon as bw
-import re
-from base64 import b64encode, b64decode
 from matplotlib.backends.backend_pdf import PdfPages
+
 import flametree
-
-
-PYTHON3 = (sys.version_info > (3, 0))
-if PYTHON3:
-    from io import StringIO, BytesIO
-    StringByteIO = BytesIO
-else:
-    from StringIO import StringIO
-    StringByteIO = StringIO
+from snapgene_reader import snapgene_file_to_seqrecord
+import bandwagon as bw
 
 def fix_ice_genbank(genbank_txt):
     lines = genbank_txt.splitlines()
@@ -27,7 +22,6 @@ def string_to_record(string):
     """Convert a string of a fasta, genbank... into a simple ATGC string.
 
     Can also be used to detect a format.
-
     """
     matches = re.match("([ATGC][ATGC]*)", string)
     if (matches is not None) and (matches.groups()[0] == string):
@@ -43,11 +37,18 @@ def string_to_record(string):
                 return (records, fmt)
         except:
             pass
+
+    try:
+        record = snapgene_file_to_seqrecord(filecontent=StringIO(string))
+        return record
+    except:
+        pass
     raise ValueError("Invalid sequence format")
 
-def file_to_filelike_object(file_):
+def file_to_filelike_object(file_, type='byte'):
     content = file_.content.split("base64,")[1]
-    return StringByteIO(b64decode(content))
+    filelike = BytesIO if (type == 'byte') else StringIO
+    return filelike(b64decode(content))
 
 def records_from_zip_file(zip_file):
     zip_file = flametree.file_tree(file_to_filelike_object(zip_file))
@@ -62,16 +63,25 @@ def records_from_zip_file(zip_file):
                     number = ('' if single_record else ("%04d" % i))
                     name = f._name_no_extension + number
                 record.id = name
-                record.name = name
+                record.name = name[:20]
             records += new_records
     return records
 
 
 def records_from_data_file(data_file):
-    content = data_file.content.split("base64,")[1]
-    content = b64decode(content).decode("utf-8")
-    records, fmt = string_to_record(content)
+    content = b64decode(data_file.content.split("base64,")[1])
+    try:
+        records, fmt = string_to_record(content.decode("utf-8"))
+    except:
+        record = snapgene_file_to_seqrecord(fileobject=BytesIO(content))
+        records, fmt = [record], 'snapgene'
     return records, fmt
+
+def record_to_formated_string(record, fmt='genbank'):
+    fileobject = StringIO()
+    SeqIO.write(record, fileobject, fmt)
+    return fileobject.getvalue().encode('utf-8')
+
 
 def records_from_data_files(data_files):
     records = []
@@ -90,16 +100,17 @@ def records_from_data_files(data_files):
             name = name_no_extension + ('' if single_record else ("%04d" % i))
             if str(record.id).strip() in ['None', '', "<unknown id>", '.']:
                 record.id = name
-            if str(record.name).strip() in ['None', '', "<unknown id>", '.']:
+            if str(record.name).strip() in ['None', '', "<unknown name>", '.']:
                 record.name = name
+            record.name = record.name[:20]
         records += recs
     return records
 
 def data_to_html_data(data, datatype):
     datatype = {
         'zip': 'application/zip',
-        'genbank': 'application/genbank'
-
+        'genbank': 'application/genbank',
+        'fasta': 'application/fasta',
     }.get(datatype, datatype)
     return 'data:%s;base64,%s' % (datatype, b64encode(data).decode("utf-8"))
 
@@ -113,20 +124,17 @@ LADDERS = {
 def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
     """Return a string of the form 'data:image/svg+xml;base64,XXX' where XXX
     is the base64-encoded svg version of the figure."""
-    output = StringByteIO()
+    output = BytesIO()
     fig.savefig(output, format='svg', **kwargs)
     svg_txt = output.getvalue().decode("ascii")
     svg_txt = "\n".join(svg_txt.split("\n")[4:])
     svg_txt = "".join(svg_txt.split("\n"))
 
-    if PYTHON3:
-        content = b64encode(svg_txt.encode("ascii"))
-        result = (b"data:image/svg+xml;base64," + content).decode("utf-8")
+    content = b64encode(svg_txt.encode("ascii"))
+    result = (b"data:image/svg+xml;base64," + content).decode("utf-8")
 
-        return result
-    else:
-        return "data:image/svg+xml;base64," + b64encode(svg_txt)
-
+    return result
+    
 def figures_to_pdf_report_data(figures, filename='report.pdf'):
     pdf_io = BytesIO()
     with PdfPages(pdf_io) as pdf:
