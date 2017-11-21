@@ -12,6 +12,7 @@
   .constructs
     transition-group(name='constructs-list',
                      enter-active-class='animated flipInX',
+                     leave-active-class='animated fadeOut absolute-animation',
                      tag='div')
       .construct(v-for="construct, i in sketchesData.constructs", v-model='sketchesData.constructs[i]',
            @duplicate='duplicateConstruct(i)', @new='newConstruct(i)',
@@ -180,12 +181,9 @@ export default {
 // .constructs-list-item {
 //   transition: all 1s;
 // }
-.constructs-list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-.constructs-list-leave-active {
+.absolute-animation {
   position: absolute;
+  transform: all 0.3s;
 }
 }
 </style>

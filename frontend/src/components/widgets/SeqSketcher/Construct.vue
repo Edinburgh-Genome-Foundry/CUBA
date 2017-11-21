@@ -14,6 +14,7 @@
   .parts
     transition-group.inline-part(name='parts-list',
                      enter-active-class='animated flipInX',
+                     leave-active-class='animated zoomOut absolute',
                      tag='div')
       .inline-part(@click="addPart(0)", is='part-adder', key="www")
       .inline-part(v-for='part, i in constructData.parts', :key="part.id")
@@ -154,12 +155,9 @@ export default {
 .parts-list-move {
   transition: transform 0.5s;
 }
-.parts-list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-.parts-list-leave-active {
+.absolute {
   position: absolute;
+  transition: all 0.5s;
 }
 }
 </style>
