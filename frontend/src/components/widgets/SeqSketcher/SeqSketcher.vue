@@ -177,9 +177,9 @@ export default {
 .constructs-list-move {
   transition: transform 1s;
 }
-.constructs-list-item {
-  transition: all 1s;
-}
+// .constructs-list-item {
+//   transition: all 1s;
+// }
 .constructs-list-leave-to {
   opacity: 0;
   transform: translateX(30px);

@@ -12,10 +12,13 @@
     .control(@click="$emit('moveUp')") <icon name='arrow-up'></icon> Move up
     .control(@click="$emit('moveDown')") <icon name='arrow-down'></icon> Move down
   .parts
-    part-adder(@click="addPart(0)")
-    span(v-for='part, i in constructData.parts', :key="part.id")
-      part(v-model='constructData.parts[i]' @delete='deletePart(i+1)')
-      part-adder(@click="addPart(i+1)")
+    transition-group.inline-part(name='parts-list',
+                     enter-active-class='animated flipInX',
+                     tag='div')
+      .inline-part(@click="addPart(0)", is='part-adder', key="www")
+      .inline-part(v-for='part, i in constructData.parts', :key="part.id")
+        part(v-model='constructData.parts[i]' @delete='deletePart(i+1)')
+        part-adder(@click="addPart(i+1)")
 
 </template>
 <script>
@@ -68,7 +71,6 @@ export default {
         id: this.counter
       })
       this.$set(this.constructData, 'parts', newPartsData)
-      console.log('add', i)
     },
     deletePart (i) {
       var newPartsData = this.constructData.parts.slice()
@@ -146,5 +148,18 @@ export default {
       }
     }
   }
+.inline-part {
+  display: inline-block;;
+}
+.parts-list-move {
+  transition: transform 0.5s;
+}
+.parts-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.parts-list-leave-active {
+  position: absolute;
+}
 }
 </style>
