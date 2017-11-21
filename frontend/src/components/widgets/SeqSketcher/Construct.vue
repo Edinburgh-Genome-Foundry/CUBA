@@ -1,5 +1,5 @@
 <template lang='pug'>
-.construct.animated.flipInX
+.construct
   hr
   textarea.name(v-model='constructData.name', placeholder='(Name this construct)' rows=1)
   textarea.note(v-model='constructData.note', placeholder='(Add a note)',

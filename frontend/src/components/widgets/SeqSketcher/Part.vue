@@ -1,5 +1,5 @@
 <template lang='pug'>
-.sketcher-part(:style='partStyle').animated.flipInY
+.sketcher-part(:style='partStyle')
   .label-and-sublabel
     textarea.label(v-model='partData.label', rows=2, placeholder='(label)',
                    :class="{'hover-only': (partData.label.length === 0)}",

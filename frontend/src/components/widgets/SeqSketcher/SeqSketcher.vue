@@ -10,11 +10,15 @@
   p
     input.note(v-model='sketchesData.note', placeholder='(Add some note here)')
   .constructs
-    construct(v-for="construct, i in sketchesData.constructs", v-model='sketchesData.constructs[i]',
-              @duplicate='duplicateConstruct(i)', @new='newConstruct(i)',
-              @delete='deleteConstruct(i)', @moveUp='moveUpConstruct(i)',
-              @moveDown='moveDownConstruct(i)',
-              :key='construct.id')
+    transition-group(name='constructs-list',
+                     enter-active-class='animated flipInX',
+                     tag='div')
+      .construct(v-for="construct, i in sketchesData.constructs", v-model='sketchesData.constructs[i]',
+           @duplicate='duplicateConstruct(i)', @new='newConstruct(i)',
+           @delete='deleteConstruct(i)', @moveUp='moveUpConstruct(i)',
+           @moveDown='moveDownConstruct(i)',
+           is='construct',
+           :key='construct.id')
 </template>
 
 <script>
@@ -99,16 +103,13 @@ export default {
       var newConstructs = this.sketchesData.constructs.slice()
       newConstructs.splice(i, 1)
       this.$set(this.sketchesData, 'constructs', newConstructs)
-      console.log('delete', i)
     },
     moveUpConstruct (i) {
-      if (i === 0) {
-        return
-      }
+      var indexUp = Math.max(0, i - 1)
       var newConstructs = this.sketchesData.constructs.slice()
-      var construct = this.sketchesData.constructs[i]
-      newConstructs.splice(i, 1)
-      newConstructs.splice(i - 1, 0, construct)
+      var construct = newConstructs[i]
+      newConstructs[i] = newConstructs[indexUp]
+      newConstructs[indexUp] = construct
       this.$set(this.sketchesData, 'constructs', newConstructs)
     },
     moveDownConstruct (i) {
@@ -163,14 +164,28 @@ export default {
     }
   }
   .file-operations {
-  text-align: center;
-  .file-link {
-    display: inline;
-    font-size: 1em;
-    border: none;
-    margin-right: 1em;
+    text-align: center;
+    .file-link {
+      display: inline;
+      font-size: 1em;
+      border: none;
+      margin-right: 1em;
+    }
+    margin-bottom: 2.5em;
+
   }
-  margin-bottom: 2.5em;
+.constructs-list-move {
+  transition: transform 1s;
+}
+.constructs-list-item {
+  transition: all 1s;
+}
+.constructs-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.constructs-list-leave-active {
+  position: absolute;
 }
 }
 </style>
