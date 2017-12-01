@@ -1,16 +1,16 @@
 <template lang="pug">
 .page
   h1 {{infos.title}}
-  img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
-  p.center.
-    Find the best enzymes to digest your constructs, for verification or
-    identification purposes.
-  p.
-    If no single digestion works for all constructs,
-    2 or 3 digestions that collectively cover all constructs will be suggested.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Get enzyme suggestions for your restriction digests:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+  img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
+  p.scenario-description.
+    Find the best enzymes to digest your constructs, for verification or
+    identification purposes.
+    If no single digestion works for all constructs,
+    2 or 3 digestions that collectively cover all constructs will be suggested.
+
 
 
 
@@ -24,7 +24,9 @@
       p.inline Bands in <i>sensitivity</i> zone: {{ form.bandsRange[0] }} to {{ form.bandsRange[1] }}
         el-slider(range show-stops v-if="" v-model='form.bandsRange',
                        :max=10, :min=1)
-        helper(help='Bands in the high-band-size-sensitivity zone, between 10% and 90% of the maximal migration distance.')
+        helper.
+          Bands in the <i>central</i> zone,
+          between 10% and 90% of the maximal migration distance.
 
     h4.formlabel Constructs Sequences
 
@@ -48,6 +50,7 @@
       el-radio(v-model='form.maxDigestions', label='2') 2
 
     el-checkbox(v-model='form.showBandsSizes') Show bands sizes in plot.
+    el-checkbox(v-model='form.plotCuts') Plot constructs cuts maps (long !).
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Select digestions',
@@ -63,6 +66,13 @@
           No solution found :'(
       .center
         img(v-if='queryStatus.result.figure_data', :src='queryStatus.result.figure_data')
+      p(:class='{warn: scoreIsLow}') Score: {{Math.round(queryStatus.result.score * 100)}}%.
+        span(v-if='scoreIsLow').
+          &nbsp; This is very low and means that no digestion fitted your constraints.
+          Try with another ladder, enzyme set, number of bands etc.
+      download-button(v-if='queryStatus.result.pdf_file',
+                      :filedata='queryStatus.result.pdf_file',
+                      text='Download cut maps')
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
@@ -92,9 +102,10 @@ export default {
         maxDigestions: '1',
         make_report: false,
         goal: 'ideal',
-        bandsRange: [3, 5],
+        bandsRange: [3, 6],
         circularSequences: true,
         showBandsSizes: false,
+        plotCuts: false,
         files: []
       },
       infos: infos,
@@ -129,6 +140,11 @@ export default {
     ladderselector
   },
   infos: infos,
+  computed: {
+    scoreIsLow () {
+      return this.queryStatus.result.score < 0.01
+    }
+  },
   methods: {
     handleSuccess (evt) {
       console.log(evt)
@@ -195,5 +211,9 @@ p.loadData {
     margin-bottom: -12px;
     margin-left: 10px;
   }
+}
+
+.warn {
+  color: red;
 }
 </style>

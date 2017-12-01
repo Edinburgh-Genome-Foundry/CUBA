@@ -27,6 +27,13 @@ export default {
     i.el-collapse-item__header__arrow {
       display: none !important;
     }
+    .el-collapse-item__content {
+      // background-color: #fcfcff;
+      border: 2px solid #e7e7f7;
+      padding: 1em;
+      border-radius: 0.5em;
+      margin-bottom: 1em;
+    }
   }
   hr {
     border: 0;

@@ -1,8 +1,11 @@
 <template lang="pug">
 .page
   h1 {{infos.title}}
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Convert sequences formats to Genbank or Fasta",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
-  p.center.
+  p.scenario-description.
     Provide the results of an automated restriction digestion, and get a complete
     report on the results.
 
@@ -16,7 +19,8 @@
 
 
     h4.formlabel Constructs Sequences
-      helper(help="The title of each Genbank file (or Fasta entry) must be the construct's name.")
+      helper.
+        The title of each Genbank file (or Fasta entry) must be the construct's name.
 
     collapsible(title='Examples')
       file-example(filename='constructs_sequences.zip',
@@ -35,7 +39,8 @@
 
       h4.formlabel Constructs Map
 
-        helper(help="A spreadsheet where the cells contents indicate the construct in each well")
+        helper.
+          A spreadsheet where the cells contents indicate the construct in each well
 
       collapsible(title='Examples')
         file-example(filename='constructs_sequences.zip',
@@ -52,7 +57,8 @@
     el-checkbox(v-model='form.severalDigestionsPerClone') Some clones have several digestions in different wells
     .animated.fadeIn(v-if='form.severalDigestionsPerClone')
       h4.formlabel Clones Map
-        helper(help="A spreadsheet where the cells contents indicate the ID of the clone in each well")
+        helper.
+          A spreadsheet where the cells contents indicate the ID of the clone in each well
       files-uploader(v-model='form.clonesMap', help='Fasta or Genbank files', :multiple='false')
 
 
@@ -63,11 +69,13 @@
     digestionselector.animated.fadeIn(v-if='form.uniqueDigestion' v-model='form.digestion')
     .animated.fadeIn(v-else)
       p Provide a spreadsheet map of all digestions.
-        helper(help='If a digestion has several enzymes, separate them with a comma')
+        helper.
+          If a digestion has several enzymes, separate them with a comma
       files-uploader(v-model='form.digestionsMap', :multiple='false')
 
     h4.formlabel Fragment Analysis ZIP File
-      helper(help='Provide a ZIP file of the AATI fragment analyzer (only machine supported at the moment)')
+      helper.
+        Provide a ZIP file of the AATI fragment analyzer (only machine supported at the moment)
     collapsible(title='Examples')
       file-example(filename='fragment_analyzer_data.zip',
                    fileHref='/static/file_examples/analyze_digests/fragment_analyzer_data.zip',
@@ -82,10 +90,12 @@
 
     h4.formlabel Validation parameters
     p Tolerance
-      helper(help='Distance at which two bands are considered different (in proportion of the ladder span)')
+      helper.
+        Distance at which two bands are considered different (in proportion of the ladder span)
       el-slider(:min='0', :max='1', :step='0.05', :show-tooltip='true', v-model='form.tolerance')
     p Bands range
-      helper(help='All bands outside this range will be ignored')
+      helper.
+        All bands outside this range will be ignored
       el-slider(:min='0', :max='15000', :range='true', :step='10', :show-tooltip='true', v-model='form.bandsRange')
     el-checkbox(v-model='form.includeDigestionPlots') Include plots of cutting sites (slower)
 

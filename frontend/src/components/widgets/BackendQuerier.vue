@@ -1,14 +1,14 @@
 <template lang='pug'>
-div
+.backend-querier
   input(type='text', size='25', value='', v-model='honeypot', :style="{display: 'none'}")
   el-button.center(v-if='submitButtonText.length > 0' @click='submit()', :disabled='status.polling.inProgress') {{submitButtonText }}
   .polling(v-if='status.polling.inProgress && showProgress')
 
     .polling-message {{status.polling.data.message}}
-    el-steps(:space='100', :active='progressStage')
-      el-step(icon='upload')
-      el-step(icon='setting')
-      el-step.last-step(icon='message')
+    el-steps.steps(:space='100', :active='progressStage' simple)
+      el-step(title='send' icon='el-icon-upload')
+      el-step(title='run' icon='el-icon-setting')
+      el-step.last-step(title='get' icon='el-icon-message')
     img.spinner(src='../../assets/images/egf-spinner.svg')
 </template>
 
@@ -154,6 +154,9 @@ export default {
 </script>
 
 <style scoped>
+.backend-querier {
+  max-width: 100%;
+}
 
 .submit-button {
   margin-top: 20px;
@@ -171,7 +174,7 @@ export default {
 
 .polling {
   text-align:center;
-  margin-top: 50px
+  margin-top: 50px;
 }
 
 .last-step {
@@ -181,6 +184,10 @@ export default {
 .spinner {
   width: 120px;
   margin-top: 2em;
+}
+
+.steps {
+  text-align: center;
 }
 
 </style>

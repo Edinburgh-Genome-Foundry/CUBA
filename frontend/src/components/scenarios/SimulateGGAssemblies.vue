@@ -1,13 +1,14 @@
 <template lang="pug">
 .page
   h1  {{ infos.title }}
-  img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.center.
-    Submit parts and a receptor vector. Get an annotated Genbank of the
-    resulting construct(s).
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Simple online cloning simulator for Golden Gate:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+  img.icon.center-block(slot='title-img', :src='infos.icon')
+  p.scenario-description.
+    Submit parts and a receptor vector. Get an annotated Genbank of the
+    resulting construct(s).
+
 
   .form
     h4.formlabel Select an enzyme
@@ -23,7 +24,9 @@
     el-checkbox(v-model='form.select_connectors') Autoselect connectors
     .select-connectors(v-if='form.select_connectors')
       h4.formlabel Provide connectors
-        helper(help="Only the connector parts necessary to obtain assemblies will be selected and added to the other parts.")
+        helper.
+          Only the connector parts necessary to obtain assemblies will be
+          selected and added to the other parts.")
 
       sequencesuploader(v-model='form.connectors', :multiple='true',
                         text="Drop multiple Genbank/Fasta (or click to select)")

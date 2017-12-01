@@ -37,7 +37,6 @@ export default {
     this.handleResize()
   }
 }
-
 </script>
 
 <style lang='scss' scoped>

@@ -5,10 +5,10 @@
   web-links(emailSubject='[CUBA] Some user feedback',
             tweetMessage="The Edinburgh Genome Foundry's Collection of Useful Bio Apps",
             tweetUrl='http://cuba.genomefoundry.org')
-  h2 Pick a scenario below.
-  .scenario-category(v-for='category in scenarios', :key='category')
-    h3 {{category.category}}
-    scenariospanel(:scenarios='category.scenarios')
+  .scenarios
+    .scenario-category(v-for='category in scenarios', :key='category')
+      h3 {{category.category}}
+      scenariospanel(:scenarios='category.scenarios')
 </template>
 
 <script>
@@ -33,5 +33,9 @@ h2 {
 }
 p {
   font-size: 18px;
+}
+
+.scenarios {
+  margin-top: 5em;
 }
 </style>

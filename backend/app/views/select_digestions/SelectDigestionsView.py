@@ -1,14 +1,14 @@
 """Bla."""
 
-from base64 import b64decode, b64encode
-
 from rest_framework import serializers
 from collections import OrderedDict
-from ..base import AsyncWorker, StartJobView, JobResult
+from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files,
+                     data_to_html_data,
                      matplotlib_figure_to_svg_base64_data)
 from bandwitch import (IdealDigestionsProblem, SeparatingDigestionsProblem,
                        LADDERS)
+from bandwitch.plots import plot_all_constructs_cuts_maps
 
 
 digestion = serializers.ListField(child=serializers.CharField())
@@ -30,6 +30,7 @@ class serializer_class(serializers.Serializer):
     circularSequences = serializers.BooleanField()
     possibleEnzymes = ComaSeparatedList()
     showBandsSizes = serializers.BooleanField()
+    plotCuts = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -39,19 +40,17 @@ class worker_class(AsyncWorker):
 
         data = self.data
         ladder = LADDERS[data.ladder]
-        print ('------', LADDERS, data.ladder, ladder)
         enzymes = data.possibleEnzymes
-
+        records = records_from_data_files(data.files)
         sequences = OrderedDict([
             (record.id, str(record.seq))
-            for record in records_from_data_files(data.files)
+            for record in records
         ])
-        # print (sequences)
-        self.logger(message="Initializing...")
-        if (data.goal == 'ideal'):
 
+        self.logger(message="Initializing...")
+
+        if (data.goal == 'ideal'):
             mini, maxi = data.bandsRange
-            print ("-------------------", ladder)
             problem = IdealDigestionsProblem(
                 sequences=sequences, enzymes=enzymes, ladder=ladder,
                 linear=not data.circularSequences,
@@ -79,10 +78,25 @@ class worker_class(AsyncWorker):
         figure_data = matplotlib_figure_to_svg_base64_data(
             axes[0].figure, bbox_inches='tight'
         )
+
+        if data.plotCuts:
+            self.logger(message="Plotting cuts maps...")
+            pdf_data = plot_all_constructs_cuts_maps([
+                (rec, digestion)
+                for rec in records
+                for digestion in selected_digestions
+            ])
+            pdf_file = dict(data=data_to_html_data(pdf_data, 'pdf'),
+                            name='restrictions_cuts.pdf',
+                            mimetype='application/pdf')
+        else:
+            pdf_file = None
+
         return {
           'figure_data': figure_data,
           'digestions': selected_digestions,
           'score': score,
+          'pdf_file': pdf_file
         }
 
 class SelectDigestionsView(StartJobView):

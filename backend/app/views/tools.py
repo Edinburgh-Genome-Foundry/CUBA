@@ -98,9 +98,10 @@ def records_from_data_files(data_files):
             record.linear = not circular
             name_no_extension = "".join(file_.name.split('.')[:-1])
             name = name_no_extension + ('' if single_record else ("%04d" % i))
-            if str(record.id).strip() in ['None', '', "<unknown id>", '.']:
+            UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED']
+            if str(record.id).strip() in UNKNOWN_IDS:
                 record.id = name
-            if str(record.name).strip() in ['None', '', "<unknown name>", '.']:
+            if str(record.name).strip() in UNKNOWN_IDS:
                 record.name = name
             record.name = record.name[:20]
         records += recs
@@ -111,6 +112,7 @@ def data_to_html_data(data, datatype):
         'zip': 'application/zip',
         'genbank': 'application/genbank',
         'fasta': 'application/fasta',
+        'pdf': 'application/pdf',
     }.get(datatype, datatype)
     return 'data:%s;base64,%s' % (datatype, b64encode(data).decode("utf-8"))
 
@@ -134,7 +136,7 @@ def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
     result = (b"data:image/svg+xml;base64," + content).decode("utf-8")
 
     return result
-    
+
 def figures_to_pdf_report_data(figures, filename='report.pdf'):
     pdf_io = BytesIO()
     with PdfPages(pdf_io) as pdf:

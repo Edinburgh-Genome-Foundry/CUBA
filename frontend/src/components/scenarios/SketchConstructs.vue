@@ -1,12 +1,13 @@
 <template lang="pug">
 .page
   h1  {{ infos.title }}
-  img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.center.
-    Sketch one or several assemblies below, then export as PDF or PNG.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Simple online DNA construct sketcher:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+  img.icon.center-block(slot='title-img', :src='infos.icon')
+  p.scenario-description.
+    Sketch one or several assemblies below, then export as PDF or PNG.
+
   .sketcher
     sketcher(v-model='form.sketchesData')
 

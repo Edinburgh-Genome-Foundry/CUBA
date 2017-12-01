@@ -1,7 +1,8 @@
 <template lang='pug'>
 .helper-div
-  el-popover(trigger="hover", :content="help", placement="right", width="220")
+  el-popover(trigger="hover", placement="right", width="220")
     .helper(slot='reference')
+    slot
 </template>
 <script>
 export default {
@@ -33,5 +34,4 @@ export default {
       text-decoration: none;
   }
 }
-
 </style>

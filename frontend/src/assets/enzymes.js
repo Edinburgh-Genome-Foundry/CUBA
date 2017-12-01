@@ -77,6 +77,7 @@ export default {
     'SacI',
     'SacII',
     'SalI',
+    'ScaI',
     'SfoI',
     'SmaI',
     'SmlI',

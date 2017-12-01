@@ -1,9 +1,15 @@
 <template lang="pug">
-el-collapse(slot='learnmore-paragr')
-  el-collapse-item(title='Learn more', name='1')
+el-collapse
+  el-collapse-item(:title='title', name='1')
     slot Actually there is nothing to learn more
 </template>
-
+<script>
+export default {
+  props: {
+    title: {default: ''}
+  }
+}
+</script>
 <style scoped>
 .el-collapse {
   border: none;

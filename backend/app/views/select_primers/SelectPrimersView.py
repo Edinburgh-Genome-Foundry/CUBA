@@ -44,6 +44,7 @@ class worker_class(AsyncWorker):
         #(55, 70)
         selector = PrimerSelector(read_range=data.readRange,
                                   tm_range=data.tmRange,
+                                  nucleotide_resolution=1,
                                   logger=self.logger)
         selected_primers = selector.select_primers(
             records, available_primers)

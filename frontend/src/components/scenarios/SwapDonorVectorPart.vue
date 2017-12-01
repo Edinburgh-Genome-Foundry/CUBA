@@ -1,16 +1,17 @@
 <template lang="pug">
 .page
   h1  {{ infos.title }}
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Automatically put part sequences on a backbone !",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.
+  p.scenario-description.
     Quickly swap a part (from a golden-gate-like based assembly standard) from
     one vector to another (with same overhangs).
     Provide the donor vector to insert in, and a list of insert parts
     (either as linearized or plasmid records). Get a version of your part(s)
     inserted in the donor vector.
-  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-            tweetMessage="Simple online cloning simulator for Golden Gate:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+
 
   .form
     h4.formlabel Select an enzyme
@@ -23,7 +24,7 @@
     files-uploader(v-model='form.donor_vector', :multiple='false',
                       text="Drop multiple Genbank/Fasta (or click to select)")
     h4.formlabel Provide parts to insert
-      helper(help='The parts can be either on a linear or plasmid sequence.')
+        helper The parts can be either on a linear or plasmid sequence.
 
 
     files-uploader(v-model='form.inserts', :multiple='true',

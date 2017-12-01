@@ -36,7 +36,7 @@ export default {
 <style lang='scss' scoped>
 .weblinks-bar {
   text-align: center;
-  // margin-top: -1em;
+  margin-bottom: 2em;
   a {
     font-size: 1.2em;
     display: inline-block;
@@ -53,5 +53,6 @@ export default {
     margin-bottom: -.1em;
     margin-right: 0.2em
   }
+
 }
 </style>

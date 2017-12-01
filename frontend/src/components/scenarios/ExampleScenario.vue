@@ -11,7 +11,7 @@ Example scenario
   img.icon.center-block(slot='title-img', :src='infos.icon')
 
   //- Short description of what you can do in this page
-  p.center.
+  p.scenario-description.
     Hi I am an example scenario code for the frontend !
     Duplicate me to get started !
 

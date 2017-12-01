@@ -83,7 +83,7 @@ body {
 
 h1, h2 {
   text-align: center;
-  margin-bottom:1em;
+  margin-bottom:0.5em;
   font-weight: normal
 }
 
@@ -103,5 +103,22 @@ img.icon {
 
 .router-link-active {
     color: "black";
+}
+
+.scenario-description {
+  max-width: 400px;
+  margin: 1em auto 1em;
+}
+
+.el-popper {
+  word-break: normal !important;
+}
+.el-steps {
+  max-width:400px;
+  margin: 0 auto;
+  background: none !important;
+}
+.el-steps--simple{
+  background: none !important;
 }
 </style>

@@ -1,18 +1,13 @@
 <template lang="pug">
 .page
   h1 {{infos.title}}
-  img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
-  p.center.
-    Find the best primers to  your constructs, for verification or
-    identification purposes.
-  p.
-    If no single digestion works for all constructs,
-    2 or 3 digestions that collectively cover all constructs will be suggested.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Get enzyme suggestions for your restriction digests:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
-
-
+  img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
+  p.scenario-description.
+    Find the best primers to  your constructs, for validation or
+    identification purposes.
 
   .form
     h4.formlabel Validation type
@@ -21,7 +16,10 @@
                 :value='item.value', :key='item.value')
 
     h4.formlabel Constructs Sequences
-      helper(:help='helpText')
+      helper.
+        The sequences should be Genbanks with features annotated "cover" for the
+        zones to be covered (it can be one big zone covering the full sequence)
+        or "no_primer" to forbid primers in certain zones.
     collapsible(title='Examples')
       file-example(filename='20_random_constructs.zip',
                    fileHref='/static/file_examples/select_primers/20_random_constructs.zip',
@@ -111,10 +109,7 @@ export default {
         polling: {},
         result: {},
         requestError: ''
-      },
-      helpText: ('The sequences should be Genbanks with features annotated "cover" for the' +
-                 'zones to be covered (it can be one big zone covering the full sequence)' +
-                 'or "no_primer" to forbid primers in certain zones.')
+      }
     }
   },
   components: {

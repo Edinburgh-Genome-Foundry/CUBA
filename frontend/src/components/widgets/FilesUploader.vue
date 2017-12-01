@@ -28,7 +28,8 @@ https://jsfiddle.net/Linusborg/dzfdctv9/
 
 <template lang="pug">
 .files-uploader
-  .dropzone-area(drag-over='handleDragOver', @dragenter='hovering = true',
+  .dropzone-area(@dragenter='hovering = true',
+                 @dragover='hovering = true',
                  @dragleave='hovering = false', :class="{'hovered': hovering}",
                  :style="{'height': '100px'}")
       .dropzone-text
@@ -59,6 +60,7 @@ export default {
   },
   methods: {
     change (evt) {
+      this.hovering = false
       var files = evt.target.files
       var self = this
       self.valueMirror = []
@@ -103,10 +105,10 @@ export default {
     border: 2px dashed #CBCBCB;
     &.hovered {
         border: 2px dashed #2E94C4;
+        background-color: rgba(#19749f, 0.03);
         .dropzone-title {
           color: #1975A0;
         }
-
     }
 }
 

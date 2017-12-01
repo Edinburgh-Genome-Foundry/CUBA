@@ -3,7 +3,7 @@
 .page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.center.
+  p.scenario-description.
     Submit a sequence(s), get plots of patterns impacting synthesis and assembly difficulty.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find patterns that can impact your sequence's manufacturability:",

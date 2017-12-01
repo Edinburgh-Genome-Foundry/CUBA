@@ -1,16 +1,14 @@
 <template lang="pug">
 .page
   h1  {{ infos.title }}
-
+  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+            tweetMessage="Easy automated overhangs design for Golden Gate assembly",
+            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
 
-  p.center Find sets of compatible overhangs for your assembly problem.
+  p.scenario-description Find sets of compatible overhangs for your assembly problem.
 
-  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-            tweetMessage="Design Golden Gate overhangs online:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
-
-  learnmore Bla bla bla
+  //- learnmore Bla bla bla
 
   .form
 
@@ -35,9 +33,10 @@
 
         h4.formlabel
           span Sequence decomposition
-          helper(help='If the provided sequence has features with a label "!cut",\
-                       these features can be used as cutting zones. Otherwise the\
-                       sequence will be cut into similar-length fragments')
+          helper.
+            If the provided sequence has features with a label "!cut",
+            these features can be used as cutting zones. Otherwise the
+            sequence will be cut into similar-length fragments')
 
         p
           el-radio(class='radio'
@@ -50,15 +49,17 @@
 
         p
           el-checkbox(v-model='form.extremities') Consider overhangs on extremities
-          helper(help="If this is checked, the overhangs at the suggested cut\
-                       positions will also be compatible with the 4 basepairs\
-                       at each extremity of the sequence")
+          helper.
+            If this is checked, the overhangs at the suggested cut
+            positions will also be compatible with the 4 basepairs
+            at each extremity of the sequence
 
         p
           el-checkbox(v-model='form.allow_edits') Allow sequence edits
-          helper(help='If this is checked, the sequence can be edited to make the\
-                       decomposition possible. You can protect part of the sequence\
-                       with features labeled "@DoNotModify" or "@EnforceTranslation".')
+          helper.
+            If this is checked, the sequence can be edited to make the
+            decomposition possible. You can protect part of the sequence
+            with features labeled "@DoNotModify" or "@EnforceTranslation".
 
         p(v-if="form.cutting_mode === 'equal'")
           span Number of fragments:
@@ -78,9 +79,11 @@
       p.inline Differences between overhangs:
         el-input-number.inline(v-model="form.overhangs_differences", size="small",
                                :min=1, :max=4)
-        helper(help='Number of basepairs by which every overhang pair should\
-                     differ (this includes reverse complements).')
-
+        //- helper(help='Number of basepairs by which every overhang pair should\
+        //-              differ (this includes reverse complements).')
+        helper.
+          Number of basepairs by which every overhang pair should differ
+          (this includes reverse complements).
       p.inline
         span Overhangs GC content
         el-slider.inline(range show-stops v-model='form.gc_content',
@@ -95,7 +98,10 @@
                placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
 
       div(v-show="form.goal === 'overhangs_set'")
-        h4 External overhangs
+        h4
+          span External overhangs
+          helper.
+            The generated overhangs will be compatible with all the external overhangs
         el-input(type='textarea',
                  :rows='4',
                  v-model='form.mandatory_overhangs',

@@ -1,5 +1,5 @@
 <template lang="pug">
-el-row
+el-row.scenario-panel
 	el-col(:xs="24", :sm="12", :md="6", :lg="6" v-for='scenario in scenarios', :key='scenario.infos.title')
 		el-card.box-card
 			img.icon(:src='scenario.infos.icon', alt='')
