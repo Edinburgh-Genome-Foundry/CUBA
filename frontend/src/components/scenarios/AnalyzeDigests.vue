@@ -30,7 +30,7 @@
           Collection of constructs assembled using random parts from the EMMA standard.
           Unzip the file and drag the genbank files into the file upload area.
 
-    files-uploader(v-model='form.constructsSequences', help='Fasta or Genbank files')
+    files-uploader(v-model='form.constructsSequences', help='Fasta/Genbank/Zip files')
     el-checkbox(v-model='form.circularSequences') Sequences are circular
 
 
@@ -43,14 +43,14 @@
           A spreadsheet where the cells contents indicate the construct in each well
 
       collapsible(title='Examples')
-        file-example(filename='constructs_sequences.zip',
+        file-example(filename='constructs_map.xlsx',
                      fileHref='/static/file_examples/analyze_digests/constructs_map.xlsx',
                      imgSrc='/static/file_examples/analyze_digests/constructs_map.png')
           p.
             Collection of constructs assembled using random parts from the EMMA standard.
             Unzip the file and drag the genbank files into the file upload area.
 
-      files-uploader(v-model='form.constructsMap', help='Fasta or Genbank files', :multiple='false')
+      files-uploader(v-model='form.constructsMap', help='CSV or Excel file', :multiple='false')
 
 
 
@@ -59,7 +59,7 @@
       h4.formlabel Clones Map
         helper.
           A spreadsheet where the cells contents indicate the ID of the clone in each well
-      files-uploader(v-model='form.clonesMap', help='Fasta or Genbank files', :multiple='false')
+      files-uploader(v-model='form.clonesMap', help='CSV or Excel file', :multiple='false')
 
 
 
@@ -92,11 +92,16 @@
     p Tolerance
       helper.
         Distance at which two bands are considered different (in proportion of the ladder span)
-      el-slider(:min='0', :max='1', :step='0.05', :show-tooltip='true', v-model='form.tolerance')
+      el-input-number.inline(:min='0', :max='0.5', :step='0.05', :show-tooltip='true', v-model='form.tolerance' size='small')
     p Bands range
       helper.
         All bands outside this range will be ignored
-      el-slider(:min='0', :max='15000', :range='true', :step='10', :show-tooltip='true', v-model='form.bandsRange')
+      span From
+      el-input-number.inline(:min='0', :max='form.bandsRange[1]',
+                             v-model='form.bandsRange[0]', size='small', :step='10')
+      span to
+      el-input-number.inline(:min='form.bandsRange[0]', :max='15000',
+                             v-model='form.bandsRange[1]', size='small', :step='10')
     el-checkbox(v-model='form.includeDigestionPlots') Include plots of cutting sites (slower)
 
 
@@ -142,7 +147,7 @@ export default {
         goal: 'validation',
         fragmentAnalysisArchive: null,
         circularSequences: true,
-        tolerance: 0.1,
+        tolerance: 0.05,
         bandsRange: [10, 15000],
         includeDigestionPlots: true
       },
@@ -238,7 +243,8 @@ h4.formlabel {
 .el-input-number.inline {
   margin-bottom: -9px;
   margin-left: 10px;
-  width: 130px;
+  margin-right: 10px;
+  width: 120px;
 }
 
 p.loadData {

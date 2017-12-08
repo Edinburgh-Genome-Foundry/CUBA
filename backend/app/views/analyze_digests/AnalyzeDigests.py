@@ -11,6 +11,7 @@ from ..serializers import FileSerializer
 import flametree
 from plateo.parsers import plate_from_platemap_spreadsheet
 from bandwitch import Clone, BandsObservation, ClonesObservations
+from bandwitch.plots import plot_all_constructs_cuts_maps
 
 
 digestion = serializers.ListField(child=serializers.CharField())
@@ -19,6 +20,7 @@ class SequenceFileSerializer( FileSerializer):
 
 class serializer_class(serializers.Serializer):
     constructsMap = FileSerializer(allow_null=True)
+    circularSequences = serializers.BooleanField()
     clonesMap = FileSerializer(allow_null=True)
     constructsSequences = serializers.ListField(child=FileSerializer())
     goal = serializers.CharField()
@@ -42,6 +44,9 @@ class worker_class(AsyncWorker):
         # PARSE ALL FILES
 
         constructs_records = records_from_data_files(data.constructsSequences)
+        if data.circularSequences:
+            for record in constructs_records:
+                record.linear = False
         constructs_records = {r.id: r for r in constructs_records}
         print (list(constructs_records.keys()))
         constructs_records = OrderedDict(sorted(constructs_records.items()))
@@ -99,10 +104,14 @@ class worker_class(AsyncWorker):
             clones_observations.plot_all_validations_patterns(validations)
         )
         if data.includeDigestionPlots:
-            self.logger(message="Generating the digestion sites report...")
-            zip_root._file('digestions.pdf').write(
-                clones_observations.plot_all_constructs_digestions()
-            )
+            self.logger(message="Plotting cuts maps...")
+            co = clones_observations
+            pdf_data = plot_all_constructs_cuts_maps([
+                (co.constructs_records[cst], digestion_)
+                for cst, digestions in co.constructs_digestions.items()
+                for digestion_ in digestions
+            ])
+            zip_root._file('digestions.pdf').write(pdf_data)
 
         self.logger(message="Generating the success plate map...")
         ax = clones_observations.plot_validations_plate_map(validations)
@@ -117,8 +126,7 @@ class worker_class(AsyncWorker):
               'name': 'validation_report.zip',
               'mimetype': 'application/zip'
           },
-          'success': 'yeah!',
-          'summary': 'none yet'
+          'success': 'yeah!'
         }
 
 class AnalyzeDigestsView(StartJobView):

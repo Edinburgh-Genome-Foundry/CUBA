@@ -51,9 +51,9 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=63
+ARG CACHEBUST=64
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Primavera.git
+# RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Primavera.git
 
 # Remove SSH keys
 RUN rm -rf /root/.ssh/
