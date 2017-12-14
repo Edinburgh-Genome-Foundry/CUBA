@@ -1,4 +1,9 @@
-# CUBA - The EGF Collection of Useful Biological Apps
+
+<p align="center">
+<img alt="DNA Cauldron Logo" title="DNA Cauldron Logo" src="https://github.com/Edinburgh-Genome-Foundry/CUBA/raw/master/frontend/src/assets/images/cuba-title.png" width="400">
+</p>
+<h1 align="center"> The EGF Collection of Useful Biological Apps </h1>
+
 
 This repository contains the source code of [cuba.genomefoundry.org](http://cuba.genomefoundry.org/),
 a website of the Edinburgh Genome Foundry enabling anyone to use some of the EGF's
