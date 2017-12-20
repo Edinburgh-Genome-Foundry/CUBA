@@ -12,12 +12,15 @@ import About from './components/pages/About'
 import Login from './auth/Login'
 import scenarios from './components/scenarios/scenarios'
 import widgets from './components/widgets'
-
+import VueAnalytics from 'vue-analytics'
 // import auth from './auth'
 // import BootstrapVue from 'bootstrap-vue'
 
 // Globally register bootstrap-vue components
 
+Vue.use(VueAnalytics, {
+  id: 'UA-111440852-1'
+})
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(widgets)

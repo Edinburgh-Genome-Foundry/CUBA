@@ -22,7 +22,8 @@
     "ve-range-utils": "2.3.3",
 
     "xlsx": "0.11.4",
-    "vue-awesome": "2.3.3"
+    "vue-awesome": "2.3.3",
+    "vue-analytics": "5.7.1"
   },
   "devDependencies": {
       "autoprefixer": "7.1.2",
