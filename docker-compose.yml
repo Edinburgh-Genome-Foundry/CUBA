@@ -13,8 +13,10 @@ services:
     command: gunicorn website.wsgi:application -b :8082 --reload
     links:
       - redis
+      - rqworker
     depends_on:
       - redis
+      - rqworker
     volumes:
       - ./backend:/code
 
@@ -24,10 +26,8 @@ services:
     command: ./rqworker_reload.sh
     links:
       - redis
-      - django
     depends_on:
       - redis
-      - django
     volumes:
       - ./backend:/code
 

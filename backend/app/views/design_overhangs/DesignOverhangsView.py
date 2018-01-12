@@ -10,13 +10,10 @@ from goldenhinges.reports import write_report_for_cutting_solution
 
 class serializer_class(serializers.Serializer):
     """Serializer."""
-
-    sequence = FileSerializer(allow_null=True)
+    sequence = FileSerializer(allow_null=True, required=False)
     goal = serializers.CharField()
     overhangs_differences = serializers.IntegerField()
     gc_content = serializers.ListField(child=serializers.IntegerField())
-    # mandatory_overhangs = serializers.ListField(child=serializers.CharField())
-    # forbidden_overhangs = serializers.ListField(child=serializers.CharField())
     mandatory_overhangs = serializers.CharField(allow_blank=True)
     forbidden_overhangs = serializers.CharField(allow_blank=True)
     cutting_mode = serializers.CharField()
@@ -32,6 +29,9 @@ class worker_class(AsyncWorker):
 
     def work(self):
         data = self.data
+
+        import logging
+        logging.log(logging.ERROR, data)
 
         data.forbidden_overhangs = [] if (data.forbidden_overhangs == '') else [
             s.strip() for s in data.forbidden_overhangs.split(',')
