@@ -10,7 +10,7 @@ from dnacauldron import full_assembly_report, autoselect_enzyme
 
 
 digestion = serializers.ListField(child=serializers.CharField())
-class SequenceFileSerializer( FileSerializer):
+class SequenceFileSerializer(FileSerializer):
     circularity = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):

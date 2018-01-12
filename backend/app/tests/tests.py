@@ -1,23 +1,6 @@
+"""Tests for the backend"""
 
-"""
-'sequence': 'None',
-'goal': 'overhangs_set',
-'overhangs_differences': '2',
-'gc_content': '[25, 75]',
-'mandatory_overhangs': '',
-'forbidden_overhangs': '',
-'cutting_mode': 'equal',
-'extremities': 'True',
-'n_overhangs': '10',
-'n_fragments': '2',
-'auto_overhangs': 'True',
-'left_flank_sequence': '',
-'right_flank_sequence': '',
-'allow_edits': 'False',
-'domain_name': 'django:8082'
-"""
-
-from .tools import logprint, AppTestCase
+from .tools import logprint, AppTestCase, load_file_to_dict
 
 class DesignOverhangsTests(AppTestCase):
     endpoint = 'design_overhangs'
@@ -40,3 +23,27 @@ class DesignOverhangsTests(AppTestCase):
         response = self.run_job(goal='overhangs_set', n_overhangs=10,
                                 auto_overhangs=False)
         self.assertEqual(len(response['overhangs']), 10)
+
+
+class SimulateGGAssemblies(AppTestCase):
+    endpoint = 'simulate_gg_assemblies'
+    defaults = dict(
+        enzyme='Autoselect',
+        parts=[],
+        connectors=[],
+        select_connectors=False,
+        include_fragments=False
+    )
+
+    def test_dual_assembly(self):
+        parts = [
+            load_file_to_dict(['simulate_gg_assemblies', "%s.gb" % p])
+            for p in ['partA', 'partA2', 'partB', 'partC', 'receptor']
+        ]
+        for part in parts:
+            part['circularity'] = True
+        logprint(parts)
+        response = self.run_job(parts=parts)#parts=parts)
+        logprint(response)
+        self.assertEqual(response['preview']['html'],
+                         "2 constructs were generated.")

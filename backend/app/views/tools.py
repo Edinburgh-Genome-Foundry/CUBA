@@ -98,7 +98,8 @@ def records_from_data_files(data_files):
             record.linear = not circular
             name_no_extension = "".join(file_.name.split('.')[:-1])
             name = name_no_extension + ('' if single_record else ("%04d" % i))
-            UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED']
+            UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED',
+                           'Exported']
             if str(record.id).strip() in UNKNOWN_IDS:
                 record.id = name
             if str(record.name).strip() in UNKNOWN_IDS:

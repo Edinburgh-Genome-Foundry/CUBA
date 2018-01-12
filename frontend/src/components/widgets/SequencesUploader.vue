@@ -4,10 +4,11 @@
                 :displaySelected='displaySelected')
   p.num-files(v-if='files.length') {{files.length}} {{files.length > 1 ? 'files' : 'file'}} selected
   .sequences-list
-    el-row(v-for='(file, index) in filesWithLinearities', :key='index', :gutter='40')
-      el-col(:span='5')
-        el-switch(v-model='circularities[index]', :width='90',
-                  on-text='circular', off-text='linear')
+    el-row(v-for='(file, index) in filesWithLinearities', :key='index', :gutter='20')
+      el-col(:span='6')
+        el-select(v-model='circularities[index]', size='mini')
+          el-option(label='circular', :value='true')
+          el-option(label='linear', :value='false')
       el-col(:span='18') {{file.name}}
 </template>
 
@@ -69,12 +70,8 @@ export default {
   margin-top: 30px;
   margin-left: 10%;
 }
-.el-switch {
-  margin-bottom: 10px;
-}
-.el-switch__label.el-switch__label--right {
-  width: 100% !important;
-}
+
+
 
 p.num-files {
   font-size: 14px;
