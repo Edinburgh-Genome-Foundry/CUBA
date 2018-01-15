@@ -4,6 +4,7 @@
 </p>
 <h1 align="center"> The EGF Collection of Useful Biological Apps </h1>
 
+[![Build Status](https://travis-ci.org/Edinburgh-Genome-Foundry/CUBA.svg?branch=master)](https://travis-ci.org/Edinburgh-Genome-Foundry/CUBA)
 
 This repository contains the source code of [cuba.genomefoundry.org](http://cuba.genomefoundry.org/),
 a website of the Edinburgh Genome Foundry enabling anyone to use some of the EGF's
