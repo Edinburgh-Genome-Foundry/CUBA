@@ -3,13 +3,12 @@
   input(type='text', size='25', value='', v-model='honeypot', :style="{display: 'none'}")
   el-button.center(v-if='submitButtonText.length > 0' @click='submit()', :disabled='status.polling.inProgress') {{submitButtonText }}
   .polling(v-if='status.polling.inProgress && showProgress')
-
-    .polling-message {{status.polling.data.message}}
-    el-steps.steps(:space='100', :active='progressStage' simple)
+    img.spinner(src='../../assets/images/egf-spinner.svg')
+    el-steps.steps(:active='progressStage', finish-status='success' align-center)
       el-step(title='send' icon='el-icon-upload')
       el-step(title='run' icon='el-icon-setting')
       el-step.last-step(title='get' icon='el-icon-message')
-    img.spinner(src='../../assets/images/egf-spinner.svg')
+    .polling-message {{status.polling.data.message}}
 </template>
 
 <script>
@@ -74,7 +73,7 @@ export default {
       }
     },
     progressStage () {
-      return ['sending', 'queued', 'started', 'finished'].indexOf(this.status.polling.status)
+      return ['sending', 'queued', 'started', 'finished'].indexOf(this.status.polling.status) - 1
     }
   },
   methods: {
@@ -177,17 +176,11 @@ export default {
   margin-top: 50px;
 }
 
-.last-step {
-  width: 40px !important;
-}
-
 .spinner {
   width: 120px;
-  margin-top: 2em;
 }
 
 .steps {
-  text-align: center;
+  margin-top: 1em;
 }
-
 </style>

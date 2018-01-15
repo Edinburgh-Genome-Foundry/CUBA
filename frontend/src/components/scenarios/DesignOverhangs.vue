@@ -158,10 +158,12 @@ var infos = {
 export default {
   data () {
     return {
-      overhangs: tools.cartesian(['A', 'T', 'G', 'C'],
-                                 ['A', 'T', 'G', 'C'],
-                                 ['A', 'T', 'G', 'C'],
-                                 ['A', 'T', 'G', 'C']).map((l) => l.join('')),
+      overhangs: tools.cartesian(
+        ['A', 'T', 'G', 'C'],
+        ['A', 'T', 'G', 'C'],
+        ['A', 'T', 'G', 'C'],
+        ['A', 'T', 'G', 'C']
+      ).map((l) => l.join('')),
       infos: infos,
       form: {
         goal: null,

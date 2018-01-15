@@ -64,7 +64,7 @@ Example scenario
 
 
 <script>
-// Infos on this scenario.
+// Infos on this scenario.default.
 var infos = {
   title: 'Example Scenario',
   navbarTitle: 'Example Scenario',

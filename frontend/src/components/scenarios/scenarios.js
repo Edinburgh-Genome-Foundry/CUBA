@@ -3,28 +3,28 @@ export default {
     {
       category: 'Sequence design',
       scenarios: [
-        require('./SculptASequence.vue'),
-        require('./DesignOverhangs.vue'),
-        require('./SimulateGGAssemblies'),
-        require('./SwapDonorVectorPart'),
-        require('./SketchConstructs'),
-        require('./ConvertSequenceFiles')
+        require('./SculptASequence.vue').default,
+        require('./DesignOverhangs.vue').default,
+        require('./SimulateGGAssemblies').default,
+        require('./SwapDonorVectorPart').default,
+        require('./SketchConstructs').default,
+        require('./ConvertSequenceFiles').default
       ]
     },
     {
       category: 'Quality Control',
       scenarios: [
-        require('./PredictDigestions'),
-        require('./SelectDigestions'),
-        require('./AnalyzeDigests'),
-        require('./SelectPrimers')
+        require('./PredictDigestions').default,
+        require('./SelectDigestions').default,
+        require('./AnalyzeDigests').default,
+        require('./SelectPrimers').default
       ]
     },
     {
       category: 'Sequence analysis',
       scenarios: [
-        require('./EvaluateManufacturability.vue'),
-        require('./FindCommonBlocks.vue')
+        require('./EvaluateManufacturability.vue').default,
+        require('./FindCommonBlocks.vue').default
       ]
     }
   ]

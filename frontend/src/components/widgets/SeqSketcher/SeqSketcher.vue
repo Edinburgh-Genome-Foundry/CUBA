@@ -94,8 +94,10 @@ export default {
     duplicateConstruct (i) {
       this.constructIdCounter++
       var newConstructs = this.sketchesData.constructs.slice()
-      var newConstruct = Object.assign({}, JSON.parse(JSON.stringify(newConstructs[i])),
-                                       {id: this.constructIdCounter})
+      var newConstruct = Object.assign(
+        {}, JSON.parse(JSON.stringify(newConstructs[i])),
+        {id: this.constructIdCounter}
+      )
       this.constructIdCounter++
       newConstructs.splice(i + 1, 0, newConstruct)
       this.$set(this.sketchesData, 'constructs', newConstructs)

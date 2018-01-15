@@ -28,9 +28,6 @@ class worker_class(AsyncWorker):
         records = records_from_data_files(data.parts)
         connector_records = records_from_data_files(data.connectors)
 
-
-
-
         if data.enzyme == "Autoselect":
             possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
             data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)

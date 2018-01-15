@@ -6,7 +6,7 @@
             tweetMessage="The Edinburgh Genome Foundry's Collection of Useful Bio Apps",
             tweetUrl='http://cuba.genomefoundry.org')
   .scenarios
-    .scenario-category(v-for='category in scenarios', :key='category')
+    .scenario-category(v-for='category in scenarios', :key='category.category')
       h3 {{category.category}}
       scenariospanel(:scenarios='category.scenarios')
 </template>
