@@ -140,7 +140,7 @@ class AsyncWorker:
 
         self.job = job
         self.data = data
-        self.logger = RqWorkerBarLogger(job, min_time_interval=100)
+        self.logger = RqWorkerBarLogger(job, min_time_interval=0.2)
 
     @classmethod
     def run(cls, data):

@@ -43,7 +43,7 @@ class worker_class(AsyncWorker):
             record = records[0]
         problem = DnaOptimizationProblem.from_record(record)
         problem.max_random_iters = 1000
-        problem.progress_logger = self.logger
+        problem.logger = self.logger
         success, summary, zip_data = optimization_with_report(
             target="@memory", problem=problem, project_name=record.id)
         return {
