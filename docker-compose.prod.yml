@@ -10,8 +10,15 @@ services:
       - DEBUG=False
 
   vue:
-    command: ./production_server.sh
+    restart: 'no'
+    command: bash -c "npm run build && echo 'Vue will now stop.'"
+    volumes:
+      - website-dist:/code/dist
 
   nginx:
-    environment:
-      - BUFFERING=on
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - website-dist:/website
+
+volumes:
+     website-dist:

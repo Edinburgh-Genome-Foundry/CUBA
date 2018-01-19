@@ -18,6 +18,7 @@ class FileSerializer(serializers.Serializer):
 class serializer_class(serializers.Serializer):
     report = serializers.CharField()
     files = serializers.ListField(child=FileSerializer())
+    show_features = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -32,8 +33,8 @@ class worker_class(AsyncWorker):
             records, fmt = records_from_data_file(f)
             for (i, record) in enumerate(records):
 
-                seq = str(record.seq).upper()
-                axes = plot_sequence_manufacturability_difficulties(seq)
+                axes = plot_sequence_manufacturability_difficulties(
+                    record if data.show_features else str(record.seq).upper())
                 figure = axes[0].figure
                 name = f.name if (len(records) == 1) else f.name + ("%03d" % i)
                 name = name + "--" + record.name[:40]

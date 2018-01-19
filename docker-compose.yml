@@ -8,8 +8,9 @@ services:
 
   django:
     restart: always
-    build:
-      context: backend
+    build: backend
+    image: cuba/django
+    container_name: cuba_django
     command: gunicorn website.wsgi:application -b :8082 --reload
     links:
       - redis
@@ -21,8 +22,8 @@ services:
       - ./backend:/code
 
   rqworker:
+    image: cuba/django
     restart: always
-    build: backend
     command: ./rqworker_reload.sh
     links:
       - redis
@@ -38,7 +39,6 @@ services:
     volumes:
       - ./frontend:/code
       - /code/node_modules
-      - /code/dist
 
   nginx:
     restart: always
@@ -49,8 +49,5 @@ services:
       - vue
       - django
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.template
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - /var/log/nginx_cuba:/var/log/nginx
-    environment:
-     - BUFFERING=off
-    command: /bin/bash -c "envsubst '$$BUFFERING' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"

@@ -17,8 +17,8 @@
     .files-number(v-if='form.files.length > 0')
       p {{ form.files.length }} file{{ form.files.length > 1 ? 's' : '' }}  selected
     .report-radio
-        el-radio(v-model='form.report', class="radio", label='quick_view') Quick view
-        el-radio(v-model='form.report', class="radio", label='pdf_report') PDF report
+      el-radio(v-model='form.report', class="radio", label='quick_view') Quick view
+      el-radio(v-model='form.report', class="radio", label='pdf_report') PDF report
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
@@ -59,6 +59,7 @@ export default {
       enzymes: ['BsaI', 'BsmBI', 'BbsI'],
       form: {
         report: 'quick_view',
+        show_features: true,
         files: []
       },
       infos: infos,
