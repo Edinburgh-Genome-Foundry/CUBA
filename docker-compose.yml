@@ -6,22 +6,8 @@ services:
     restart: always
     image: redis
 
-  django:
-    restart: always
-    build: backend
-    image: cuba/django
-    container_name: cuba_django
-    command: gunicorn website.wsgi:application -b :8082 --reload
-    links:
-      - redis
-      - rqworker
-    depends_on:
-      - redis
-      - rqworker
-    volumes:
-      - ./backend:/code
-
   rqworker:
+    build: backend
     image: cuba/django
     restart: always
     command: ./rqworker_reload.sh
@@ -29,6 +15,19 @@ services:
       - redis
     depends_on:
       - redis
+    volumes:
+      - ./backend:/code
+
+  django:
+    image: cuba/django
+    restart: always
+    command: gunicorn website.wsgi:application -b :8082 --reload
+    links:
+      - redis
+      - rqworker
+    depends_on:
+      - redis
+      - rqworker
     volumes:
       - ./backend:/code
 
