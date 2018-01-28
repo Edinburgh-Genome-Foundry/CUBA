@@ -23,6 +23,7 @@ export default {
     {
       category: 'Sequence analysis',
       scenarios: [
+        require('./PlotSequenceFeatures.vue').default,
         require('./EvaluateManufacturability.vue').default,
         require('./FindCommonBlocks.vue').default
       ]

@@ -74,12 +74,12 @@ body {
   margin: 2em auto;
 }
 
-.el-alert {
-  background-color: white;
-  border-radius: 10px;
-  border: 2px solid red;
-  color: red;
-}
+// .el-alert {
+//   background-color: white;
+//   border-radius: 10px;
+//   border: 2px solid red;
+//   color: red;
+// }
 
 h1, h2 {
   text-align: center;
@@ -120,5 +120,11 @@ img.icon {
 }
 .el-steps--simple{
   background: none !important;
+}
+
+p.inline {
+  span.options{
+    margin-left: 1em;
+  }
 }
 </style>
