@@ -36,7 +36,9 @@ https://jsfiddle.net/Linusborg/dzfdctv9/
         .dropzone-title {{text}}
         .dropzone-info(v-if='help') {{ help }}
       input(type='file', @change='change', :multiple='multiple')
-  p.selected(v-if='value && ((value.name && !(multiple)) || (value.length && !(value.length === 0)))')
+  p(v-if='loadingInProgress && (loaded < toLoad)') Loading file {{loaded + 1}} / {{toLoad}}
+  p.selected(v-if='!loadingInProgress && value && ((value.name && !(multiple)) || (value.length && !(value.length === 0)))')
+
     span Selected:
     span(v-if='value.name') <b> {{value.name}} </b>
     span.selected-file(v-for='file in value' v-else) <b>{{file.name}}</b>
@@ -55,7 +57,10 @@ export default {
   data () {
     return {
       hovering: false,
-      valueMirror: this.value
+      valueMirror: this.value,
+      loadingInProgress: false,
+      toLoad: 0,
+      loaded: 0
     }
   },
   methods: {
@@ -64,6 +69,10 @@ export default {
       var files = evt.target.files
       var self = this
       self.valueMirror = []
+
+      self.toLoad = files.length
+      self.loaded = 0
+      self.loadingInProgress = true
       for (var i = 0; i < files.length; i++) {
         var file = files[i]
         let name = file.name
@@ -75,6 +84,10 @@ export default {
                 name: name,
                 content: ev.target.result
               })
+              self.loaded++
+              if (self.loaded === self.toLoad) {
+                self.loadingInProgress = false
+              }
             }
           }
           reader.readAsDataURL(files[i])

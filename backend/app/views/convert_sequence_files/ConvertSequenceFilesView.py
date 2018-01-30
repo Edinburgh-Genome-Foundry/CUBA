@@ -25,6 +25,8 @@ class worker_class(AsyncWorker):
         data = self.data
         fmt = data.format
         records = records_from_data_files(data.files)
+        for r in records:
+            r.id = r.name = r.id.replace(' ', '_')
         extension = {'fasta': '.fa', 'genbank': '.gb'}[fmt]
         if (fmt == 'fasta') and (len(records) > 1) and data.inSingleFile:
             file_content = record_to_formated_string(records, fmt=fmt)

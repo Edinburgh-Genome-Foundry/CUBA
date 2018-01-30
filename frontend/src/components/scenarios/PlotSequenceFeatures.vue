@@ -1,6 +1,7 @@
 <template lang="pug">
 .page
-  el-alert(type='error' center :closable="false" show-icon) Currently under development
+  el-alert(type='error' center :closable="false" title='Do not use !', show-icon)
+    .inline This app is currently under development
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description Plot assembly features: highlight the important, discard the irrelevant.
@@ -14,41 +15,95 @@
     h4.formlabel Upload sequence files
     filesuploader(v-model='form.files', text="Drop files (or click to select)",
                   help='Fasta, Genbank, or Snapgene files. No file too large please :)', :multiple='true')
-    h4.formlabel Plot style
-    p.center
-      el-radio(class='radio' v-model='form.linearity' label='linear') Linear
-      el-radio(class='radio' v-model='form.linearity' label='circular') Circular
-    p.inline.plot-size Width (inches)
-      el-input-number.inline(v-model="form.plot_width", size="small",
-                               :min='4', :max='16')
-    p.inline.plot-size Height (inches)
-      el-checkbox.inline(v-model='form.auto_height') auto
-      el-input-number.inline(v-if='!form.auto_height', v-model="form.plot_height", size="small",
-                                :min='4', :max='16')
-    p
-      el-checkbox(v-model='form.plot_full_sequence') Plot the full sequence's span
-    p.inline(v-if='!form.plot_full_sequence') Plot index segment
-      el-input-number.inline(v-model="form.plot_from_position", size="small",
-                             :min='1', :max='form.plot_to_position-1')
-      span &nbsp;to
-      el-input-number.inline(v-model="form.plot_to_position", size="small",
-                             :min='form.plot_from_position+1', :max='1000000')
-    p
-      el-checkbox(v-model='form.inline_labels') Allow inline feature labels.
-    p
-      el-checkbox(v-model='form.plot_sequence') Indicate sequence nucleotides
-    p
-      el-checkbox(v-model='form.plot_translation') Indicate amino acids
 
-    h4.formlabel Ignore features where:
-    el-button.center(icon='el-icon-plus' size='small') Add a rule
+    h4.formlabel PARAMETERS OF THE PLOT
+    p.inline Display:
+      span.options
+        el-radio(class='radio' v-model='form.display' label='linear') Linear
+        el-radio(class='radio' v-model='form.display' label='circular') Circular
+    p.inline.plot-size Width (inches)
+      el-input-number.inline(v-model="form.plot_width", size="mini",
+                               :min='4', :max='16')
+    p
+      el-checkbox(v-model='form.plot_ruler') Plot ruler (location indices)
+    span(v-if="form.display == 'linear'")
+
+      p
+        el-checkbox(v-model='form.plot_full_sequence') Plot the full sequence's span
+      p.inline(v-if='!form.plot_full_sequence') Plot segment
+        el-input-number.inline(v-model="form.plot_from_position", size="mini",
+                               :min='1', :max='form.plot_to_position-1')
+        span &nbsp;to
+        el-input-number.inline(v-model="form.plot_to_position", size="mini",
+                               :min='form.plot_from_position+1', :max='1000000')
+      p
+        el-checkbox(v-model='form.inline_labels') Allow inline feature labels.
+      p
+        el-checkbox(v-model='form.plot_nucleotides') Indicate sequence nucleotides
+      p
+        el-checkbox(v-model='form.plot_translation') Indicate amino acids
+      p.inline(v-if='form.plot_translation') Plot segment
+        el-input-number.inline(v-model="form.translation_start", size="mini",
+                               :min='1', :max='form.translation_end-3')
+        span &nbsp;to
+        el-input-number.inline(v-model="form.translation_end", size="mini",
+                               :min='form.translation_start+3', :max='1000000')
+
+    h4.formlabel FEATURE FILTERS
+    p
+      el-radio(v-model='form.keep_or_discard' label='keep') Only show these types
+      el-radio(v-model='form.keep_or_discard' label='discard') Discard these types
+    el-select(v-model='form.keep_or_discard_types' multiple placeholder="Select feature types")
+      el-option(v-for='type, i in featureTypes', :label='type', :value='type', :key='type')
+    p Features must contain
+    el-input(v-model='form.keep_text',
+             placeholder='Enter comma-separated text fragment')
+    p Features must NOT contain
+    el-input(v-model='form.discard_text',
+             placeholder='Enter comma-separated text fragment')
 
     h4.formlabel Custom feature styles
-    p.center.inline Default feature color:
+    p.inline Default color:
       span.options
         el-color-picker.inline(v-model="form.default_color", size="small")
-    el-button.center(icon='el-icon-plus' size='small') Add a new style
+    p.inline Default line thickness:
+      span.options
+        el-radio(v-model="form.default_thickness", :label='0') 0
+        el-radio(v-model="form.default_thickness", :label='1') 1
+        el-radio(v-model="form.default_thickness", :label='2') 2
+    p
+      el-checkbox(v-model='form.default_display_label') Display labels by default
 
+    el-card.style-definer(v-for='style, i in form.custom_styles', :key='i')
+      p
+        el-radio(v-model='style.keep_or_discard' label='keep') Features with
+        el-radio(v-model='style.keep_or_discard' label='discard') Features without
+      el-select(v-model='style.selector')
+        el-option(label='Feature type' value='type')
+        el-option(label='Feature text' value='text')
+      el-select(v-if="style.selector === 'type'" v-model='style.feature_type')
+        el-option(v-for='type, i in featureTypes', :label='type', :value='type', :key='type')
+      el-input(v-if="style.selector === 'text'" v-model='style.feature_text',
+               placeholder='Enter an exact text fragment')
+      p.inline Color:
+        span.options
+          el-color-picker.inline(v-model="style.color", size="small")
+        span.options
+          el-checkbox(v-model='style.display_label') Display label
+      p.inline Line thickness:
+        span.options
+          el-radio(v-model="style.thickness", :label='0') 0
+          el-radio(v-model="style.thickness", :label='1') 1
+          el-radio(v-model="style.thickness", :label='2') 2
+        //- el-input-number.inline(v-model="style.thickness", size="small",
+        //-                          :min='0', :max='3', :step='0.1')
+
+
+    el-button.center(icon='el-icon-plus' size='mini' @click='addCustomStyle()') Add a new style
+
+    h4.formlabel PLOTS RENDERING
+    p.center
+      el-checkbox(v-model='form.pdf_report') Return plots as PDF
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Plot',
                     v-model='queryStatus')
@@ -56,8 +111,12 @@
        type="error", :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result')
-    download-button(v-if='queryStatus.result.pdf_file',
-                    :filedata='queryStatus.result.pdf_file')
+    download-button(v-if='queryStatus.result.pdf_report',
+                    :filedata='queryStatus.result.pdf_report')
+    .figures-preview(v-if='queryStatus.result.figures_data')
+      .figure-preview(v-for='fig in queryStatus.result.figures_data')
+        h4 {{fig.filename}}
+        img(:src='fig.img_data')
 
 
   powered-by(:softwareNames='infos.poweredby')
@@ -70,9 +129,9 @@ import filesuploader from '../../components/widgets/FilesUploader'
 var infos = {
   title: 'Plot sequence features',
   navbarTitle: 'Plot sequence features',
-  path: 'plot-common-features',
+  path: 'plot-sequence-features',
   description: '',
-  backendUrl: 'start/plot_common_features',
+  backendUrl: 'start/plot_sequence_features',
   icon: require('assets/images/plot_sequence_features.svg'),
   poweredby: ['dnafeaturesviewer']
 }
@@ -83,31 +142,42 @@ export default {
       infos: infos,
       form: {
         files: [],
-        linearity: 'linear',
+        display: 'linear',
         default_color: '#BABAEB',
+        default_display_label: true,
+        default_thickness: 1,
         plot_width: 12,
-        plot_height: 6,
-        auto_height: true,
+        plot_ruler: true,
         inline_labels: false,
         plot_full_sequence: true,
         plot_from_position: 1,
-        plot_to_position: 10000
+        plot_to_position: 10000,
+        plot_nucleotides: false,
+        plot_translation: false,
+        translation_start: 0,
+        translation_end: 10000,
+        custom_styles: [],
+        must_contain: '',
+        must_not_contain: '',
+        keep_or_discard: 'keep',
+        keep_or_discard_types: [],
+        pdf_report: false
+      },
+      default_style: {
+        selector: 'type',
+        keep_or_discard: 'keep',
+        feature_type: 'CDS',
+        feature_text: '',
+        display_label: true,
+        color: '#BABAEB',
+        thickness: 1
       },
       queryStatus: {
         polling: {},
         result: {},
         requestError: ''
       },
-      goal_options: [
-        {
-          label: 'A collection of compatible overhangs',
-          value: 'overhangs_set'
-        },
-        {
-          label: 'A sequence decomposition, with compatible overhangs',
-          value: 'sequence_decomposition'
-        }
-      ]
+      featureTypes: ['CDS', 'Promoter', 'Terminator', 'Source', 'Operon', 'misc_feature']
     }
   },
   components: {
@@ -122,6 +192,9 @@ export default {
         errors.push('Provide files !')
       }
       return errors
+    },
+    addCustomStyle () {
+      this.form.custom_styles.push(Object.assign({}, this.default_style))
     }
   }
 }
@@ -190,5 +263,20 @@ h4.formlabel {
 .result_image {
   max-width: 80%;
   margin: 0 10%;
+}
+
+.style-definer {
+  // background-color: #fafafa;
+  // padding: 10px;
+  margin-bottom: 2em;
+  width: 80%;
+  margin-left: 10%
+}
+
+.figure-preview {
+  margin-bottom: 5em;
+  img {
+    width:100%;
+  }
 }
 </style>

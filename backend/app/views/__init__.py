@@ -5,6 +5,7 @@ from .convert_sequence_files import ConvertSequenceFilesView
 from .design_overhangs import DesignOverhangsView
 from .evaluate_manufacturability import EvaluateManufacturabilityView
 from .find_common_blocks import FindCommonBlocksView
+from .plot_sequence_features import PlotSequenceFeaturesView
 from .predict_digestions import PredictDigestionsView
 from .sculpt_a_sequence import SculptASequenceView
 from .select_digestions import SelectDigestionsView
