@@ -1,14 +1,13 @@
 <template lang="pug">
 .page
-  el-alert(type='error' center :closable="false" title='Do not use !', show-icon)
-    .inline This app is currently under development
+  //- el-alert(type='error' center :closable="false" title='Do not use !', show-icon)
+  //-   .inline This app is currently under development
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Plot assembly features: highlight the important, discard the irrelevant.
+  p.scenario-description Plot assembly features, highlight the important, discard the irrelevant, use the colors you love, etc.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find common regions between different DNA sequences:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
-  //- learnmore Bla bla bla
 
   .form
 
