@@ -10,7 +10,7 @@ from ..tools import (records_from_data_files,
                      matplotlib_figure_to_svg_base64_data)
 from ..serializers import FileSerializer
 from dna_features_viewer import (BiopythonTranslator, GraphicRecord,
-                                 CirCularGraphicRecord)
+                                 CircularGraphicRecord)
 from io import BytesIO
 
 
@@ -115,7 +115,7 @@ class worker_class(AsyncWorker):
 
         display_class = {
             'linear': GraphicRecord,
-            'circular': CirCularGraphicRecord
+            'circular': CircularGraphicRecord
         }[data.display]
 
         translator = BiopythonTranslator(
