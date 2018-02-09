@@ -41,8 +41,8 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=65
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/SnapGeneReader.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer.git
+ARG CACHEBUST=66
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
+# RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer.git
 # Remove SSH keys
 RUN rm -rf /root/.ssh/

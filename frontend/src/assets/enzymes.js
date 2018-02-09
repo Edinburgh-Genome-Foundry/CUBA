@@ -1,5 +1,6 @@
 export default {
-  list: ['AatII',
+  list: [
+    'AatII',
     'Acc65I',
     'AccI',
     'AclI',
@@ -65,6 +66,7 @@ export default {
     'NdeI',
     'NgoMIV',
     'NheI',
+    'NotI',
     'NruI',
     'NsiI',
     'PaeR7I',
@@ -89,5 +91,6 @@ export default {
     'StyI',
     'XbaI',
     'XhoI',
-    'XmaI']
+    'XmaI'
+  ]
 }

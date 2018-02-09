@@ -39,7 +39,10 @@
 
     h4.formlabel Possible enzymes
 
-    p.loadData(@click='form.possibleEnzymes = enzymesPreselection') &#9656; Click me for ~60 preset enzymes.
+    el-select(v-model='selectedEnzymeSet', size='mini',
+              placeholder=' start with preselected set (optional)')
+      el-option(v-for='i, set in enzymesPreselections', :value='set', :label='set')
+
     el-input(type='textarea', :rows='6', placeholder='Example: EcoRI, XbaI, XhoI, ...',
              v-model="form.possibleEnzymes")
 
@@ -124,13 +127,19 @@ export default {
         result: {},
         requestError: ''
       },
-      enzymesPreselection: (
-        'AccI, AclI, AflII, AflIII, AgeI, ApaLI, AvaI, BlnI, BmtI, BsmI, ' +
-        'BssHII, DdeI, DraI, Eco47III, EcoRI, EcoRV, HindII, HindIII, HinfI, ' +
-        'HpaI, MluI, MspA1I, MunI, NaeI, NciI, NcoI, NdeI, NsiI, PstI, PvuII, ' +
-        'SacI, SacII, SalI, ScaI, SfaNI, SnaBI, SpeI, SphI, SspI, StyI, VspI, ' +
-        'XhoI, XmaI, ZraI'
-      )
+      enzymesPreselections: {
+        'EGF\'s favorite':
+          'AgeI, AseI, AvaI, BamHI, BanII, ClaI, DraI, EcoRI, EcoRV, HindIII, ' +
+          'KpnI, MfeI,NaeI, NdeI, NheI, NotI, NspI, PstI, PvuI, SacI, SalI, ' +
+          'ScaI, SnaBI, SpeI, SphI, StyI, XbaI, XhoI',
+        'Common enzymes':
+          'AccI, AclI, AflII, AflIII, AgeI, ApaLI, AvaI, BlnI, BmtI, BsmI, ' +
+          'BssHII, DdeI, DraI, Eco47III, EcoRI, EcoRV, HindII, HindIII, HinfI, ' +
+          'HpaI, MluI, MspA1I, MunI, NaeI, NciI, NcoI, NdeI, NsiI, PstI, PvuII, ' +
+          'SacI, SacII, SalI, ScaI, SfaNI, SnaBI, SpeI, SphI, SspI, StyI, VspI, ' +
+          'XhoI, XmaI, ZraI'
+      },
+      selectedEnzymeSet: null
     }
   },
   components: {
@@ -158,6 +167,11 @@ export default {
         errors.push('Provide at least one construct file')
       }
       return errors
+    }
+  },
+  watch: {
+    selectedEnzymeSet (val) {
+      this.form.possibleEnzymes = this.enzymesPreselections[val]
     }
   }
 }

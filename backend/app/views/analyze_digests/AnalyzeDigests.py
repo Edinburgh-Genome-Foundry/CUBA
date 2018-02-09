@@ -74,7 +74,7 @@ class worker_class(AsyncWorker):
                 file_type=file_type(data.digestionsMap),
                 data_field='digestion', headers=True)
             digestions_map = OrderedDict([
-                (well.name, well.data.digestion.split(', '))
+                (well.name, tuple(well.data.digestion.split(', ')))
                 for well in digestions_plate.iter_wells(direction='row')
                 if 'digestion' in well.data
                 and str(well.data.digestion) != 'nan'
