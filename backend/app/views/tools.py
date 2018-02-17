@@ -55,7 +55,7 @@ def records_from_zip_file(zip_file):
     records = []
     for f in zip_file._all_files:
         if f._extension.lower() in ['gb', 'fa']:
-            new_records, fmt = string_to_record(f.read().decode('utf-8'))
+            new_records, fmt = string_to_record(f.read())
             single_record = len(new_records) == 1
             for i, record in enumerate(new_records):
                 name = record.id
