@@ -9,6 +9,11 @@
     .scenario-category(v-for='category in scenarios', :key='category.category')
       h3 {{category.category}}
       scenariospanel(:scenarios='category.scenarios')
+
+    .egf-codons
+      p Powered by
+      a(href='https://edinburgh-genome-foundry.github.io/')
+        img(src='/static/logos/egf-codons.svg')
 </template>
 
 <script>
@@ -26,7 +31,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 h2 {
   margin-bottom: 2em;
   margin-top: 1.5em;
@@ -37,5 +42,15 @@ p {
 
 .scenarios {
   margin-top: 5em;
+}
+
+.egf-codons {
+  width: 100%;
+  margin-top: 10em;
+  text-align: center;
+  img {
+    margin: 0 auto;
+    width: 140px;
+  }
 }
 </style>

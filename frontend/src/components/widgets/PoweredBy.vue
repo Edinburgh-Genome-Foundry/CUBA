@@ -25,6 +25,11 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/bandwitch.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/BandWitch'
   },
+  caravagene: {
+    name: 'Caravagene',
+    logoSrc: '/static/logos/caravagene.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/Caravagene'
+  },
   dnacauldron: {
     name: 'DNA Cauldron',
     logoSrc: '/static/logos/dnacauldron.png',
@@ -40,6 +45,11 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/dfv.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer'
   },
+  egfcodons: {
+    name: 'EGF Codons',
+    logoSrc: '/static/logos/egf-codons.png',
+    href: 'https://edinburgh-genome-foundry.github.io/'
+  },
   goldenhinges: {
     name: 'Golden Hinges',
     logoSrc: '/static/logos/goldenhinges.png',
@@ -49,11 +59,6 @@ var allSoftwareInfos = {
     name: 'Gene Blocks',
     logoSrc: '/static/logos/geneblocks.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Geneblocks'
-  },
-  caravagene: {
-    name: 'Caravagene',
-    logoSrc: '/static/logos/caravagene.png',
-    href: 'https://github.com/Edinburgh-Genome-Foundry/Caravagene'
   },
   primavera: {
     name: 'Primavera',
