@@ -5,7 +5,8 @@ from collections import OrderedDict
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files, data_to_html_data,
-                     file_to_filelike_object)
+                     file_to_filelike_object,
+                     matplotlib_figure_to_svg_base64_data)
 from ..serializers import FileSerializer
 
 import flametree
@@ -15,7 +16,8 @@ from bandwitch.plots import plot_all_constructs_cuts_maps
 
 
 digestion = serializers.ListField(child=serializers.CharField())
-class SequenceFileSerializer( FileSerializer):
+
+class SequenceFileSerializer(FileSerializer):
     circularity = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):
@@ -31,6 +33,7 @@ class serializer_class(serializers.Serializer):
     bandsRange = serializers.ListField(child=serializers.IntegerField())
     fragmentAnalysisArchive = FileSerializer(allow_null=True)
     includeDigestionPlots = serializers.BooleanField()
+    subanalysis = serializers.CharField()
 
 def file_type(f):
     return 'csv' if f.name.lower().endswith('csv') else 'excel'
@@ -48,7 +51,6 @@ class worker_class(AsyncWorker):
             for record in constructs_records:
                 record.linear = False
         constructs_records = {r.id: r for r in constructs_records}
-        print (list(constructs_records.keys()))
         constructs_records = OrderedDict(sorted(constructs_records.items()))
 
         constructs_plate = plate_from_platemap_spreadsheet(
@@ -90,6 +92,40 @@ class worker_class(AsyncWorker):
         clones = Clone.from_bands_observations(observations, constructs_map,
                                                digestions_map)
         clones_observations = ClonesObservations(clones, constructs_records)
+        if data.subanalysis == 'partial_digests':
+            return self.partial_digests_analysis(data, clones_observations)
+        else:
+            return self.validation_analysis(data, clones_observations)
+
+    def partial_digests_analysis(self, data, clones_observations):
+        analysis = clones_observations.partial_digests_analysis()
+        best = max(analysis, key=lambda a: analysis[a]['valid_clones'])
+        if analysis[best]['valid_clones'] == analysis[()]['valid_clones']:
+            return {
+              'message': 'The partial digest analysis did not find any '
+                         'significant results',
+              'success': 'yeah!'
+            }
+        ax = clones_observations.plot_partial_digests_analysis(analysis)
+        validations = analysis[best]['validations']
+        observations = ClonesObservations(
+            clones_observations.clones,
+            clones_observations.constructs_records,
+            partial_cutters=best
+        )
+        pdf_data = observations.plot_all_validations_patterns(validations)
+        return {
+          'pdf_file': {
+              'data': data_to_html_data(pdf_data, 'pdf'),
+              'name': 'partial_digest_validation.zip',
+              'mimetype': 'application/pdf'
+          },
+          'figure_data':  matplotlib_figure_to_svg_base64_data(
+                              ax.figure, bbox_inches='tight'),
+          'success': 'yeah!'
+        }
+
+    def validation_analysis(self, data, clones_observations):
         validations = clones_observations.validate_all_clones(
             min_band_cutoff=data.bandsRange[0],
             max_band_cutoff=data.bandsRange[1],

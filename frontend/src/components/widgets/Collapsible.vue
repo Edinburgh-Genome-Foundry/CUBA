@@ -15,6 +15,8 @@ export default {
 
 <style lang='scss' scoped>
 .collapsible {
+  width: 95%;
+  margin-left: 2.5%;
   .el-collapse {
     border: none;
   }
@@ -24,16 +26,18 @@ export default {
 
       font-size: 1em;
     }
-    i.el-collapse-item__header__arrow {
+    i.el-collapse-item__arrow {
       display: none !important;
     }
     .el-collapse-item__content {
-      // background-color: #fcfcff;
-      border: 2px solid #e7e7f7;
       padding: 1em;
-      border-radius: 0.5em;
-      margin-bottom: 1em;
+
     }
+    .el-collapse-item__wrap {
+      box-shadow: 1px 1px 8px #CBD2DA;
+       margin-bottom: 1em;
+    }
+
   }
   hr {
     border: 0;

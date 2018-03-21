@@ -1,11 +1,5 @@
 <template lang='pug'>
 .seq-sketcher
-  .file-operations
-    //- el-button(icon='document' size='mini' @click='downloadExcel').file-link Download Excel
-    el-button.file-link(size='mini' @click='downloadJson') <icon name='file-text-o'></icon> Download JSON
-    el-button.file-link(size='mini' @click='showFileDialog=true') <icon name='upload'></icon> Upload Sketches
-    el-dialog.part-selector(title="Upload a schema", :visible.sync="showFileDialog", size='small')
-      files-uploader(v-model='file', :showSelected='false', :multiple='false')
   textarea.title(v-model='sketchesData.title', type="textarea" rows=1, placeholder='(Enter a title here)')
   p
     input.note(v-model='sketchesData.note', placeholder='(Add some note here)')
@@ -20,11 +14,18 @@
            @moveDown='moveDownConstruct(i)',
            is='construct',
            :key='construct.id')
+  .file-operations
+    //- el-button(icon='document' size='mini' @click='downloadExcel').file-link Download Excel
+    el-button.file-link(size='mini' @click='downloadJson') <icon name='file-text-o'></icon> Download JSON
+    el-button.file-link(size='mini' @click='showFileDialog=true') <icon name='upload'></icon> Upload Sketches
+    el-dialog.part-selector(title="Upload a schema", :visible.sync="showFileDialog", size='small')
+      files-uploader(v-model='file', :showSelected='false', :multiple='false')
 </template>
 
 <script>
 import construct from './Construct'
 import download from 'downloadjs'
+import uuidv1 from 'uuid/v1'
 
 export default {
   name: 'seq-sketcher',
@@ -41,17 +42,17 @@ export default {
               {
                 category: 'promoter',
                 label: 'prom1',
-                id: 0
+                id: uuidv1()
               },
               {
                 category: 'CDS',
                 label: 'gene with a very very long name',
-                id: 1
+                id: uuidv1()
               },
               {
                 category: 'terminator',
                 label: 'Term1',
-                id: 2
+                id: uuidv1()
               }
             ]
           }
@@ -62,7 +63,6 @@ export default {
   data () {
     return {
       sketchesData: this.value,
-      constructIdCounter: 0,
       file: {},
       showFileDialog: false
     }
@@ -85,7 +85,7 @@ export default {
           {
             category: 'user-defined',
             label: '',
-            id: 0
+            id: uuidv1()
           }
         ]
       })
@@ -130,6 +130,7 @@ export default {
         if (newval) {
           var json = JSON.parse(atob(newval.split(',')[1]))
           this.sketchesData = json
+          console.log('done')
         }
       }
     },
@@ -173,6 +174,11 @@ export default {
       border: none;
       margin-right: 1em;
     }
+    width: 400px;
+    margin: 0 auto;
+    padding: 0.5em;
+    border-radius: 1em;
+    border: 1px solid black;
     margin-bottom: 2.5em;
 
   }

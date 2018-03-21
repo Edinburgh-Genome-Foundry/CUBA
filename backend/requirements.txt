@@ -15,6 +15,7 @@ WeasyPrint==0.34
 git+https://github.com/pygraphviz/pygraphviz.git
 git+https://github.com/networkx/networkx.git
 
+git+git://github.com/Edinburgh-Genome-Foundry/Proglog
 git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer
 git+git://github.com/Edinburgh-Genome-Foundry/DnaCauldron.git
 git+git://github.com/Edinburgh-Genome-Foundry/BandWagon.git

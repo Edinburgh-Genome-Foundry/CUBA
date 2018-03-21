@@ -4,7 +4,10 @@
   //-   .inline This app is currently under development
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Plot assembly features, highlight the important, discard the irrelevant, use the colors you love, etc.
+  p.scenario-description.
+    Plot assembly features, highlight the important, discard the irrelevant,
+    use the colors you love, etc.
+
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find common regions between different DNA sequences:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
@@ -13,7 +16,8 @@
 
     h4.formlabel Upload sequence files
     filesuploader(v-model='form.files', text="Drop files (or click to select)",
-                  help='Fasta, Genbank, or Snapgene files. No file too large please :)', :multiple='true')
+                  help='Fasta, Genbank, or Snapgene files. No file too large please :)',
+                  :multiple='true')
     h4.formlabel Customize the plots
     el-tabs
       el-tab-pane(label='Plot parameters')

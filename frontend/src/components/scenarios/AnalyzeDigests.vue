@@ -16,6 +16,10 @@
       el-option(v-for='item in goal_options', :label='item.label',
                 :value='item.value', :key='item.value')
 
+    div(v-if="form.goal === 'validation'", style='margin-top:1em;')
+      el-radio(v-model='form.subanalysis', class="radio", label='standard') Standard analysis
+      el-radio(v-model='form.subanalysis', class="radio", label='partial_digests')  Partial digests analysis
+
 
 
     h4.formlabel Constructs Sequences
@@ -112,9 +116,14 @@
     el-alert(v-if='queryStatus.requestError && !queryStatus.polling.inProgress',
              :title="queryStatus.requestError",
        type="error", :closable="false")
-    .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.zip_file')
+    .results(v-if='!queryStatus.polling.inProgress && (queryStatus.result.zip_file || queryStatus.result.message || queryStatus.result.pdf_file)')
       download-button(v-if='queryStatus.result.zip_file', text='Download report',
                       :filedata='queryStatus.result.zip_file')
+      p(v-if='queryStatus.result.message') {{ queryStatus.result.message }}
+      download-button(v-if='queryStatus.result.pdf_file', text='Download report',
+                      :filedata='queryStatus.result.pdf_file')
+      .center(v-if='queryStatus.result.figure_data')
+        img(:src='queryStatus.result.figure_data')
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
@@ -149,7 +158,8 @@ export default {
         circularSequences: true,
         tolerance: 0.05,
         bandsRange: [10, 15000],
-        includeDigestionPlots: true
+        includeDigestionPlots: true,
+        subanalysis: 'standard'
       },
       infos: infos,
       ladder_options: [

@@ -27,7 +27,9 @@ class worker_class(AsyncWorker):
 
         records = records_from_data_files(data.parts)
         connector_records = records_from_data_files(data.connectors)
-
+        for r in records:
+            if not hasattr(r, 'linear'):
+                r.linear = False
         if data.enzyme == "Autoselect":
             possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
             data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)

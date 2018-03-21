@@ -45,11 +45,6 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/dfv.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer'
   },
-  egfcodons: {
-    name: 'EGF Codons',
-    logoSrc: '/static/logos/egf-codons.png',
-    href: 'https://edinburgh-genome-foundry.github.io/'
-  },
   goldenhinges: {
     name: 'Golden Hinges',
     logoSrc: '/static/logos/goldenhinges.png',

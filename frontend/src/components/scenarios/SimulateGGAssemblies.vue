@@ -17,21 +17,35 @@
         el-col(v-for='enzyme in enzymes', :md='6', :sm='6', :xs='24', :key='enzyme')
           el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
 
-    h4.formlabel Provide Parts and a receptor vector
+    h4.formlabel Provide parts to assemble
+      helper Upload parts sequences for one or several assemblies. Don't forget the receptor vector(s).
+    collapsible(title='Examples')
+      file-example(filename='example_genetic_parts_and_backbone.zip',
+                   fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
+                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
+        p.
+          Genbank records of five parts (A, A2, B, B2, C) and receptor vector. the parts can go into
+          one of 3 possible slots, forming a total of four possible assemblies.
     sequencesuploader(v-model='form.parts', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
-
-    el-checkbox(v-model='form.select_connectors') Autoselect connectors
-    .select-connectors(v-if='form.select_connectors')
-      h4.formlabel Provide connectors
+    p: el-checkbox(v-model='form.use_assembly_list') Provide a list of assemblies
+    .select-connectors(v-if='form.use_assembly_list').animated.flipInX
+      h4.formlabel Provide an assembly list
         helper.
           Only the connector parts necessary to obtain assemblies will be
           selected and added to the other parts.")
+      files-uploader(v-model='form.assembly_list')
+    p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
+    .select-connectors(v-if='form.select_connectors').animated.flipInX
+      h4.formlabel Provide connectors
+        helper.
+          Connectors are neutral parts used to fill gaps in some assemblies.
+          Drop here all the connector sequences you have, only the connectors
+          necessary to obtain assemblies will be selected and added to the other parts.
 
       sequencesuploader(v-model='form.connectors', :multiple='true',
                         text="Drop multiple Genbank/Fasta (or click to select)")
-    div
-        el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
+    p: el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
 
 
     backend-querier(:form='form',
@@ -75,7 +89,9 @@ export default {
         parts: [],
         connectors: [],
         select_connectors: false,
-        include_fragments: false
+        include_fragments: false,
+        use_assembly_list: false,
+        assembly_list: null
       },
       infos: infos,
       ladder_options: [

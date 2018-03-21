@@ -12,7 +12,7 @@
 
     .egf-codons
       p Powered by
-      a(href='https://edinburgh-genome-foundry.github.io/')
+      a(href='https://edinburgh-genome-foundry.github.io/', target='_blank')
         img(src='/static/logos/egf-codons.svg')
 </template>
 
