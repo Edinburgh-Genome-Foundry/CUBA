@@ -115,11 +115,17 @@ class worker_class(AsyncWorker):
         )
         pdf_data = observations.plot_all_validations_patterns(validations)
         return {
-          'pdf_file': {
-              'data': data_to_html_data(pdf_data, 'pdf'),
-              'name': 'partial_digest_validation.zip',
-              'mimetype': 'application/pdf'
-          },
+            'pdf_file': {
+                'data': data_to_html_data(pdf_data, 'pdf'),
+                'name': 'digest_validation_assuming_partial_%s.zip' %
+                        "_".join(best),
+                'mimetype': 'application/pdf'
+            },
+            'message': (
+                "The analysis shows that the following enzyme(s) were"
+                " possibly only partially cutting: %s. <br/>The report below"
+                " shows the validation under this hypothesis."
+            ) % (", ".join(["<b>%s</b>" % b for b in best])),
           'figure_data':  matplotlib_figure_to_svg_base64_data(
                               ax.figure, bbox_inches='tight'),
           'success': 'yeah!'

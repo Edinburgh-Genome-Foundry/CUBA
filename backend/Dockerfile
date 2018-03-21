@@ -42,7 +42,7 @@ RUN fc-cache -f
 ADD . /code/
 
 ARG CACHEBUST=68
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo.git
 # RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer.git
 # Remove SSH keys
 RUN rm -rf /root/.ssh/

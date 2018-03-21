@@ -119,7 +119,7 @@
     .results(v-if='!queryStatus.polling.inProgress && (queryStatus.result.zip_file || queryStatus.result.message || queryStatus.result.pdf_file)')
       download-button(v-if='queryStatus.result.zip_file', text='Download report',
                       :filedata='queryStatus.result.zip_file')
-      p(v-if='queryStatus.result.message') {{ queryStatus.result.message }}
+      p(v-if='queryStatus.result.message', v-html='queryStatus.result.message')
       download-button(v-if='queryStatus.result.pdf_file', text='Download report',
                       :filedata='queryStatus.result.pdf_file')
       .center(v-if='queryStatus.result.figure_data')
