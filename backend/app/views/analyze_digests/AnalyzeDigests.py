@@ -117,7 +117,7 @@ class worker_class(AsyncWorker):
         return {
             'pdf_file': {
                 'data': data_to_html_data(pdf_data, 'pdf'),
-                'name': 'digest_validation_assuming_partial_%s.zip' %
+                'name': 'digest_validation_assuming_partial_%s.pdf' %
                         "_".join(best),
                 'mimetype': 'application/pdf'
             },
@@ -126,9 +126,9 @@ class worker_class(AsyncWorker):
                 " possibly only partially cutting: %s. <br/>The report below"
                 " shows the validation under this hypothesis."
             ) % (", ".join(["<b>%s</b>" % b for b in best])),
-          'figure_data':  matplotlib_figure_to_svg_base64_data(
+            'figure_data':  matplotlib_figure_to_svg_base64_data(
                               ax.figure, bbox_inches='tight'),
-          'success': 'yeah!'
+            'success': 'yeah!'
         }
 
     def validation_analysis(self, data, clones_observations):

@@ -41,8 +41,9 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=68
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo.git
+ARG CACHEBUST=72
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/pdf_reports.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git
 # RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer.git
 # Remove SSH keys
 RUN rm -rf /root/.ssh/

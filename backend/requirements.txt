@@ -28,3 +28,4 @@ git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
 git+git://github.com/Edinburgh-Genome-Foundry/GoldenHinges.git
 git+git://github.com/Edinburgh-Genome-Foundry/SnapGeneReader.git
 git+git://github.com/Edinburgh-Genome-Foundry/Flametree.git
+git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git

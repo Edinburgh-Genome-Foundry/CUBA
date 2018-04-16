@@ -73,7 +73,11 @@ def records_from_data_file(data_file):
     try:
         records, fmt = string_to_record(content.decode("utf-8"))
     except:
-        record = snapgene_file_to_seqrecord(fileobject=BytesIO(content))
+        try:
+            record = snapgene_file_to_seqrecord(fileobject=BytesIO(content))
+        except:
+            raise ValueError("Format not recognized for file " +
+                             data_file.name)
         records, fmt = [record], 'snapgene'
     return records, fmt
 

@@ -25,7 +25,8 @@ export default {
       scenarios: [
         require('./PlotSequenceFeatures.vue').default,
         require('./EvaluateManufacturability.vue').default,
-        require('./FindCommonBlocks.vue').default
+        require('./FindCommonBlocks.vue').default,
+        require('./RenderSequenticons.vue').default
       ]
     }
   ]

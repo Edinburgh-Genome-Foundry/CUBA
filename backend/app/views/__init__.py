@@ -7,6 +7,7 @@ from .evaluate_manufacturability import EvaluateManufacturabilityView
 from .find_common_blocks import FindCommonBlocksView
 from .plot_sequence_features import PlotSequenceFeaturesView
 from .predict_digestions import PredictDigestionsView
+from .render_sequenticons import RenderSequenticonsView
 from .sculpt_a_sequence import SculptASequenceView
 from .select_digestions import SelectDigestionsView
 from .select_primers import SelectPrimersView

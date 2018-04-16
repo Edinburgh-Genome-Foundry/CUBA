@@ -59,6 +59,11 @@ var allSoftwareInfos = {
     name: 'Primavera',
     logoSrc: '/static/logos/primavera.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Primavera'
+  },
+  sequenticon: {
+    name: 'Sequenticon',
+    logoSrc: '/static/logos/sequenticon.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/sequenticon'
   }
 }
 export default {
