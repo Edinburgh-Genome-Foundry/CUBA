@@ -43,8 +43,8 @@ class worker_class(AsyncWorker):
             enzyme=self.data.enzyme,
             max_assemblies=40, fragments_filters='auto',
             assemblies_prefix='assembly',
-            include_fragments=data.include_fragments,
-            include_parts=data.include_fragments
+            include_fragments_plots=data.include_fragments,
+            include_parts_plots=data.include_fragments
 
         )
         zip_data = ('data:application/zip;base64,' +
