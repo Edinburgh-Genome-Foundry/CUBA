@@ -25,6 +25,9 @@ RUN apt-get install -y fontconfig libfontconfig1 libfreetype6 libx11-6 libxext6 
 RUN apt-get install -y xvfb wkhtmltopdf
 RUN apt-get install -y unzip
 ENV QT_QPA_FONTDIR=/root/.fonts/
+# RUN wget -O "Lato.zip" "https://fonts.google.com/download?family=Lato" \
+#     && unzip -u "Lato.zip" -d /root/.fonts \
+#     && rm -f "Lato.zip"
 RUN wget -O "Raleway.zip" "https://fonts.google.com/download?family=Raleway" \
     && unzip -u "Raleway.zip" -d /root/.fonts \
     && rm -f "Raleway.zip"
@@ -44,6 +47,7 @@ ADD . /code/
 ARG CACHEBUST=72
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/pdf_reports.git
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git
+RUN pip install biopython==1.70
 # RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer.git
 # Remove SSH keys
 RUN rm -rf /root/.ssh/
