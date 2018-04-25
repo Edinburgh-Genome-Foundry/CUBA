@@ -61,7 +61,7 @@ def records_from_zip_file(zip_file):
                 name = record.id
                 if name in [None, '', "<unknown id>", '.', ' ']:
                     number = ('' if single_record else ("%04d" % i))
-                    name = f._name_no_extension + number
+                    name = f._name_no_extension.replace(" ", "_") + number
                 record.id = name
                 record.name = name[:20]
             records += new_records
@@ -102,6 +102,7 @@ def records_from_data_files(data_files):
             record.linear = not circular
             name_no_extension = "".join(file_.name.split('.')[:-1])
             name = name_no_extension + ('' if single_record else ("%04d" % i))
+            name = name.replace(" ", "_")
             UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED',
                            'Exported']
             if str(record.id).strip() in UNKNOWN_IDS:

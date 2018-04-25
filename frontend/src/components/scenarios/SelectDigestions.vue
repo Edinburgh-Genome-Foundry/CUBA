@@ -129,9 +129,9 @@ export default {
       },
       enzymesPreselections: {
         'EGF\'s favorite':
-          'AgeI, AseI, AvaI, BamHI, BanII, ClaI, DraI, EcoRI, EcoRV, HindIII, ' +
+          'AgeI, AseI, AvaI, BamHI, BanII, DraI, EcoRI, EcoRV, HindIII, ' +
           'KpnI, MfeI,NaeI, NdeI, NheI, NotI, NspI, PstI, PvuI, SacI, SalI, ' +
-          'ScaI, SnaBI, SpeI, SphI, StyI, XbaI, XhoI',
+          'ScaI, SnaBI, SpeI, SphI, StyI, XhoI',
         'Common enzymes':
           'AccI, AclI, AflII, AflIII, AgeI, ApaLI, AvaI, BlnI, BmtI, BsmI, ' +
           'BssHII, DdeI, DraI, Eco47III, EcoRI, EcoRV, HindII, HindIII, HinfI, ' +

@@ -6,7 +6,7 @@ import flametree
 from geneblocks import BlocksFinder
 
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_file, data_to_html_data,
+from ..tools import (records_from_data_files, data_to_html_data,
                      matplotlib_figure_to_svg_base64_data,
                      figures_to_pdf_report_data)
 
@@ -32,15 +32,10 @@ class worker_class(AsyncWorker):
 
         self.logger(message='Reading the files...')
 
-        sequences = {}
-        for file_ in data.files:
-            records, fmt = records_from_data_file(file_)
-            single_record = len(records) == 1
-            for i, record in enumerate(records):
-                name = record.id
-                if name in [None, '', "<unknown id>"]:
-                    name = file_.name + ('' if single_record else ("%04d" % i))
-                sequences[name] = str(record.seq).upper()
+        sequences = {
+          record.name: str(record.seq).upper()
+          for record in records_from_data_files(data.files)
+        }
 
         self.logger(message='Analyzing the sequence...')
         blocks_finder = BlocksFinder(
