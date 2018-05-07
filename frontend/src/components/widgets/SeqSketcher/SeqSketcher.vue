@@ -64,7 +64,8 @@ export default {
     return {
       sketchesData: this.value,
       file: {},
-      showFileDialog: false
+      showFileDialog: false,
+      constructIdCounter: 5
     }
   },
   components: {

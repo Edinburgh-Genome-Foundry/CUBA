@@ -131,7 +131,7 @@ export default {
 
 $categories: (ATG CDS DNA-binding-element five-prime-overhang homology-arm
               insulator IRES ITR LTR origin-of-replication p2A part-linker
-              peptide-linker promoter none recombinase-recognition-sequence
+              peptide-linker promoter protein-tag none recombinase-recognition-sequence
               restriction-enzyme-recognition-site ribosome-entry-site
               RNA-stability-sequence terminator
               three-prime-overhang user-defined UTR);
