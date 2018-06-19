@@ -60,7 +60,7 @@ var infos = {
   path: 'sketch_constructs',
   description: '',
   backendUrl: 'start/sketch_constructs',
-  icon: require('assets/images/sketch_constructs.svg'),
+  icon: require('../../assets/images/sketch_constructs.svg'),
   poweredby: ['caravagene']
 }
 

@@ -51,7 +51,7 @@ var infos = {
   path: 'sculpt_a_sequence',
   description: '',
   backendUrl: 'start/sculpt_a_sequence',
-  icon: require('assets/images/sculpt_a_sequence.svg'),
+  icon: require('../../assets/images/sculpt_a_sequence.svg'),
   poweredby: ['dnachisel', 'dnafeaturesviewer']
 }
 

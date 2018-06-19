@@ -46,7 +46,7 @@ var infos = {
   path: 'predict-digestions',
   description: '',
   backendUrl: 'start/predict_digestions',
-  icon: require('assets/images/predict-icon.svg'),
+  icon: require('../../assets/images/predict-icon.svg'),
   poweredby: ['bandwagon']
 }
 
@@ -93,7 +93,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang='css' scoped>
 
 h4.formlabel {
   text-align: center;

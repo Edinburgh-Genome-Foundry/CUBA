@@ -133,7 +133,7 @@ var infos = {
   path: 'plot-sequence-features',
   description: '',
   backendUrl: 'start/plot_sequence_features',
-  icon: require('assets/images/plot_sequence_features.svg'),
+  icon: require('../../assets/images/plot_sequence_features.svg'),
   poweredby: ['dnafeaturesviewer']
 }
 

@@ -59,7 +59,7 @@ var infos = {
   path: 'swap_vector_part',
   description: '',
   backendUrl: 'start/swap_donor_vector_part',
-  icon: require('assets/images/swap_donor_vector_part.svg'),
+  icon: require('../../assets/images/swap_donor_vector_part.svg'),
   poweredby: ['dnacauldron', 'dnafeaturesviewer']
 }
 

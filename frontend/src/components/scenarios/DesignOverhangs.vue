@@ -151,7 +151,7 @@ var infos = {
   path: 'design-overhangs',
   description: '',
   backendUrl: 'start/design_overhangs',
-  icon: require('assets/images/overhangs.svg'),
+  icon: require('../../assets/images/overhangs.svg'),
   poweredby: ['goldenhinges', 'dnachisel']
 }
 

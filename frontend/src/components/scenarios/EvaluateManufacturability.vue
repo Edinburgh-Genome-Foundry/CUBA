@@ -49,7 +49,7 @@ var infos = {
   path: 'evaluate_manufacturability',
   description: '',
   backendUrl: 'start/evaluate_manufacturability',
-  icon: require('assets/images/evaluate_manufacturability.svg'),
+  icon: require('../../assets/images/evaluate_manufacturability.svg'),
   poweredby: ['dnachisel']
 }
 

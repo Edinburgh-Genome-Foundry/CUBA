@@ -41,7 +41,7 @@
 
     el-select(v-model='selectedEnzymeSet', size='mini',
               placeholder=' start with preselected set (optional)')
-      el-option(v-for='i, set in enzymesPreselections', :value='set', :label='set')
+      el-option(v-for='i, set in enzymesPreselections', :value='set', :label='set', :key='set')
 
     el-input(type='textarea', :rows='6', placeholder='Example: EcoRI, XbaI, XhoI, ...',
              v-model="form.possibleEnzymes")
@@ -91,7 +91,7 @@ var infos = {
   path: 'select_digestions',
   description: '',
   backendUrl: 'start/select_digestions',
-  icon: require('assets/images/select_digestion.svg'),
+  icon: require('../../assets/images/select_digestion.svg'),
   poweredby: ['bandwitch', 'bandwagon']
 }
 

@@ -33,6 +33,7 @@ class serializer_class(serializers.Serializer):
     bandsRange = serializers.ListField(child=serializers.IntegerField())
     fragmentAnalysisArchive = FileSerializer(allow_null=True)
     includeDigestionPlots = serializers.BooleanField()
+    ignoreBandsUnder = serializers.IntegerField()
     subanalysis = serializers.CharField()
 
 def file_type(f):
@@ -88,7 +89,8 @@ class worker_class(AsyncWorker):
 
         self.logger(message="Analyzing the data...")
 
-        observations = BandsObservation.from_aati_fa_archive(archive)
+        observations = BandsObservation.from_aati_fa_archive(
+            archive, ignore_bands_under=data.ignoreBandsUnder)
         clones = Clone.from_bands_observations(observations, constructs_map,
                                                digestions_map)
         clones_observations = ClonesObservations(clones, constructs_records)

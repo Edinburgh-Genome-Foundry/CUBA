@@ -42,7 +42,7 @@ var infos = {
   path: 'convert_sequence_files',
   description: '',
   backendUrl: 'start/convert_sequence_files',
-  icon: require('assets/images/convert_sequence_files.svg')
+  icon: require('../../assets/images/convert_sequence_files.svg')
 }
 
 export default {

@@ -12,6 +12,11 @@ import About from './components/pages/About'
 import Login from './auth/Login'
 import scenarios from './components/scenarios/scenarios'
 import widgets from './components/widgets'
+
+import VueGitHubCorners from 'vue-gh-corners'
+import 'vue-gh-corners/dist/vue-github-corners.css'
+Vue.use(VueGitHubCorners)
+
 // import VueAnalytics from 'vue-analytics'
 // import auth from './auth'
 // import BootstrapVue from 'bootstrap-vue'

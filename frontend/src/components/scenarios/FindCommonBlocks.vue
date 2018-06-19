@@ -45,7 +45,7 @@ var infos = {
   path: 'find-common-blocks',
   description: '',
   backendUrl: 'start/find_common_blocks',
-  icon: require('assets/images/find_common_blocks.svg'),
+  icon: require('../../assets/images/find_common_blocks.svg'),
   poweredby: ['geneblocks', 'dnafeaturesviewer']
 }
 

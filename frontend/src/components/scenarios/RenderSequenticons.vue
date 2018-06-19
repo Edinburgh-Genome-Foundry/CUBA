@@ -35,6 +35,7 @@
                     :filedata='queryStatus.result.pdf_file')
     .images(v-if="queryStatus.result.images")
       el-card.box-card(v-for="name_tag in queryStatus.result.images"
+                       :key='name_tag[0]'
                        style="width:150px; display: inline-block; text-align: center; margin: 0.5cm;")
         .clearfix(slot="header")
           span {{ name_tag[0] }}
@@ -54,7 +55,7 @@ var infos = {
   path: 'render-sequenticons',
   description: '',
   backendUrl: 'start/render_sequenticons',
-  icon: require('assets/images/render_sequenticons.svg'),
+  icon: require('../../assets/images/render_sequenticons.svg'),
   poweredby: ['sequenticon']
 }
 

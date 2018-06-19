@@ -106,6 +106,10 @@
       span to
       el-input-number.inline(:min='form.bandsRange[0]', :max='15000',
                              v-model='form.bandsRange[1]', size='small', :step='10')
+    p Ignore bands under
+      el-input-number.inline(:min='0', :max='5000',
+                           v-model='form.ignoreBandsUnder', size='small', :step='10')
+      span bp
     el-checkbox(v-model='form.includeDigestionPlots') Include plots of cutting sites (slower)
 
 
@@ -138,7 +142,7 @@ var infos = {
   path: 'analyze-digests',
   description: '',
   backendUrl: 'start/analyze_digests',
-  icon: require('assets/images/analyze_digests.svg'),
+  icon: require('../../assets/images/analyze_digests.svg'),
   poweredby: ['bandwitch', 'bandwagon']
 }
 
@@ -159,7 +163,8 @@ export default {
         tolerance: 0.05,
         bandsRange: [10, 15000],
         includeDigestionPlots: true,
-        subanalysis: 'standard'
+        subanalysis: 'standard',
+        ignoreBandsUnder: 0
       },
       infos: infos,
       ladder_options: [

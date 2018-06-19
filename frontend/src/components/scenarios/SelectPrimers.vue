@@ -79,7 +79,7 @@ var infos = {
   path: 'select_primers',
   description: '',
   backendUrl: 'start/select_primers',
-  icon: require('assets/images/select_primers.svg'),
+  icon: require('../../assets/images/select_primers.svg'),
   poweredby: ['primavera']
 }
 

@@ -1,8 +1,8 @@
 <template lang='pug'>
 footer
   .container
-  | © Edinburgh Genome Foundry, 2017 <br />
-  | The EGF is supported by the Research Councils UK and the University of Edinburgh
+    | © Edinburgh Genome Foundry, 2017 <br />
+    | The EGF is supported by the Research Councils UK and the University of Edinburgh
 </template>
 
 <style scoped>

@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -38,6 +38,8 @@ services:
     volumes:
       - ./frontend:/code
       - /code/node_modules
+    # port:
+    #   - '8080:8080'
 
   nginx:
     restart: always

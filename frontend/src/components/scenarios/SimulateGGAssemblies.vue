@@ -76,7 +76,7 @@ var infos = {
   path: 'simulate_gg_assemblies',
   description: '',
   backendUrl: 'start/simulate_gg_assemblies',
-  icon: require('assets/images/assembly.svg'),
+  icon: require('../../assets/images/assembly.svg'),
   poweredby: ['dnacauldron', 'dnafeaturesviewer']
 }
 
