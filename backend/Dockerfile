@@ -45,6 +45,7 @@ RUN fc-cache -f
 ADD . /code/
 
 ARG CACHEBUST=73
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron.git
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
 RUN pip install biopython==1.70
 
