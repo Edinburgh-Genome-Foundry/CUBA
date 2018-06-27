@@ -3,7 +3,7 @@
 from rest_framework import serializers
 from Bio import SeqIO
 import flametree
-from geneblocks import BlocksFinder
+from geneblocks import CommonBlocks
 
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files, data_to_html_data,
@@ -38,18 +38,18 @@ class worker_class(AsyncWorker):
         }
 
         self.logger(message='Analyzing the sequence...')
-        blocks_finder = BlocksFinder(
+        common_blocks = CommonBlocks(
             sequences, block_selection=data.block_selection,
             min_block_size=data.min_block_size
         )
-        blocks_finder = BlocksFinder(sequences)
+        common_blocks = CommonBlocks(sequences)
 
 
         self.logger(message='Generating the report')
 
         root = flametree.file_tree("@memory")
 
-        axes = blocks_finder.plot_common_blocks()
+        axes = common_blocks.plot_common_blocks()
         figure = axes[0].figure
         figure_data = matplotlib_figure_to_svg_base64_data(
             figure, bbox_inches="tight")
@@ -57,11 +57,11 @@ class worker_class(AsyncWorker):
                     bbox_inches='tight')
 
         blocks_gb_dir = root._dir('blocks_genbanks')
-        for rec in blocks_finder.common_blocks_records():
+        for rec in common_blocks.common_blocks_records():
             gb_file = blocks_gb_dir._file(rec.id + '.gb')
             SeqIO.write(rec, gb_file.open('w'), 'genbank')
         seq_gb_dir = root._dir('sequences_genbanks')
-        seq_records = blocks_finder.sequences_with_annotated_blocks()
+        seq_records = common_blocks.sequences_with_annotated_blocks()
         for recname, rec in seq_records.items():
             gb_file = seq_gb_dir._file("%s.gb" % recname)
             rec.id = recname

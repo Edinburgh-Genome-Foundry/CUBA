@@ -134,11 +134,11 @@ def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
     is the base64-encoded svg version of the figure."""
     output = BytesIO()
     fig.savefig(output, format='svg', **kwargs)
-    svg_txt = output.getvalue().decode("ascii")
+    svg_txt = output.getvalue().decode("utf-8")
     svg_txt = "\n".join(svg_txt.split("\n")[4:])
     svg_txt = "".join(svg_txt.split("\n"))
 
-    content = b64encode(svg_txt.encode("ascii"))
+    content = b64encode(svg_txt.encode("utf-8"))
     result = (b"data:image/svg+xml;base64," + content).decode("utf-8")
 
     return result

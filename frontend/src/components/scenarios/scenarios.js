@@ -26,6 +26,7 @@ export default {
         require('./PlotSequenceFeatures.vue').default,
         require('./EvaluateManufacturability.vue').default,
         require('./FindCommonBlocks.vue').default,
+        require('./CompareTwoSequences.vue').default,
         require('./RenderSequenticons.vue').default
       ]
     }

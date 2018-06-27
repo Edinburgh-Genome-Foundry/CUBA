@@ -1,6 +1,7 @@
 from .base import PollJobView
 
 from .analyze_digests import AnalyzeDigestsView
+from .compare_two_sequences import CompareTwoSequencesView
 from .convert_sequence_files import ConvertSequenceFilesView
 from .design_overhangs import DesignOverhangsView
 from .evaluate_manufacturability import EvaluateManufacturabilityView
