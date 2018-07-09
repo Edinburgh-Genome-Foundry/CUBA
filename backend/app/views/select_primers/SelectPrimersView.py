@@ -15,6 +15,7 @@ from primavera import PrimerSelector, Primer, load_record
 
 class serializer_class(serializers.Serializer):
     goal = serializers.CharField()
+    strand = serializers.CharField()
     constructs = serializers.ListField(child=FileSerializer())
     availablePrimers = serializers.ListField(child=FileSerializer())
     circularSequences = serializers.BooleanField()
@@ -47,7 +48,7 @@ class worker_class(AsyncWorker):
                                   nucleotide_resolution=1,
                                   logger=self.logger)
         selected_primers = selector.select_primers(
-            records, available_primers)
+            records, available_primers, strand=data.strand)
 
         zip_data = selector.write_multifile_report(
             records=records,

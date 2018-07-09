@@ -11,8 +11,13 @@
 
   .form
     h4.formlabel Validation type
-    el-select(v-model='form.goal', placeholder='Select')
+    el-select(v-model='form.goal', placeholder='Select a goal')
       el-option(v-for='item in goal_options', :label='item.label',
+                :value='item.value', :key='item.value')
+
+    h4.formlabel Strands covered
+    el-select(v-model='form.strand', placeholder='Select a strand')
+      el-option(v-for='item in strand_options', :label='item.label',
                 :value='item.value', :key='item.value')
 
     h4.formlabel Constructs Sequences
@@ -92,6 +97,7 @@ export default {
         constructs: [],
         readRange: [150, 800],
         tmRange: [55, 70],
+        strand: 'both',
         availablePrimers: []
       },
       infos: infos,
@@ -103,6 +109,24 @@ export default {
         {
           label: 'Validation PCR (NOT IMPLEMENTED YET)',
           value: 'validation_pcr'
+        }
+      ],
+      strand_options: [
+        {
+          label: 'Both',
+          value: 'both'
+        },
+        {
+          label: '3\'-5\'',
+          value: '3-5'
+        },
+        {
+          label: '5\'-3\'',
+          value: '5-3'
+        },
+        {
+          label: 'Any',
+          value: 'any'
         }
       ],
       queryStatus: {
