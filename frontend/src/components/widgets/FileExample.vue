@@ -1,63 +1,64 @@
 <template lang="pug">
 .file-example
+  el-dialog(title="File preview" :visible.sync="dialogVisible" width="80%")
+    img.big-image(v-if='imgSrc', :src='imgSrc')
 
-  //- using el-row here because the image and text used to be side by side
-  //- and may be so again in the future
-  el-row
-    el-col.img-column(:xs='24', :sm='24', :lg='24')
-      img(v-if='imgSrc', :src='imgSrc')
-    el-col.text-column(:xs='24', :sm='24', :lg='24')
+  el-card
+    center
+      img.small-image(v-if='imgSrc', :src='imgSrc' @click="dialogVisible = true")
       h3
-        a(:href='fileHref')
-          icon(name='upload' scale='1.3')
-          .filename {{dataFilename}}
-      p(v-if='description') {{description}}
-      slot
+        .filename {{dataFilename}}
+      el-row(:gutter='60')
+        span.use-file(v-if='useFileButton')
+          el-tooltip(content='use this file')
+            el-button(icon='el-icon-plus' @click='loadFile()' circle)
+        span &nbsp;
+        el-tooltip(content='download this file')
+          a(:href='fileHref')
+            el-button(icon='el-icon-download' circle)
+    p(v-if='description') {{description}}
+    slot
   //- hr
 </template>
 
 <script>
+import uuidv1 from 'uuid/v1'
+
 export default {
   name: 'file-example',
   props: {
     fileHref: {default: () => ''},
     imgSrc: {default: () => null},
     description: {default: () => null},
-    filename: {default: () => null}
+    filename: {default: () => null},
+    useFileButton: {default: true}
   },
   data () {
     return {
       defaultImgSrc: null,
-      dataFilename: this.filename
+      dataFilename: this.filename,
+      dialogVisible: false
     }
   },
   methods: {
-    change (evt) {
-      var files = evt.target.files
+    loadFile () {
+      console.log('loadfile')
       var self = this
-      self.valueMirror = []
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i]
-        let name = file.name
-        if (this.filter(files[i])) {
-          var reader = new window.FileReader()
-          reader.onloadend = function (ev) {
-            if (ev.target.readyState === window.FileReader.DONE) {
-              self.valueMirror.push({
-                name: name,
-                content: ev.target.result
-              })
-            }
+      this.$http.get(this.fileHref, {responseType: 'blob'}).then(function (response) {
+        console.log(response)
+        var reader = new window.FileReader()
+        reader.onloadend = function (ev) {
+          if (ev.target.readyState === window.FileReader.DONE) {
+            self.$emit('input', {
+              name: response.url.split('/').slice(-1)[0],
+              content: ev.target.result,
+              uid: uuidv1(),
+              status: 'success'
+            })
           }
-          reader.readAsDataURL(files[i])
         }
-      }
-    }
-  },
-  watch: {
-    valueMirror (val) {
-      // this.value = val
-      this.$emit('input', this.multiple ? val : val[0])
+        reader.readAsDataURL(response.bodyBlob)
+      })
     }
   }
 }
@@ -66,7 +67,7 @@ export default {
 <style lang='scss' scoped>
 
 .file-example {
-  text-align: center;
+
   hr {
     margin-bottom: 1em;
     border: 0;
@@ -74,15 +75,15 @@ export default {
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
   }
-  .img-column {
-
-    img {
-      margin-top: 1em;
-      box-shadow: 4px 4px 5px #aaa;
-      max-width: 100%;
-      max-height: 9em;
-    }
+  img.small-image {
+    max-width: 100%;
+    max-height: 9em;
+    cursor: pointer;
   }
+  img.big-image {
+    max-width: 100%;
+  }
+
   .text-column {
     text-align: left;
     h3 {

@@ -1,1 +1,0 @@
-from .SwapDonorVectorPart import SwapDonorVectorPartView

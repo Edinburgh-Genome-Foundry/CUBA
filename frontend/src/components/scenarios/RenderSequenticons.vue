@@ -14,8 +14,9 @@
     collapsible(title='Examples')
       file-example(filename='Example sequences',
                    fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
-                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
-    filesuploader(v-model='form.files', text="Drop files (or click to select)",
+                   @input='function (e) { form.files.push(e) }'
+                   imgSrc='/static/file_examples/simulate_gg_assemblies/generic_logos/sequences_records.png')
+    files-uploader(v-model='form.files', text="Drop files (or click to select)",
                   help='Fasta or genbank. No file too large please :)', :multiple='true')
     p.inline
       el-radio(class='radio' v-model='form.output' label='images') Web preview
@@ -47,7 +48,6 @@
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
   title: 'Render sequenticons',
@@ -76,7 +76,6 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore
   },
   infos: infos,
@@ -94,15 +93,15 @@ export default {
 
 <style lang='scss' scoped>
 
+.form {
+  margin: 50px auto;
+  max-width: 500px;
+}
+
 h4.formlabel {
   text-align: center;
   text-transform: uppercase;
   margin-top: 40px
-}
-
-.form {
-  margin: 50px auto;
-  max-width: 500px;
 }
 
 .title-img {

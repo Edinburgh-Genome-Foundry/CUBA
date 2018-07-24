@@ -75,13 +75,6 @@ body {
   margin: 2em auto;
 }
 
-// .el-alert {
-//   background-color: white;
-//   border-radius: 10px;
-//   border: 2px solid red;
-//   color: red;
-// }
-
 h1, h2 {
   text-align: center;
   margin-bottom:0.5em;
@@ -127,5 +120,29 @@ p.inline {
   span.options{
     margin-left: 1em;
   }
+}
+
+h4.formlabel {
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 60px;
+}
+
+.el-checkbox.inline {
+  margin-left: 15px;
+}
+
+
+.el-slider.inline {
+  display: inline-block;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: -12px;
+}
+
+.el-input-number.inline {
+  margin-bottom: -9px;
+  margin-left: 10px;
+  width: 130px;
 }
 </style>

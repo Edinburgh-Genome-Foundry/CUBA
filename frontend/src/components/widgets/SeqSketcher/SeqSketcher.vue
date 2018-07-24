@@ -1,5 +1,21 @@
 <template lang='pug'>
 .seq-sketcher
+  .file-operations
+    //- el-button(icon='document' size='mini' @click='downloadExcel').file-link Download Excel
+    el-button-group
+      el-button(icon='el-icon-upload2' size='mini' @click='showFileDialog=true') Upload sketches
+      el-button(icon='el-icon-download' size='mini' @click='downloadJson') Download as JSON
+      el-button(icon='el-icon-download' size='mini' @click='downloadXlsx') Download as Xlsx
+    el-dialog.part-selector(title="Upload a schema", :visible.sync="showFileDialog", size='small')
+      collapsible(title='Examples')
+        file-example(filename='example_construct_sketches.xlsx',
+                     @input='function (e) {file = e}',
+                     fileHref='/static/file_examples/sketch_constructs/example_construct_sketches.xlsx',
+                     imgSrc='/static/file_examples/sketch_constructs/example_construct_sketches.png')
+          p.
+            Collection of constructs assembled using random parts from the EMMA standard.
+            Unzip the file and drag the genbank files into the file upload area.
+      files-uploader(v-model='file', :showSelected='false', :multiple='false')
   textarea.title(v-model='sketchesData.title', type="textarea" rows=1, placeholder='(Enter a title here)')
   p
     input.note(v-model='sketchesData.note', placeholder='(Add some note here)')
@@ -14,18 +30,14 @@
            @moveDown='moveDownConstruct(i)',
            is='construct',
            :key='construct.id')
-  .file-operations
-    //- el-button(icon='document' size='mini' @click='downloadExcel').file-link Download Excel
-    el-button.file-link(size='mini' @click='downloadJson') <icon name='file-text-o'></icon> Download JSON
-    el-button.file-link(size='mini' @click='showFileDialog=true') <icon name='upload'></icon> Upload Sketches
-    el-dialog.part-selector(title="Upload a schema", :visible.sync="showFileDialog", size='small')
-      files-uploader(v-model='file', :showSelected='false', :multiple='false')
 </template>
 
 <script>
 import construct from './Construct'
 import download from 'downloadjs'
 import uuidv1 from 'uuid/v1'
+// import json2xlsx from 'json2xlsx-export'
+import XLSX from 'xlsx'
 
 export default {
   name: 'seq-sketcher',
@@ -63,7 +75,7 @@ export default {
   data () {
     return {
       sketchesData: this.value,
-      file: {},
+      file: null,
       showFileDialog: false,
       constructIdCounter: 5
     }
@@ -74,6 +86,25 @@ export default {
   methods: {
     downloadJson () {
       download(JSON.stringify(this.sketchesData, null, ' '), 'design.json')
+    },
+    downloadXlsx () {
+      var data = this.sketchesData
+      var workbook = XLSX.utils.book_new()
+      var sheet = XLSX.utils.aoa_to_sheet([
+        ['field', 'value'],
+        ['title', data.title],
+        ['note', data.note]
+      ])
+      XLSX.utils.book_append_sheet(workbook, sheet, 'options')
+      var columns = ['label', 'category', 'reversed', 'subscript', 'sublabel', 'bg_color']
+      data.constructs.map(function (construct) {
+        console.log(construct)
+        var sheetData = construct.parts.map(part => (columns.map(c => part[c])))
+        sheet = XLSX.utils.aoa_to_sheet([ columns ].concat(sheetData))
+        XLSX.utils.book_append_sheet(workbook, sheet, construct.name)
+      })
+      var wbData = XLSX.write(workbook, { bookType: 'xlsx', bookSST: false, type: 'array' })
+      download(wbData, (data.title === '' ? 'design' : data.title) + '.xlsx', 'application/xlsx')
     },
     newConstruct (i) {
       var newConstructs = this.sketchesData.constructs.slice()
@@ -93,13 +124,11 @@ export default {
       this.$set(this.sketchesData, 'constructs', newConstructs)
     },
     duplicateConstruct (i) {
-      this.constructIdCounter++
       var newConstructs = this.sketchesData.constructs.slice()
       var newConstruct = Object.assign(
         {}, JSON.parse(JSON.stringify(newConstructs[i])),
-        {id: this.constructIdCounter}
+        {id: uuidv1()}
       )
-      this.constructIdCounter++
       newConstructs.splice(i + 1, 0, newConstruct)
       this.$set(this.sketchesData, 'constructs', newConstructs)
     },
@@ -124,14 +153,46 @@ export default {
     }
   },
   watch: {
-    'file.content': {
+    file: {
       deep: true,
       handler (newval) {
         this.showFileDialog = false
+        var data = this.sketchesData
         if (newval) {
-          var json = JSON.parse(atob(newval.split(',')[1]))
-          this.sketchesData = json
-          console.log('done')
+          var [mimetype, content] = newval.content.split(',')
+          if (mimetype.indexOf('json') >= 0) {
+            this.sketchesData = JSON.parse(atob(content))
+          } else {
+            var colorReplacements = {
+              blue: '#ECF3FF',
+              green: '#DFFFE3',
+              red: '#FFEBE9'
+            }
+            var workbook = XLSX.read(content, {type: 'base64'})
+            console.log(workbook)
+            workbook.SheetNames.map(function (sheetName) {
+              var sheet = workbook.Sheets[sheetName]
+              if (sheetName === 'options') {
+                XLSX.utils.sheet_to_json(sheet).map(function (o) {
+                  if (data[o.field] === '') {
+                    data[o.field] = o.value
+                  }
+                })
+              } else {
+                var newConstruct = {
+                  id: uuidv1(),
+                  name: sheetName,
+                  note: '',
+                  parts: XLSX.utils.sheet_to_json(sheet).map(function (o) {
+                    o.bg_color = colorReplacements[o.bg_color] || o.bg_color
+                    return Object.assign({id: uuidv1()}, o)
+                  })
+                }
+                data.constructs.push(newConstruct)
+              }
+            })
+          }
+          this.file = null
         }
       }
     },
@@ -168,19 +229,14 @@ export default {
     }
   }
   .file-operations {
-    text-align: center;
+    text-align: left;
     .file-link {
       display: inline;
       font-size: 1em;
       border: none;
       margin-right: 1em;
     }
-    width: 400px;
-    margin: 0 auto;
-    padding: 0.5em;
-    border-radius: 1em;
-    border: 1px solid black;
-    margin-bottom: 2.5em;
+    margin-bottom: 3em;
 
   }
 .constructs-list-move {

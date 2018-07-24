@@ -10,10 +10,20 @@
   learnmore(title='About this scenario')
     p Documentation in progress, come back later !
 
+
+
   .form
     h4.formlabel Provide an annotated sequence
-    filesuploader(v-model='form.file', text="Drop a single Genbank file (or click to select)",
-                      :multiple='false', help='')
+    collapsible(title='Examples')
+      file-example(filename='example_sequenc.gbk',
+                   @input='function (e) {form.file = e}',
+                   fileHref='/static/file_examples/sculpt_a_sequence/example_sequence.gbk',
+                   imgSrc='/static/file_examples/sculpt_a_sequence/example_sequence_Map.svg')
+        p.
+          Collection of constructs assembled using random parts from the EMMA standard.
+          Unzip the file and drag the genbank files into the file upload area.
+    files-uploader(v-model='form.file', tip="Genbank/Snapgene format only",
+                   :multiple='false')
     el-checkbox.animated.fadeIn(v-if='Object.keys(form.editedFeatures).length > 0',
                                 v-model='form.editFeatures') Edit features
     featureseditor.animated.fadeIn(v-if='form.editedFeatures && form.editFeatures',
@@ -33,14 +43,11 @@
                      v-html="queryStatus.result.summary")
     download-button(v-if='queryStatus.result.zip_file',
                     :filedata='queryStatus.result.zip_file')
-
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
-import digestionset from '../../components/widgets/DigestionSelectorSet'
 import featureseditor from '../../components/widgets/FeaturesEditor/FeaturesEditor'
 
 var bioparsers = require('bio-parsers')
@@ -73,9 +80,7 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore,
-    digestionset,
     featureseditor
   },
   infos: infos,
@@ -103,6 +108,9 @@ export default {
   },
   watch: {
     'form.file.content' (value) {
+      if (!value) {
+        return
+      }
       var genbank = atob(value.split(',')[1])
       this.form.editedFeatures = {}
       var self = this

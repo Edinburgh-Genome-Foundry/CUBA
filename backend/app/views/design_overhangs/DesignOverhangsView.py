@@ -41,8 +41,8 @@ class worker_class(AsyncWorker):
         ]
 
         selector = OverhangsSelector(
-            gc_min=1.0 * data.gc_content[0] / 100,
-            gc_max=1.0 * data.gc_content[1] / 100,
+            gc_min=data.gc_content[0] / 100.0,
+            gc_max=data.gc_content[1] / 100.0,
             differences=data.overhangs_differences,
             forbidden_overhangs=data.forbidden_overhangs,
             external_overhangs=data.mandatory_overhangs,
@@ -51,19 +51,21 @@ class worker_class(AsyncWorker):
         )
 
         if data.goal == 'sequence_decomposition':
-            records, fmt = records_from_data_file(data.sequence)
-            record = records[0]
-            sequence = record
+            record, fmt = records_from_data_file(data.sequence)
+            # record = records[0]
+            print (record[:50])
             self.logger(message="Decomposing the sequence...")
             if data.cutting_mode == 'equal':
+                print ("HEEEEEEERE")
                 solution = selector.cut_sequence(
-                    equal_segments=data.n_fragments, sequence=sequence,
-                    max_radius=20,
+                    sequence=record,
+                    equal_segments=data.n_fragments,
+                    max_radius=30,
                     include_extremities=data.extremities,
                     allow_edits=data.allow_edits)
             else:
                 solution = selector.cut_sequence(
-                    sequence=sequence,
+                    sequence=record,
                     include_extremities=data.extremities,
                     allow_edits=data.allow_edits)
             print("Solution", solution)
@@ -73,7 +75,7 @@ class worker_class(AsyncWorker):
                 }
 
             zip_data = write_report_for_cutting_solution(
-                solution=solution, target="@memory", sequence=sequence,
+                solution=solution, target="@memory", sequence=record,
                 left_flank=data.left_flank_sequence,
                 right_flank=data.right_flank_sequence
             )

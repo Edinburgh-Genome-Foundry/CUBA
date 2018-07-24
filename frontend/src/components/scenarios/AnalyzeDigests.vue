@@ -29,6 +29,7 @@
     collapsible(title='Examples')
       file-example(filename='constructs_sequences.zip',
                    fileHref='/static/file_examples/analyze_digests/constructs_sequences.zip',
+                   @input='function (e) { form.constructsSequences.push(e) }',
                    imgSrc='/static/file_examples/sequences_records.png')
         p.
           Collection of constructs assembled using random parts from the EMMA standard.
@@ -48,6 +49,7 @@
 
       collapsible(title='Examples')
         file-example(filename='constructs_map.xlsx',
+                     @input='function (e) { form.constructsMap = e }',
                      fileHref='/static/file_examples/analyze_digests/constructs_map.xlsx',
                      imgSrc='/static/file_examples/analyze_digests/constructs_map.png')
           p.
@@ -82,6 +84,7 @@
         Provide a ZIP file of the AATI fragment analyzer (only machine supported at the moment)
     collapsible(title='Examples')
       file-example(filename='fragment_analyzer_data.zip',
+                   @input='function (e) { form.fragmentAnalysisArchive = e }',
                    fileHref='/static/file_examples/analyze_digests/fragment_analyzer_data.zip',
                    imgSrc='/static/file_examples/analyze_digests/fragment_analyzer_data_screenshot.png')
         p.
@@ -151,7 +154,7 @@ export default {
     return {
       form: {
         constructsMap: null,
-        constructsSequences: {},
+        constructsSequences: [],
         clonesMap: null,
         uniqueDigestion: true,
         severalDigestionsPerClone: false,

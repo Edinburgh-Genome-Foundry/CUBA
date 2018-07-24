@@ -11,8 +11,8 @@
   .form
 
     h4.formlabel Sequence(s) to convert
-    filesuploader(v-model='form.files', :multiple='true',
-                      text="Drop Genbank/Fasta/Snapgene files (or click to select)")
+    files-uploader(v-model='form.files', :multiple='true',
+                   tip="Accepted formats: Genbank/Fasta/Snapgene/MSDoc")
 
     h4.formlabel Desired format
     .report-radio
@@ -31,10 +31,11 @@
     .results(v-if='!queryStatus.polling.inProgress')
       download-button(v-if='queryStatus.result.file',
                       :filedata='queryStatus.result.file')
+  powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
-import filesuploader from '../../components/widgets/FilesUploader'
+// import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
   title: 'Convert Sequence Files',
@@ -42,7 +43,8 @@ var infos = {
   path: 'convert_sequence_files',
   description: '',
   backendUrl: 'start/convert_sequence_files',
-  icon: require('../../assets/images/convert_sequence_files.svg')
+  icon: require('../../assets/images/convert_sequence_files.svg'),
+  poweredby: ['crazydoc']
 }
 
 export default {
@@ -67,9 +69,6 @@ export default {
         requestError: ''
       }
     }
-  },
-  components: {
-    filesuploader
   },
   infos: infos,
   methods: {

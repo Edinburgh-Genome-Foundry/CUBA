@@ -1,0 +1,1 @@
+from .CreateAssemblyPicklistsView import CreateAssemblyPicklistsView

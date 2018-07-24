@@ -15,6 +15,7 @@
 .about-big-logo {
   width: 50%;
   margin-left: 25%;
+  margin-top: 3em;
 }
 p {
   text-align: justify;

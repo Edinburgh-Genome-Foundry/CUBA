@@ -11,8 +11,8 @@
   .form
 
     h4.formlabel Upload sequence files
-    filesuploader(v-model='form.files', text="Drop files (or click to select)",
-                  help='Fasta or genbank. No file too large please :)', :multiple='true')
+    files-uploader(v-model='form.files',
+                   tip='Fasta or genbank, or zip', :multiple='true')
     p.inline Minimal block size in basepairs:
       el-input-number.inline(v-model="form.min_block_size", size="small",
                              :min=10, :max=5000)
@@ -37,7 +37,6 @@
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
   title: 'Find common DNA blocks',
@@ -76,7 +75,6 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore
   },
   infos: infos,

@@ -17,7 +17,6 @@ import VueGitHubCorners from 'vue-gh-corners'
 import 'vue-gh-corners/dist/vue-github-corners.css'
 Vue.use(VueGitHubCorners)
 
-// import VueAnalytics from 'vue-analytics'
 // import auth from './auth'
 // import BootstrapVue from 'bootstrap-vue'
 

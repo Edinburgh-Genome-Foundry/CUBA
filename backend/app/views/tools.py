@@ -12,6 +12,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import flametree
 from snapgene_reader import snapgene_file_to_seqrecord
 import bandwagon as bw
+import crazydoc
 
 def fix_ice_genbank(genbank_txt):
     lines = genbank_txt.splitlines()
@@ -24,8 +25,10 @@ def string_to_record(string):
     Can also be used to detect a format.
     """
     matches = re.match("([ATGC][ATGC]*)", string)
+    # print("============", len(matches.groups()[0]), len(string))
+    # print (matches.groups()[0] == string)
     if (matches is not None) and (matches.groups()[0] == string):
-        return SeqRecord(Seq(string, DNAAlphabet()), "ATGC")
+        return SeqRecord(Seq(string, DNAAlphabet())), "ATGC"
 
     for fmt in ("fasta", "genbank"):
         if fmt == 'genbank':
@@ -75,10 +78,16 @@ def records_from_data_file(data_file):
     except:
         try:
             record = snapgene_file_to_seqrecord(fileobject=BytesIO(content))
+            records, fmt = [record], 'snapgene'
         except:
-            raise ValueError("Format not recognized for file " +
-                             data_file.name)
-        records, fmt = [record], 'snapgene'
+            try:
+                parser = crazydoc.CrazydocParser(['highlight_color', 'bold',
+                                                  'underline'])
+                records = parser.parse_doc_file(BytesIO(content))
+                fmt = 'doc'
+            except:
+                raise ValueError("Format not recognized for file " +
+                                 data_file.name)
     return records, fmt
 
 def record_to_formated_string(record, fmt='genbank'):

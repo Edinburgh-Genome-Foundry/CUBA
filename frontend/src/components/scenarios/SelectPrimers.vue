@@ -6,8 +6,8 @@
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
   p.scenario-description.
-    Find the best primers to  your constructs, for validation or
-    identification purposes.
+    Find optimal Sanger sequencing plans for your constructs, maximizing primer
+    reuse and minimizing the total numbers of reads and of new primers to buy.
 
   .form
     h4.formlabel Validation type
@@ -27,18 +27,20 @@
         or "no_primer" to forbid primers in certain zones.
     collapsible(title='Examples')
       file-example(filename='20_random_constructs.zip',
+                   @input='function (e) {form.constructs.push(e)}',
                    fileHref='/static/file_examples/select_primers/20_random_constructs.zip',
                    imgSrc='/static/file_examples/select_primers/20_random_constructs.png')
         p.
           Collection of constructs assembled using random parts from the EMMA standard.
           Unzip the file and drag the genbank files into the file upload area.
 
-    files-uploader(v-model='form.constructs', help='Fasta or Genbank files')
+    files-uploader(v-model='form.constructs', tip='Fasta or Genbank files')
     el-checkbox(v-model='form.circularSequences') Sequences are circular
 
     h4.formlabel Available primers
     collapsible(title='Examples')
       file-example(filename='available_primers.fa',
+                   @input='function (e) {form.availablePrimers.push(e)}',
                    fileHref='/static/file_examples/select_primers/available_primers.fa',
                    imgSrc='/static/file_examples/select_primers/available_primers.png')
         p.
@@ -55,6 +57,9 @@
     p.inline Primer melting temperatures from <b>{{ form.tmRange[0] }}C</b> to <b>{{ form.tmRange[1] }}C</b>
       el-slider(range v-if="" v-model='form.tmRange',
                 :min='20', :max='100', :step='1')
+    p.inline Digits in new primers names:
+      el-input-number.inline(v-model="form.newPrimerDigits", size="small",
+                             :min='1', :max='6')
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Select primers',
@@ -73,10 +78,6 @@
 </template>
 
 <script>
-import learnmore from '../../components/widgets/LearnMore'
-import sequencesuploader from '../../components/widgets/SequencesUploader'
-import digestionset from '../../components/widgets/DigestionSelectorSet'
-import ladderselector from '../../components/widgets/LadderSelector'
 
 var infos = {
   title: 'Select Primers',
@@ -98,6 +99,7 @@ export default {
         readRange: [150, 800],
         tmRange: [55, 70],
         strand: 'both',
+        newPrimerDigits: 4,
         availablePrimers: []
       },
       infos: infos,
@@ -135,12 +137,6 @@ export default {
         requestError: ''
       }
     }
-  },
-  components: {
-    sequencesuploader,
-    learnmore,
-    digestionset,
-    ladderselector
   },
   infos: infos,
   methods: {

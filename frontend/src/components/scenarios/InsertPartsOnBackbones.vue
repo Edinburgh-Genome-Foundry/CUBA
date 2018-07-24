@@ -14,21 +14,36 @@
 
 
   .form
+    h4.formlabel You want to
+
+    el-select(v-model='form.mode', placeholder='Select')
+      el-option(label='Put one or several parts on one backbone', value='one_backbone')
+      el-option(label='Auto-select backbones for different parts', value='select_backbone')
+
+
     h4.formlabel Select an enzyme
     .enzymes-radio
       el-row(:gutter='60')
         el-col(v-for='enzyme in enzymes', :md='6', :sm='6', :xs='24', :key='enzyme')
           el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
 
-    h4.formlabel Provide a donor vector
-    files-uploader(v-model='form.donor_vector', :multiple='false',
-                      text="Drop multiple Genbank/Fasta (or click to select)")
-    h4.formlabel Provide parts to insert
-        helper The parts can be either on a linear or plasmid sequence.
+    div(v-if="form.mode === 'one_backbone'")
+      h4.formlabel Provide a backbone
+      files-uploader(v-model='form.backbone', :multiple='false',
+                     tip="Accepted formats: Genbank/Fasta/txt/.doc")
+      h4.formlabel Provide parts to insert
+          helper The parts can be either on a linear or plasmid sequence.
+
+    div(v-if="form.mode === 'select_backbone'")
+      h4.formlabel Provide candidate backbones
+      files-uploader(v-model='form.backbones', :multiple='true',
+                     tip="Accepted formats: Genbank/Fasta/txt/.doc")
+      h4.formlabel Provide parts to insert
+          helper The parts can be either on a linear or plasmid sequence.
 
 
     files-uploader(v-model='form.inserts', :multiple='true',
-                      text="Drop multiple Genbank/Fasta (or click to select)")
+                   tip="Accepted formats: Genbank/Fasta/txt/.doc")
 
 
     backend-querier(:form='form',
@@ -54,12 +69,12 @@ import sequencesuploader from '../../components/widgets/SequencesUploader'
 import digestionset from '../../components/widgets/DigestionSelectorSet'
 
 var infos = {
-  title: 'Swap a donor vector part',
-  navbarTitle: 'Swap a donor vector part',
-  path: 'swap_vector_part',
+  title: 'Insert parts on backbones',
+  navbarTitle: 'Insert parts on backbones',
+  path: 'insert_parts_on_backbones',
   description: '',
-  backendUrl: 'start/swap_donor_vector_part',
-  icon: require('../../assets/images/swap_donor_vector_part.svg'),
+  backendUrl: 'start/insert_parts_on_backbones',
+  icon: require('../../assets/images/insert_parts_on_backbones.svg'),
   poweredby: ['dnacauldron', 'dnafeaturesviewer']
 }
 
@@ -69,8 +84,10 @@ export default {
       enzymes: ['BsaI', 'BsmBI', 'BbsI', 'Autoselect'],
       form: {
         enzyme: 'Autoselect',
-        donor_vector: {},
-        inserts: []
+        backbone: null,
+        backbones: [],
+        inserts: [],
+        mode: 'one_backbone'
       },
       infos: infos,
       ladder_options: [

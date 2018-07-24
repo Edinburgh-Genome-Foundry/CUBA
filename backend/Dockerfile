@@ -21,7 +21,8 @@ RUN pip install -r requirements.txt
 # The next lines install wkhtmltopdf (for Caravagene)
 ENV QT_QPA_PLATFORM offscreen
 # ENV QT_QPA_FONTDIR=/usr/share/fonts
-RUN apt-get install -y fontconfig libfontconfig1 libfreetype6 libx11-6 libxext6 libxrender1 xfonts-base xfonts-75dpi
+RUN apt-get install -y fontconfig libfontconfig1 libfreetype6 libx11-6 libxext6 libxrender1
+RUN apt-get install -y xfonts-base xfonts-75dpi fonts-font-awesome fonts-lato
 RUN apt-get install -y xvfb wkhtmltopdf
 RUN apt-get install -y unzip
 ENV QT_QPA_FONTDIR=/root/.fonts/
@@ -44,9 +45,12 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=73
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Geneblocks.git
-RUN pip install biopython==1.70
-
-RUN rm -rf /root/.ssh/
+ARG CACHEBUST=74
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaChisel.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/GoldenHinges.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/plateo.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Flametree.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git
+# RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Geneblocks.git
+# RUN pip install biopython==1.70

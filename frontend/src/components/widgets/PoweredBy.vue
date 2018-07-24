@@ -30,6 +30,11 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/caravagene.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Caravagene'
   },
+  crazydoc: {
+    name: 'CrazyDoc',
+    logoSrc: '/static/logos/crazydoc.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/crazydoc'
+  },
   dnacauldron: {
     name: 'DNA Cauldron',
     logoSrc: '/static/logos/dnacauldron.png',
@@ -54,6 +59,11 @@ var allSoftwareInfos = {
     name: 'Gene Blocks',
     logoSrc: '/static/logos/geneblocks.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Geneblocks'
+  },
+  plateo: {
+    name: 'Plateo',
+    logoSrc: '/static/logos/plateo.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/Plateo'
   },
   primavera: {
     name: 'Primavera',

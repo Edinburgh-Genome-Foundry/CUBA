@@ -1,7 +1,8 @@
 <template lang="pug">
 .sequences-uploader(:class='{withfiles: (files.length != 0)}')
-  filesuploader(v-model='files', :help='help', :text='text', :multiple='multiple',
-                :displaySelected='displaySelected')
+  filesuploader(v-model='files', :help='help', :text='text',
+                :multiple='true',
+                tip="Accepted formats: FASTA, Genbank, Snapgene")
   p.num-files(v-if='files.length') {{files.length}} {{files.length > 1 ? 'files' : 'file'}} selected
   .sequences-list
     el-row(v-for='(file, index) in filesWithLinearities', :key='index', :gutter='20')

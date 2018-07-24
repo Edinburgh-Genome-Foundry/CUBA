@@ -15,7 +15,7 @@
   .form
 
     h4.formlabel Upload sequence files
-    filesuploader(v-model='form.files', text="Drop files (or click to select)",
+    files-uploader(v-model='form.files', text="Drop files (or click to select)",
                   help='Fasta, Genbank, or Snapgene files. No file too large please :)',
                   :multiple='true')
     h4.formlabel Customize the plots
@@ -125,7 +125,6 @@
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
   title: 'Plot sequence features',
@@ -182,7 +181,6 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore
   },
   infos: infos,

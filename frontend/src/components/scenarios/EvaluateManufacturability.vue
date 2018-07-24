@@ -41,7 +41,6 @@
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
   title: 'Evaluate Manufacturability',
@@ -77,7 +76,6 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore
   },
   infos: infos,

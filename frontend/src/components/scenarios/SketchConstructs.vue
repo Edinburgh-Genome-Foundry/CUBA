@@ -10,28 +10,28 @@
 
   .sketcher
     sketcher(v-model='form.sketchesData')
-
   .form
-    .form-group
-      .form-title Export as:
-      el-radio(v-model='form.format' label='PDF') PDF
-      el-radio(v-model='form.format' label='jpeg') JPEG
-      el-radio(v-model='form.format' label='PNG') PNG
-    .form-group(v-if="form.format === 'PDF'")
-      .form-title Orientation:
-      el-radio(v-model='form.orientation' label='portrait') <icon name="file-text-o"></icon> Portrait
-      el-radio(v-model='form.orientation' label='landscape') <icon name="file-text-o" class='landscape'></icon> Landscape
-    .form-group(v-else)
-      .form-title Page width:
-      el-input-number(v-model='form.width', :min='50', :max='1000' size='small')
-    .form-group
-      .form-title Font:
-      el-radio.open-sans(v-model='form.font' label='Open Sans') Open Sans
-      el-radio.raleway(v-model='form.font' label='Raleway') Raleway
-      el-radio.cabin-sketch(v-model='form.font' label='Cabin sketch') Cabin Sketch
-    .form-group
-      .form-title Font size:
-      el-input-number(v-model='form.fontsize', :min='5', :max='18' size='small')
+    el-form(:model='form' label-width="120px")
+      el-form-item(label='Format')
+        el-select(v-model='form.format')
+          el-option(value='PDF' label='PDF')
+          el-option(value='jpeg' label='JPEG')
+          el-option(value='PNG' label='PNG')
+        //- el-radio(v-model='form.format' label='jpeg') JPEG
+        //- el-radio(v-model='form.format' label='PNG') PNG
+      el-form-item(label='Orientation' v-if="form.format === 'PDF'")
+        el-select(v-model='form.orientation')
+             el-option(value='portrait' label='Protrait')
+             el-option(value='landscape' label='Landscape')
+      el-form-item(label='Width' v-else)
+        el-input-number(v-model='form.width', :min='50', :max='1000' size='small')
+      el-form-item(label='Font')
+        el-select(v-model='form.font')
+          el-option.open-sans(value='Open Sans' label='Open Sans')
+          el-option.open-sans(value='Raleway' label='Raleway')
+          el-option.open-sans(value='Cabin sketch' label='Cabin sketch')
+      el-form-item(label='Font size')
+        el-input-number(v-model='form.fontsize', :min='5', :max='18' size='small')
 
 
 
@@ -147,23 +147,11 @@ h4.formlabel {
 }
 
 .form {
-  .form-group {
-    margin-bottom: 1.2em;
-  }
-  margin: 50px auto;
-  max-width: 500px;
-  .form-title {
-    width: 5.5em;
-    display: inline-block;
-    margin-right: 1em;
-  }
-  .landscape {
-    display: inline-block;
-    transform: rotate(90deg);
-  }
   .raleway {font-family: 'Raleway'}
   .open-sans {font-family: 'Open Sans'}
   .cabin-sketch {font-family: 'Cabin Sketch'}
+  width: 500px;
+  margin: 0 auto;
 }
 .sketcher {
   margin-top: 2em;

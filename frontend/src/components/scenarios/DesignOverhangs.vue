@@ -24,12 +24,21 @@
 
         h4.formlabel Sequence
 
-        examples-dialog
+        collapsible(title='Examples')
+          file-example(filename='phage_sequence.txt',
+                       @input='function (e) {form.sequence = e}',
+                       fileHref='/static/file_examples/design_overhangs/phage_sequence.txt',
+                       imgSrc='/static/file_examples/generic_logos/sequence_file.svg')
+            p.
+              A 50kb sequence of phage lambda.
+              #[a(href="https://www.nature.com/articles/srep10655") Tsuge et al. ]
+              managed to assemble this sequence in a one-step assembly of fifty 1kb
+              fragments, digested by type-IIs enzymes. This required a very careful
+              selection of enzyme overhangs.
 
-        filesuploader(v-model='form.sequence',
-                      text="Drop a single file (or click to select)",
-                      help='Fasta or genbank. No file too large please :)',
-                      :multiple='false')
+        files-uploader(v-model='form.sequence',
+                       tip='Fasta or genbank. No file too large please :)',
+                       :multiple='false')
 
         h4.formlabel
           span Sequence decomposition
@@ -66,6 +75,14 @@
           el-input-number.inline(v-model="form.n_fragments",
                                  size="small",
                                  :min=2, :max=60)
+        p Add sequences (e.g. enzyme sites) at the end of each fragment ? <br>
+        p
+          el-form(label-width="100px")
+            el-form-item(label='Left flank:')
+              el-input(v-model='left_flank_sequence', placeholder="e.g. CGTCTCA")
+            el-form-item(label='Right flank:')
+              el-input(v-model='right_flank_sequence', placeholder="e.g. GAGACGT")
+
 
       h4.formlabel Overhangs parameters
 
@@ -117,7 +134,8 @@
     p(v-if='queryStatus.polling.inProgress && queryStatus.polling.data.n_overhangs').center.
       Attempting to find {{queryStatus.polling.data.n_overhangs}} overhangs
 
-    progress-bars(:bars='bars')
+    progress-bars(:bars='queryStatus.polling.data.bars', :order="['radius']"
+                  v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
 
     el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',
              :title="queryStatus.requestError",
@@ -142,7 +160,7 @@
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
+// import filesuploader from '../../components/widgets/FilesUploader'
 import tools from '../../tools'
 
 var infos = {
@@ -202,7 +220,6 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore
   },
   infos: infos,
@@ -245,12 +262,6 @@ export default {
 
 <style lang='scss' scoped>
 
-h4.formlabel {
-  text-align: center;
-  text-transform: uppercase;
-  margin-top: 40px
-}
-
 .form {
   margin: 50px auto;
   max-width: 500px;
@@ -265,24 +276,6 @@ h4.formlabel {
 .el-checkbox {
   font-weight: normal;
   font-size: 16px !important;
-}
-
-.el-checkbox.inline {
-  margin-left: 15px;
-}
-
-
-.el-slider.inline {
-  display: inline-block;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: -12px;
-}
-
-.el-input-number.inline {
-  margin-bottom: -9px;
-  margin-left: 10px;
-  width: 130px;
 }
 
 .el-select {

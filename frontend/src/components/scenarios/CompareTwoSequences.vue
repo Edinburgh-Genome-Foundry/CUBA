@@ -9,19 +9,22 @@
   //- learnmore Bla bla bla
 
   .form
-
     h4.formlabel Sequence 1
     collapsible(title='Example')
-      file-example(filename='Sequence_1.gb',
+      file-example(filename='sequence1.gb',
+                   @input='function (e) { form.sequence1 = e }',
                    fileHref='/static/file_examples/compare_two_sequences/sequence1.gb')
-    filesuploader(v-model='form.sequence1', text="Drop a file (or click to select)",
-                  help='Fasta/genbank/snapgene. No file too large please :)', :multiple='false')
+    files-uploader(v-model='form.sequence1',
+                   tip='Genbank/Fasta/Snapgene/txt/Zip',
+                   :multiple='false')
     h4.formlabel Sequence 2
     collapsible(title='Example')
-      file-example(filename='Sequence_2.gb',
+      file-example(filename='sequence2.gb',
+                   @input='function (e) { form.sequence2 = e }'
                    fileHref='/static/file_examples/compare_two_sequences/sequence2.gb')
-    filesuploader(v-model='form.sequence2', text="Drop a file (or click to select)",
-                  help='Fasta/genbank/snapgene. No file too large please :)', :multiple='false')
+    files-uploader(v-model='form.sequence2',
+                   tip="Genbank/Fasta/Snapgene/txt/Zip",
+                   :multiple='false')
 
     p.inline
       span Figure width:
@@ -49,7 +52,6 @@
 
 <script>
 import learnmore from '../../components/widgets/LearnMore'
-import filesuploader from '../../components/widgets/FilesUploader'
 
 var infos = {
   title: 'Compare two sequences',
@@ -66,8 +68,8 @@ export default {
     return {
       infos: infos,
       form: {
-        sequence1: {},
-        sequence2: {},
+        sequence1: null,
+        sequence2: null,
         figure_width: 8
       },
       queryStatus: {
@@ -78,7 +80,6 @@ export default {
     }
   },
   components: {
-    filesuploader,
     learnmore
   },
   infos: infos,

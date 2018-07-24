@@ -6,9 +6,19 @@ export default {
         require('./SculptASequence.vue').default,
         require('./DesignOverhangs.vue').default,
         require('./SimulateGGAssemblies').default,
-        require('./SwapDonorVectorPart').default,
+        require('./InsertPartsOnBackbones').default,
         require('./SketchConstructs').default,
         require('./ConvertSequenceFiles').default
+      ]
+    },
+    {
+      category: 'Sequence analysis',
+      scenarios: [
+        require('./PlotSequenceFeatures.vue').default,
+        require('./EvaluateManufacturability.vue').default,
+        require('./FindCommonBlocks.vue').default,
+        require('./CompareTwoSequences.vue').default,
+        require('./RenderSequenticons.vue').default
       ]
     },
     {
@@ -21,13 +31,9 @@ export default {
       ]
     },
     {
-      category: 'Sequence analysis',
+      category: 'Manufacturing',
       scenarios: [
-        require('./PlotSequenceFeatures.vue').default,
-        require('./EvaluateManufacturability.vue').default,
-        require('./FindCommonBlocks.vue').default,
-        require('./CompareTwoSequences.vue').default,
-        require('./RenderSequenticons.vue').default
+        require('./CreateAssemblyPicklists.vue').default
       ]
     }
   ]

@@ -22,8 +22,8 @@
     "ve-range-utils": "2.5.0",
     "xlsx": "0.13.0",
     "vue-awesome": "2.3.7",
-    "vue-analytics": "5.12.2",
-    "uuid": "3.2.1"
+    "uuid": "3.2.1",
+    "json2xlsx-export": "1.2.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -21,6 +21,7 @@ class serializer_class(serializers.Serializer):
     circularSequences = serializers.BooleanField()
     readRange = serializers.ListField(child=serializers.IntegerField())
     tmRange = serializers.ListField(child=serializers.IntegerField())
+    newPrimerDigits = serializers.IntegerField()
 
 
 class worker_class(AsyncWorker):
@@ -33,6 +34,8 @@ class worker_class(AsyncWorker):
         zip_root = flametree.file_tree('@memory')
 
         records = records_from_data_files(data.constructs)
+        for record in records:
+            record.linear = not data.circularSequences
         primers_records = records_from_data_files(data.availablePrimers)
 
         available_primers = [
@@ -48,7 +51,8 @@ class worker_class(AsyncWorker):
                                   nucleotide_resolution=1,
                                   logger=self.logger)
         selected_primers = selector.select_primers(
-            records, available_primers, strand=data.strand)
+            records, available_primers, strand=data.strand,
+            new_primers_digits=data.newPrimerDigits)
 
         zip_data = selector.write_multifile_report(
             records=records,

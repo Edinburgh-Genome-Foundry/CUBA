@@ -24,15 +24,16 @@
     //-           v-model="popover2Visible")
     //-   .color-choices
     //-     .color-choice(v-for='color in colorChoices', :style="{'background-color': color}", :key='color',
-    //-                 @click='partData.bgColor = color; popover2Visible = false')
-    span.control(@click="$emit('delete')" title='remove') <icon name='trash-o'></icon>
-    span.control(@click='partData.reversed = !partData.reversed' title='reverse') <icon name='undo'></icon>
+    //-                 @click='partData.bg_color = color; popover2Visible = false')
+    el-button-group.buttons
+      el-button(@click="$emit('delete')" title='remove' size='mini' icon='el-icon-delete' circle)
+      el-button(@click='partData.reversed = !partData.reversed' title='reverse' size='mini' icon='el-icon-refresh'  circle)
 
-    el-tooltip(:enterable='true', effect='light', v-model='popover2Visible', :manual='true', title='color')
-      .color-choices(slot='content')
-        .color-choice(v-for='color in colorChoices', :style="{'background-color': color}", :key='color',
-                    @click='partData.bgColor = color; popover2Visible = false')
-      span.control(@click='popover2Visible = !popover2Visible') <icon name='paint-brush'></icon>
+      el-tooltip(:enterable='true', effect='light', v-model='popover2Visible', :manual='true', title='color')
+        .color-choices(slot='content')
+          .color-choice(v-for='color in colorChoices', :style="{'background-color': color}", :key='color',
+                      @click='partData.bg_color = color; popover2Visible = false')
+        el-button(@click='popover2Visible = !popover2Visible' size='mini' icon=' el-icon-picture'  circle)
   <el-button :class="[{reversed: partData.reversed}, partData.category, 'symbol']" v-popover:popover1></el-button>
 </template>
 
@@ -44,7 +45,7 @@ export default {
       default: () => ({
         category: 'user-defined',
         symbol: null,
-        bgColor: null,
+        bg_color: null,
         label: '',
         reversed: false,
         sublabel: '',
@@ -56,7 +57,7 @@ export default {
     return {
       partData: Object.assign({
         category: 'user-defined',
-        bgColor: null,
+        bg_color: null,
         label: '',
         reversed: false,
         sublabel: '',
@@ -103,7 +104,7 @@ export default {
   computed: {
     partStyle () {
       return {
-        'background-color': this.partData.bgColor,
+        'background-color': this.partData.bg_color,
         'width': this.maxWidth
       }
     },
@@ -182,6 +183,7 @@ $categories: (ATG CDS DNA-binding-element five-prime-overhang homology-arm
   position: relative;
   margin-right: -0.3em;
   margin-left: -0.3em;
+  margin-bottom: 1em;
   min-width:8em;
   max-width:15em;
   height:16em;
@@ -253,14 +255,11 @@ $categories: (ATG CDS DNA-binding-element five-prime-overhang homology-arm
     top: 10em;
     left: 50%;
     transform: translateX(-50%);
-    .control {
-      color: #555;
-      cursor: pointer;
-      margin-left: 0.1em;
-      font-size: 1.1em;
-      &:hover {
-        color: #000;
-      }
+    font-size: 1em;
+    .buttons {
+      position: float;
+      width: 100%;
+      min-width: 100px;
     }
   }
 }

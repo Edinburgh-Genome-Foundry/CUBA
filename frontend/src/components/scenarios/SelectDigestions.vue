@@ -30,6 +30,33 @@
 
     h4.formlabel Constructs Sequences
 
+    collapsible(title='Examples')
+      file-example(v-if="form.goal === 'ideal'",
+                   key='a',
+                   filename='emma_parts.zip',
+                   @input='function (e) {form.files.push(e)}',
+                   fileHref='/static/file_examples/select_digestions/emma_parts.zip',
+                   imgSrc='/static/file_examples/generic_logos/part.svg')
+        p.
+          A random collection of 18 parts on plasmid, from the EMMA standard.
+          Try this example while selecting the "Common Enzymes" collection, and
+          "2 max. enzymes per digestion" below.
+
+      file-example(v-if="form.goal === 'separating'"
+                   filename='emma_constructs.zip',
+                   key='b',
+                   @input='function (e) {form.files.push(e)}',
+                   fileHref='/static/file_examples/select_digestions/emma_constructs.zip',
+                   imgSrc='/static/file_examples/generic_logos/part.svg')
+        p.
+          A collection of 30 random EMMA constructs. To find the best "separating"
+          digestion choose:
+        ul
+          li A 35-5kb ladder
+          li The EGF enzymes collection
+          li 2 enzymes per digestion
+          li Either 1 or 2 digestions
+
 
     files-uploader(v-model='form.files', help='Fasta or Genbank files')
     el-checkbox(v-model='form.circularSequences') Sequences are circular

@@ -11,7 +11,7 @@ redis==2.10.5
 rq==0.6.0
 requests==2.11.1
 watchdog==0.8.3
-WeasyPrint==0.42
+WeasyPrint==0.42.3
 
 git+https://github.com/pygraphviz/pygraphviz.git
 git+https://github.com/networkx/networkx.git
@@ -30,3 +30,4 @@ git+git://github.com/Edinburgh-Genome-Foundry/GoldenHinges.git
 git+git://github.com/Edinburgh-Genome-Foundry/SnapGeneReader.git
 git+git://github.com/Edinburgh-Genome-Foundry/Flametree.git
 git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git
+git+git://github.com/Edinburgh-Genome-Foundry/crazydoc.git

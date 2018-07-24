@@ -17,6 +17,7 @@ export default {
 .collapsible {
   width: 95%;
   margin-left: 2.5%;
+  margin-bottom: 1.5em;
   .el-collapse {
     border: none;
   }

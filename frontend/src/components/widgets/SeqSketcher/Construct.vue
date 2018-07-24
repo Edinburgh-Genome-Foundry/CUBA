@@ -1,16 +1,16 @@
 <template lang='pug'>
 .construct
   hr
+  .controls.construct-hover-only
+    el-button-group
+      el-button(@click="$emit('delete')" size='mini' icon='el-icon-delete' title='Delete')
+      el-button(@click="$emit('new')" size='mini' icon='el-icon-plus' title='Insert new')
+      el-button(@click="$emit('moveUp')" size='mini' icon='el-icon-arrow-up' title='Move up')
+      el-button(@click="$emit('moveDown')" size='mini' icon='el-icon-arrow-down' title='Move down')
+      el-button(@click="$emit('duplicate')" size='mini' icon='el-icon-news') Duplicate
   textarea.name(v-model='constructData.name', placeholder='(Name this construct)' rows=1)
   textarea.note(v-model='constructData.note', placeholder='(Add a note)',
                 :class="{'construct-hover-only': (constructData.note.length === 0)}")
-
-  .controls.construct-hover-only
-    .control(@click="$emit('delete')") <icon name='trash-o'></icon> Delete
-    .control(@click="$emit('new')") <icon name='plus-circle'></icon> Insert new
-    .control(@click="$emit('duplicate')") <icon name='files-o'></icon> Duplicate
-    .control(@click="$emit('moveUp')") <icon name='arrow-up'></icon> Move up
-    .control(@click="$emit('moveDown')") <icon name='arrow-down'></icon> Move down
   .parts
     transition-group.inline-part(name='parts-list',
                      enter-active-class='animated flipInX',
@@ -106,21 +106,8 @@ export default {
     width: 100%;
   }
   .controls {
-    margin-top: -1em;
+    text-align: right;
     margin-bottom: 1em;
-
-
-    .control {
-      display: inline-block;
-      margin-right: 1.5em;
-      // width: 6.5em;
-      color: #91a0cc;
-      cursor: pointer;
-      &:hover {
-        // font-weight: bold;
-        color: #000;
-      }
-    }
   }
   textarea {
     border: none !important;

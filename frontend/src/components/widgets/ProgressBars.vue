@@ -1,7 +1,7 @@
 <template lang='pug'>
 .progress-bars
-  p(v-for="bar in order" v-if='bars[bar] && bars[bar].index <= bars[bar].total')
-    span {{bars[bar].title}} {{ bars[bar].index }} / {{ bars[bar].total }}
+  .bar(v-for="bar in order" v-if='bars[bar] && bars[bar].index <= bars[bar].total')
+    div.bar-name {{bars[bar].title}} {{ bars[bar].index }} / {{ bars[bar].total }}
     el-progress(:percentage="100 * bars[bar].index / bars[bar].total", :show-text='false')
 </template>
 
@@ -17,8 +17,16 @@ export default {
 
 <style lang='scss' scoped>
 .progress-bars {
-  font-family: 'Inconsolata', Courier;
+  .bar {
+    margin-bottom: 1em;
+    .bar-name {
+      font-family: 'Inconsolata', Courier;
+      margin-bottom: 0.3em;
+    }
+  }
+
+
   max-width: 500px;
-  margin: 0 auto;
+  margin: 1em auto;
 }
 </style>
