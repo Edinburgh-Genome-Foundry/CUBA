@@ -32,7 +32,10 @@ class SimulateGGAssemblies(AppTestCase):
         parts=[],
         connectors=[],
         select_connectors=False,
-        include_fragments=False
+        include_fragments=False,
+        use_assembly_plan=False,
+        single_assemblies=False,
+        assembly_plan=None
     )
 
     def test_dual_assembly(self):
@@ -45,5 +48,4 @@ class SimulateGGAssemblies(AppTestCase):
         logprint(parts)
         response = self.run_job(parts=parts)#parts=parts)
         logprint(response)
-        self.assertEqual(response['preview']['html'],
-                         "2 constructs were generated.")
+        self.assertEqual(response['infos']['nconstructs'], 2)
