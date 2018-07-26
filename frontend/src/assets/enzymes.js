@@ -64,6 +64,7 @@ export default {
     'NarI',
     'NcoI',
     'NdeI',
+    'NspI',
     'NgoMIV',
     'NheI',
     'NotI',
