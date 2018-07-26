@@ -69,8 +69,8 @@ import sequencesuploader from '../../components/widgets/SequencesUploader'
 import digestionset from '../../components/widgets/DigestionSelectorSet'
 
 var infos = {
-  title: 'Insert parts on backbones',
-  navbarTitle: 'Insert parts on backbones',
+  title: 'Insert Parts on Backbones',
+  navbarTitle: 'Insert Parts on Backbones',
   path: 'insert_parts_on_backbones',
   description: '',
   backendUrl: 'start/insert_parts_on_backbones',

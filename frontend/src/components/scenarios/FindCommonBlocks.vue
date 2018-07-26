@@ -39,8 +39,8 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Find common DNA blocks',
-  navbarTitle: 'Find common DNA blocks',
+  title: 'Find Common DNA Blocks',
+  navbarTitle: 'Find Common DNA Blocks',
   path: 'find-common-blocks',
   description: '',
   backendUrl: 'start/find_common_blocks',

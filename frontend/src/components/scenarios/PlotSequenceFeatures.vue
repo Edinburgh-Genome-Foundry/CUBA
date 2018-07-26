@@ -127,8 +127,8 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Plot sequence features',
-  navbarTitle: 'Plot sequence features',
+  title: 'Plot Sequence Features',
+  navbarTitle: 'Plot Sequence Features',
   path: 'plot-sequence-features',
   description: '',
   backendUrl: 'start/plot_sequence_features',

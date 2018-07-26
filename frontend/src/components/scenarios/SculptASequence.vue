@@ -53,8 +53,8 @@ import featureseditor from '../../components/widgets/FeaturesEditor/FeaturesEdit
 var bioparsers = require('bio-parsers')
 
 var infos = {
-  title: 'Sculpt A Sequence',
-  navbarTitle: 'Sculpt A Sequence',
+  title: 'Sculpt a Sequence',
+  navbarTitle: 'Sculpt a Sequence',
   path: 'sculpt_a_sequence',
   description: '',
   backendUrl: 'start/sculpt_a_sequence',

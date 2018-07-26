@@ -125,18 +125,17 @@
        type="error", :closable="false")
 
     .results(v-if='!queryStatus.polling.inProgress')
-      p.results-summary(v-if='queryStatus.result.summary',
-                        v-html="queryStatus.result.summary")
-      download-button(v-if='queryStatus.result.zip_file',
-                      :filedata='queryStatus.result.zip_file')
+      download-button(v-if='queryStatus.result.file',
+        text='Download Picklist',
+        :filedata='queryStatus.result.file')
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
 
 var infos = {
-  title: 'Create assembly picklists',
-  navbarTitle: 'Create assembly picklists',
+  title: 'Create Assembly Picklists',
+  navbarTitle: 'Create Assembly Picklists',
   path: 'create_assembly_picklists',
   description: '',
   backendUrl: 'start/create_assembly_picklists',

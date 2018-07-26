@@ -52,8 +52,8 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Compare two sequences',
-  navbarTitle: 'Compare two sequences',
+  title: 'Compare Two Sequences',
+  navbarTitle: 'Compare Two Sequences',
   path: 'compare-two-sequences',
   description: '',
   backendUrl: 'start/compare_two_sequences',

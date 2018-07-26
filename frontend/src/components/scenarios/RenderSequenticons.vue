@@ -50,8 +50,8 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Render sequenticons',
-  navbarTitle: 'Render sequenticons',
+  title: 'Render Sequenticons',
+  navbarTitle: 'Render Sequenticons',
   path: 'render-sequenticons',
   description: '',
   backendUrl: 'start/render_sequenticons',

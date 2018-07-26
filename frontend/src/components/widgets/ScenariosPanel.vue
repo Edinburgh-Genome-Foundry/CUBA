@@ -32,7 +32,8 @@ img {
 .caption {
     padding: 0;
     h3 {
-        height: 50px;
+        font-size: 1em;
+        height: 40px;
     }
 }
 

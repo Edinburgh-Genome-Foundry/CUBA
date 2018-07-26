@@ -8,6 +8,7 @@ from plateo.containers.plates import Plate4ti0960
 from plateo.exporters import (AssemblyPicklistGenerator,
                               picklist_to_assembly_mix_report)
 from plateo.exporters import (picklist_to_labcyte_echo_picklist_file,
+                              picklist_to_tecan_evo_picklist_file,
                               PlateTextPlotter)
 from plateo.tools import human_volume
 import flametree
@@ -94,7 +95,6 @@ class worker_class(AsyncWorker):
             volume_rounding=2.5e-9,
             minimal_dispense_volume=5e-9
         )
-
         source_filelike = file_to_filelike_object(data.source_plate)
         source_plate = plate_from_content_spreadsheet(source_filelike)
 
@@ -105,7 +105,7 @@ class worker_class(AsyncWorker):
                 well.content.quantities[content] *= 1e-3
 
         destination_plate = Plate4ti0960("Mixplate")
-        picklist, data = picklist_generator.make_picklist(
+        picklist, picklist_data = picklist_generator.make_picklist(
             assembly_plan,
             source_wells=source_plate.iter_wells(),
             destination_wells=destination_plate.iter_wells(direction='column'),
@@ -122,7 +122,7 @@ class worker_class(AsyncWorker):
         plotter = PlateTextPlotter(text)
         ax, _ = plotter.plot_plate(future_plates[destination_plate], figsize=(20, 8))
 
-        ziproot = flametree.file_tree("assembly_picklist", replace=True)
+        ziproot = flametree.file_tree("@memory", replace=True)
         ax.figure.savefig(
             ziproot._file("final_mixplate.pdf").open('wb'),
             format="pdf",
@@ -131,7 +131,7 @@ class worker_class(AsyncWorker):
         picklist_to_assembly_mix_report(
             picklist,
             ziproot._file("assembly_mix_picklist_report.pdf").open('wb'),
-            data=data)
+            data=picklist_data)
         assembly_plan.write_report(
             ziproot._file("assembly_plan_summary.pdf").open('wb'))
         if data.dispenser_machine == 'labcyte_echo':
@@ -140,7 +140,7 @@ class worker_class(AsyncWorker):
         else:
             picklist_to_tecan_evo_picklist_file(
                 picklist, ziproot._file("EVO_picklist.gwl").open('w'))
-        ziproot._close()
+        zip_data = ziproot._close()
 
         return {
              'file': {
@@ -148,8 +148,7 @@ class worker_class(AsyncWorker):
                  'name': 'assemblies.zip',
                  'mimetype': 'application/zip'
              },
-             'success': True,
-             'infos': infos
+             'success': True
         }
 
 class CreateAssemblyPicklistsView(StartJobView):
