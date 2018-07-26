@@ -1,13 +1,13 @@
 <template lang='pug'>
 div
   div(v-for='(selector, index) in value')
-    el-row
+    el-row(:gutter='20')
       el-col(:span=22)
         digestionselector(v-model='value[index]')
       el-col(:span=2)
-        el-button(@click='value.splice(index, 1)', icon='delete')
-  .addbutton
-    el-button(@click='value.push([])' icon='plus') Add a digestion
+        el-button(@click='value.splice(index, 1)', icon='el-icon-delete' circle)
+  .addbutton(style='margin-top: 2em')
+    el-button(@click='value.push([])' icon='el-icon-plus') Add a digestion
 </template>
 
 <script>
