@@ -45,12 +45,7 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=74
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaChisel.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/GoldenHinges.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/plateo.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Flametree.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git
-# RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Geneblocks.git
+ARG CACHEBUST=81
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/pdf_reports.git
 # RUN pip install biopython==1.70

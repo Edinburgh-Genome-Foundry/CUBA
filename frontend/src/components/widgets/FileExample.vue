@@ -1,7 +1,8 @@
 <template lang="pug">
 .file-example
-  el-dialog(title="File preview" :visible.sync="dialogVisible" width="80%")
-    img.big-image(v-if='imgSrc', :src='imgSrc')
+  el-dialog(title="", :visible.sync="dialogVisible" width="80%")
+    center
+      img.big-image(v-if='imgSrc', :src='imgSrc')
 
   el-card
     center

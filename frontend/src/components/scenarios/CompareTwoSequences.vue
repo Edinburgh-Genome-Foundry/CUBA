@@ -26,11 +26,9 @@
                    tip="Genbank/Fasta/Snapgene/txt/Zip",
                    :multiple='false')
 
-    p.inline
-      span Figure width:
-      el-input-number.inline(v-model='form.figure_width',
-                       :max=50, :min=4, :step=1, size='small')
-      span &nbsp; inches
+    el-form
+      el-form-item(label='Figure width (in)')
+        el-input-number(v-model='form.figure_width', :max='50', :min='4', :step='1', size='small')
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Evaluate',
@@ -42,7 +40,7 @@
     center
       img.result_image(:src='queryStatus.result.figure_data')
     download-button(v-if='queryStatus.result.record',
-                    text='Download Genbank',
+                    text='Diff-annotated Genbank file',
                     :filedata='queryStatus.result.record')
 
 
