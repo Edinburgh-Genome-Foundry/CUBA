@@ -26,7 +26,12 @@
 
         collapsible(title='Examples')
           file-example(filename='phage_sequence.txt',
-                       @input='function (e) {form.sequence = e}',
+                       @input="function (e) { \
+                         form.sequence = e; \
+                         form.extremities = false; \
+                         form.cutting_mode = 'equal'; \
+                         form.n_fragments = 50; \
+                        }",
                        fileHref='/static/file_examples/design_overhangs/phage_sequence.txt',
                        imgSrc='/static/file_examples/generic_logos/sequence_file.svg')
             p.
@@ -35,6 +40,20 @@
               managed to assemble this sequence in a one-step assembly of fifty 1kb
               fragments, digested by type-IIs enzymes. This required a very careful
               selection of enzyme overhangs.
+          file-example(filename='sequence_with_specs.gb',
+                         @input="function (e) { \
+                           form.sequence = e; \
+                           form.extremities = true; \
+                           form.cutting_mode = 'features'; \
+                          }",
+                         fileHref='/static/file_examples/design_overhangs/sequence_with_specs.gb',
+                         imgSrc='/static/file_examples/design_overhangs/sequence_with_specs.png')
+              p.
+                A 50kb sequence of phage lambda.
+                #[a(href="https://www.nature.com/articles/srep10655") Tsuge et al. ]
+                managed to assemble this sequence in a one-step assembly of fifty 1kb
+                fragments, digested by type-IIs enzymes. This required a very careful
+                selection of enzyme overhangs.
 
         files-uploader(v-model='form.sequence',
                        tip='Fasta or genbank. No file too large please :)',
@@ -107,7 +126,7 @@
                          :max=100, :min=0, :step=25, :style="{width: '100px'}")
         span {{ form.gc_content[0] }}% to {{ form.gc_content[1] }}%:
 
-      h4 Forbidden overhangs
+      h4.formlabel Forbidden overhangs
 
       el-input(type='textarea',
                :rows='4'
@@ -115,7 +134,7 @@
                placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
 
       div(v-show="form.goal === 'overhangs_set'")
-        h4
+        h4.formlabel
           span External overhangs
           helper.
             The generated overhangs will be compatible with all the external overhangs

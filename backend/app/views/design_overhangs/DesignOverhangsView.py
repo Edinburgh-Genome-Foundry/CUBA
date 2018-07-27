@@ -51,12 +51,10 @@ class worker_class(AsyncWorker):
         )
 
         if data.goal == 'sequence_decomposition':
-            record, fmt = records_from_data_file(data.sequence)
-            # record = records[0]
-            print (record[:50])
+            records, fmt = records_from_data_file(data.sequence)
+            record = records[0]
             self.logger(message="Decomposing the sequence...")
             if data.cutting_mode == 'equal':
-                print ("HEEEEEEERE")
                 solution = selector.cut_sequence(
                     sequence=record,
                     equal_segments=data.n_fragments,
@@ -68,7 +66,6 @@ class worker_class(AsyncWorker):
                     sequence=record,
                     include_extremities=data.extremities,
                     allow_edits=data.allow_edits)
-            print("Solution", solution)
             if solution is None:
                 return {
                   'success': False
@@ -96,7 +93,6 @@ class worker_class(AsyncWorker):
                     # mandatory_overhangs=data.mandatory_overhangs,
                     n_cliques=30000
                 )
-                print ("FOUND %s" % "-".join(sorted(overhangs)))
             except ValueError as err:
                 return {
                   'success': False,

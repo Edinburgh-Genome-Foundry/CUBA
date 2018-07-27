@@ -88,6 +88,8 @@ def records_from_data_file(data_file):
             except:
                 raise ValueError("Format not recognized for file " +
                                  data_file.name)
+    if not isinstance(records, list):
+        records = [records]
     return records, fmt
 
 def record_to_formated_string(record, fmt='genbank'):
