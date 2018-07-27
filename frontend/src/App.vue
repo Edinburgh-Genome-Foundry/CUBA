@@ -66,6 +66,14 @@ body {
   margin: 0px auto;
 }
 
+hr {
+    border : 0;
+    height: 1px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
 .el-button {
   font-size: 18px;
 }

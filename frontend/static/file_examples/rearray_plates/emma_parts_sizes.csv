@@ -1,0 +1,92 @@
+part,size
+p10_tet-aptazyme,1984
+p9_firefly luciferase,3549
+p2_insulatorfb,1954
+p20_ct-nes,1857
+p9_bsdr,2214
+p20_linker3,1850
+p20_ct-minute-nes,1848
+p19_tet-on-3g,2574
+conn j-k,1855
+p16_bghpolya,2070
+p7_laci,2892
+p18_cmvp,2356
+p25_sv40-ori,1949
+p4_kt-l7ae -weiss,1845
+p5_k1-k1,1884
+p6_atg_boxc,1886
+p3_tre3gp,2209
+p5_kt-weiss,1896
+p19_mneogreen,2529
+p21_mtagbfp2,2524
+p6_nt-mls,1910
+conn l-y,1905
+conn t-v,1853
+conn a-c,1905
+p7_mcherry,2520
+p1_5'ha-haavs1,2723
+p21_mkate2,2509
+conn l-w,1905
+conn y-z,1905
+p7_bxb1,3312
+p9_mtagbfp2,2526
+conn w-y,1905
+conn b-l,1853
+p6_nt-igkl sequence,1886
+p15_puror,2424
+p11_sv40polya,1944
+conn w-z,1905
+p8_linker1,1864
+p24_3'pb,2060
+hc_amp_ccdb,2721
+p7_mtagbfp2,2523
+p19_mruby2,2532
+p5_attp-bxb1,1869
+p9_dmrc,2101
+p8_p2a,1870
+p23_insulatorfb,1954
+p5_attb-bxb1,1855
+p7_l7ae,2409
+p3_cmvp_tet,2440
+conn h-ha,1861
+p24_3'ha_haavs1,2446
+conn q-r,1905
+p3_cagp,2503
+p21_mruby2,2524
+p8a_ct-kdel,1863
+p21_dmra,2140
+p7_mkate2,2508
+p6_nt-myristoylation signal,1865
+conn l-n,1905
+p21_puror,2413
+p18_ef1ap,3037
+conn l-r,1905
+conn d-f,1855
+p4_lac-o,1909
+p8_linker2,1849
+p7_mneogreen,2520
+conn h-k,1861
+p9_mruby2,2529
+p6_kozak-atg,1856
+p6_nt-palm sequence,1883
+p9_neor,2628
+p9_a-tubulin,3175
+p20_p2a,1874
+conn b-e,1853
+conn w-x,1905
+p19_mtagbfp2,2532
+p8b_ires2,2427
+conn r-w,1853
+p14_cmvp,2356
+conn h-j,1861
+conn d-e,1855
+p21_mneogreen,2521
+p14_sv40p,2193
+p1_5'-itr-pb,2163
+p9_puror,2415
+p22_pgkpolya,2042
+p3_ef1ap,3037
+p6_nt-sv40_nls,1847
+p7_mruby2,2523
+p7_l7ae-weiss,2169
+p9_mneogreen,2526

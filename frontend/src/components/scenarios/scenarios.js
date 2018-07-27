@@ -34,7 +34,8 @@ export default {
     {
       category: 'Manufacturing',
       scenarios: [
-        require('./CreateAssemblyPicklists.vue').default
+        require('./CreateAssemblyPicklists.vue').default,
+        require('./RearrayPlates.vue').default
       ]
     }
   ]

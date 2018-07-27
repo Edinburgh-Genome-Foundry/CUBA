@@ -11,6 +11,7 @@ from .find_saboteur_parts import FindSaboteurPartsView
 from .insert_parts_on_backbones import InsertPartsOnBackbonesView
 from .plot_sequence_features import PlotSequenceFeaturesView
 from .predict_digestions import PredictDigestionsView
+from .rearray_plates import RearrayPlatesView
 from .render_sequenticons import RenderSequenticonsView
 from .sculpt_a_sequence import SculptASequenceView
 from .select_digestions import SelectDigestionsView

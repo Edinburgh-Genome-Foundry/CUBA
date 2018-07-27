@@ -23,14 +23,14 @@ from ..serializers import FileSerializer
 
 class serializer_class(serializers.Serializer):
     source_plate = FileSerializer(allow_null=False)
-    picklist = FileSerializer()
+    sample_source_by = serializers.CharField()
     destination_type = serializers.CharField()
     destination_size = serializers.IntegerField()
     fill_by = serializers.CharField()
     destination_plate = FileSerializer(allow_null=True)
-    quantity_unit = serializers.CharField()
-    part_quantity = serializers.FloatField()
-    buffer_volume = serializers.FloatField()
+    concentration_unit = serializers.CharField()
+    concentration = serializers.FloatField()
+    normalize = serializers.BooleanField()
     total_volume = serializers.FloatField()
     parts_infos = serializers.ListField(child=FileSerializer())
     dispenser_machine = serializers.CharField()
@@ -104,7 +104,6 @@ class worker_class(AsyncWorker):
                 content = well.content.components_as_string()
                 well.content.quantities[content] *= 1e-3
 
-        self.logger(message="Generating Picklist...")
         destination_plate = Plate4ti0960("Mixplate")
         picklist, picklist_data = picklist_generator.make_picklist(
             assembly_plan,
@@ -129,8 +128,6 @@ class worker_class(AsyncWorker):
             format="pdf",
             bbox_inches="tight")
         plt.close(ax.figure)
-
-        self.logger(message="Writing report...")
         picklist_to_assembly_mix_report(
             picklist,
             ziproot._file("assembly_mix_picklist_report.pdf").open('wb'),
@@ -154,6 +151,6 @@ class worker_class(AsyncWorker):
              'success': True
         }
 
-class CreateAssemblyPicklistsView(StartJobView):
+class RearrayPlatesView(StartJobView):
     serializer_class = serializer_class
     worker_class = worker_class
