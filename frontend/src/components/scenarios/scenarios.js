@@ -27,7 +27,8 @@ export default {
         require('./PredictDigestions').default,
         require('./SelectDigestions').default,
         require('./AnalyzeDigests').default,
-        require('./SelectPrimers').default
+        require('./SelectPrimers').default,
+        require('./FindSaboteurParts').default
       ]
     },
     {

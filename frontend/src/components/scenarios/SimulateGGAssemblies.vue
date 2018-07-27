@@ -117,7 +117,7 @@ import sequencesuploader from '../../components/widgets/SequencesUploader'
 import digestionset from '../../components/widgets/DigestionSelectorSet'
 
 var infos = {
-  title: 'Simulate Golden Gate assemblies',
+  title: 'Simulate Golden Gate Assemblies',
   navbarTitle: 'Simulate Golden Gate',
   path: 'simulate_gg_assemblies',
   description: '',

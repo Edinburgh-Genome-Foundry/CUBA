@@ -12,7 +12,9 @@ RUN apt-get install -y python-dev swig libxml2-dev zlib1g-dev libgmp-dev
 # The next line installs NCBI BLAST (for GeneBlocks, DNAWeaver, etc.)
 RUN apt-get install -y ncbi-blast+
 
-
+# Numberjack (requirement of GoldenHinges) is veeery slow to install,
+# It has its own Docker file, line so changes in other lines don't reinstall it.
+RUN pip install Numberjack
 RUN mkdir /code
 ADD requirements.txt /code/
 WORKDIR /code
@@ -46,6 +48,5 @@ RUN fc-cache -f
 ADD . /code/
 
 ARG CACHEBUST=81
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo.git
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/pdf_reports.git
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/saboteurs
 # RUN pip install biopython==1.70

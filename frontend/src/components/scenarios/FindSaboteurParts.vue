@@ -10,20 +10,14 @@
 
   .form
 
-    h4.formlabel Upload sequence files
+    h4.formlabel Assemblies data
     collapsible(title='Examples')
-      file-example(filename='Example sequences',
-                   fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
-                   @input='function (e) { form.files.push(e) }'
-                   imgSrc='/static/file_examples/simulate_gg_assemblies/generic_logos/sequences_records.png')
-    files-uploader(v-model='form.files', text="Drop files (or click to select)",
-                  help='Fasta or genbank. No file too large please :)', :multiple='true')
-    p.inline
-      el-radio(class='radio' v-model='form.output' label='images') Web preview
-      el-radio(class='radio' v-model='form.output' label='pdf') PDF report
-
-    p(v-if="form.output === 'pdf'") Report title: <br/><br/>
-      el-input(v-model="form.title")
+      file-example(filename='assemblies_data.csv',
+                   fileHref='/static/file_examples/find_saboteur_parts/assemblies_data.csv',
+                   @input='function (e) { form.assemblies_data_file = e }'
+                   imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+    files-uploader(v-model='form.assemblies_data_file', text="Drop files (or click to select)",
+                  help='Fasta or genbank. No file too large please :)', :multiple='false')
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Evaluate',
@@ -32,8 +26,9 @@
        type="error", :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result')
-    download-button(v-if='queryStatus.result.pdf_file',
-                    :filedata='queryStatus.result.pdf_file')
+    download-button(v-if='queryStatus.result.report',
+                    text='Download the report',
+                    :filedata='queryStatus.result.report')
     .images(v-if="queryStatus.result.images")
       el-card.box-card(v-for="name_tag in queryStatus.result.images"
                        :key='name_tag[0]'
@@ -50,13 +45,13 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Render sequenticons',
-  navbarTitle: 'Render sequenticons',
-  path: 'render-sequenticons',
+  title: 'Find Saboteur Parts',
+  navbarTitle: 'Find Saboteur Parts',
+  path: 'find_saboteur_parts',
   description: '',
-  backendUrl: 'start/render_sequenticons',
-  icon: require('../../assets/images/render_sequenticons.svg'),
-  poweredby: ['sequenticon']
+  backendUrl: 'start/find_saboteur_parts',
+  icon: require('../../assets/images/find_saboteur_parts.svg'),
+  poweredby: ['saboteurs']
 }
 
 export default {
@@ -64,9 +59,7 @@ export default {
     return {
       infos: infos,
       form: {
-        files: [],
-        output: 'images',
-        title: 'My sequenticons'
+        assemblies_data_file: null
       },
       queryStatus: {
         polling: {},
@@ -82,7 +75,7 @@ export default {
   methods: {
     validateForm () {
       var errors = []
-      if (!this.form.files.length) {
+      if (!this.form.assemblies_data_file) {
         errors.push('Provide files !')
       }
       return errors

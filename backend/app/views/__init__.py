@@ -7,6 +7,7 @@ from .create_assembly_picklists import CreateAssemblyPicklistsView
 from .design_overhangs import DesignOverhangsView
 from .evaluate_manufacturability import EvaluateManufacturabilityView
 from .find_common_blocks import FindCommonBlocksView
+from .find_saboteur_parts import FindSaboteurPartsView
 from .insert_parts_on_backbones import InsertPartsOnBackbonesView
 from .plot_sequence_features import PlotSequenceFeaturesView
 from .predict_digestions import PredictDigestionsView

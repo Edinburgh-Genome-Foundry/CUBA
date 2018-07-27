@@ -70,6 +70,11 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/primavera.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Primavera'
   },
+  saboteurs: {
+    name: 'Saboteurs',
+    logoSrc: '/static/logos/saboteurs.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/saboteurs'
+  },
   sequenticon: {
     name: 'Sequenticon',
     logoSrc: '/static/logos/sequenticon.png',
