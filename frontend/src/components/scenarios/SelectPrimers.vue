@@ -4,7 +4,7 @@
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Get enzyme suggestions for your restriction digests:",
             :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
-  img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
+  img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Find optimal Sanger sequencing plans for your constructs, maximizing primer
     reuse and minimizing the total numbers of reads and of new primers to buy.

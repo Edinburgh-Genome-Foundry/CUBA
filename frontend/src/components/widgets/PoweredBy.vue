@@ -50,6 +50,11 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/dfv.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer'
   },
+  genedom: {
+    name: 'Genedom',
+    logoSrc: '/static/logos/genedom.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/genedom'
+  },
   goldenhinges: {
     name: 'Golden Hinges',
     logoSrc: '/static/logos/goldenhinges.png',

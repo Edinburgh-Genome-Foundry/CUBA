@@ -8,7 +8,8 @@ export default {
         require('./SimulateGGAssemblies').default,
         require('./InsertPartsOnBackbones').default,
         require('./SketchConstructs').default,
-        require('./ConvertSequenceFiles').default
+        require('./ConvertSequenceFiles').default,
+        require('./DomesticatePartBatches').default
       ]
     },
     {

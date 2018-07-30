@@ -28,9 +28,6 @@ RUN apt-get install -y xfonts-base xfonts-75dpi fonts-font-awesome fonts-lato
 RUN apt-get install -y xvfb wkhtmltopdf
 RUN apt-get install -y unzip
 ENV QT_QPA_FONTDIR=/root/.fonts/
-# RUN wget -O "Lato.zip" "https://fonts.google.com/download?family=Lato" \
-#     && unzip -u "Lato.zip" -d /root/.fonts \
-#     && rm -f "Lato.zip"
 RUN wget -O "Raleway.zip" "https://fonts.google.com/download?family=Raleway" \
     && unzip -u "Raleway.zip" -d /root/.fonts \
     && rm -f "Raleway.zip"
@@ -43,10 +40,15 @@ RUN wget -O "OpenSans.zip" "https://fonts.google.com/download?family=Open+Sans" 
 RUN wget -O "CabinSketch.zip" "https://fonts.google.com/download?family=Cabin+Sketch" \
     && unzip -u "CabinSketch.zip" -d /root/.fonts \
     && rm -f "CabinSketch.zip"
+RUN wget -O "Lato.zip" "https://fonts.google.com/download?family=Lato" \
+    && unzip -u "Lato.zip" -d /root/.fonts \
+    && rm -f "Lato.zip"
 RUN fc-cache -f
 
 ADD . /code/
 
 ARG CACHEBUST=82
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
+
 # RUN pip install biopython==1.70
