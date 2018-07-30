@@ -47,6 +47,6 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=81
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/saboteurs
+ARG CACHEBUST=82
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo
 # RUN pip install biopython==1.70

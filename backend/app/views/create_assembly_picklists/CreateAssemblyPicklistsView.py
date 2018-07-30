@@ -56,6 +56,10 @@ class worker_class(AsyncWorker):
             for i, row in dataframe.iterrows()
             if row[0] not in ['nan', 'Construct name']
         ]))
+        for assembly, parts in assembly_plan.assemblies.items():
+            assembly_plan.assemblies[assembly] = [
+                part.replace(" ", "_") for part in parts
+            ]
 
         if len(data.parts_infos):
             first_file = data.parts_infos[0]
@@ -76,6 +80,13 @@ class worker_class(AsyncWorker):
                     for rec in records
                 }
             assembly_plan.parts_data = parts_data
+            parts_without_data = assembly_plan.parts_without_data()
+            if len(parts_without_data):
+                return {
+                    'success': False,
+                    'message': 'Some parts have no provided record or data.',
+                    'missing_parts': parts_without_data
+                }
 
         if data.quantity_unit == 'fmol':
             part_mol = data.part_quantity * 1e-15
@@ -97,6 +108,21 @@ class worker_class(AsyncWorker):
         )
         source_filelike = file_to_filelike_object(data.source_plate)
         source_plate = plate_from_content_spreadsheet(source_filelike)
+        for well in source_plate.iter_wells():
+            if well.is_empty:
+                continue
+            quantities = well.content.quantities
+            part, quantity = quantities.items()[0]
+            quantities.pop(part)
+            quantities[part.replace(" ", "_")] = quantity
+
+        print (source_plate)
+        parts_on_plate = set([
+            well.content.components_as_string()
+            for well in source_plate.iter_wells()
+            ]
+        ).difference({''})
+        print (parts_on_plate)
 
         source_plate.name = "Source"
         for well in source_plate.iter_wells():
@@ -110,9 +136,16 @@ class worker_class(AsyncWorker):
             assembly_plan,
             source_wells=source_plate.iter_wells(),
             destination_wells=destination_plate.iter_wells(direction='column'),
-            complement_well=source_plate.wells.O24,
-            buffer_well=source_plate.wells.P24
+            # complement_well=source_plate.wells.O24,
+            # buffer_well=source_plate.wells.P24
         )
+        if picklist is None:
+            return {
+                'success': False,
+                'message': 'Some parts have no provided record or data.',
+                'picklist_data': picklist_data,
+                'missing_parts': picklist_data.get('missing_parts', None)
+            }
         future_plates = picklist.execute(inplace=False)
 
         def text(w):

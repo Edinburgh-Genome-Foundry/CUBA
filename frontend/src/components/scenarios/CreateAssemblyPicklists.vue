@@ -128,6 +128,17 @@
        type="error", :closable="false")
 
     .results(v-if='!queryStatus.polling.inProgress')
+      p(v-if='queryStatus.result.message') {{ queryStatus.result.message }}
+      div(v-if='queryStatus.result.missing_parts')
+        ul
+          li(v-for='didYouMean, part in queryStatus.result.missing_parts')
+            span #[b {{part}}]. <br/>
+            span(v-if='didYouMean.featured_in') Featured in {{didYouMean.featured_in.join(', ')}} <br/>
+            span Did you mean: <br/>
+            ul(v-if='didYouMean.featured_in')
+              li(v-for='part in didYouMean.did_you_mean') {{part[0]}}, {{part[1]}}
+            ul(v-else)
+              li(v-for='part in didYouMean') {{part}}
       download-button(v-if='queryStatus.result.file',
         text='Download Picklist',
         :filedata='queryStatus.result.file')
@@ -157,8 +168,8 @@ export default {
         destination_plate: null,
         fill_by: 'column',
         quantity_unit: 'fmol',
-        part_quantity: 1.5,
-        buffer_volume: 0.2,
+        part_quantity: 1.3,
+        buffer_volume: 0.3,
         total_volume: 1,
         parts_infos: [],
         dispenser_machine: 'labcyte_echo',

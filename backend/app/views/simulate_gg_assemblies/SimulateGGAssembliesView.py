@@ -36,6 +36,7 @@ class worker_class(AsyncWorker):
         for r in (records + connector_records):
             if not hasattr(r, 'linear'):
                 r.linear = False
+            r.seq = r.seq.upper()
         if data.enzyme == "Autoselect":
             possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
             data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)

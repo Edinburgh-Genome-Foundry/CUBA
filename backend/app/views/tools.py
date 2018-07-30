@@ -116,6 +116,7 @@ def records_from_data_files(data_files):
             name = name.replace(" ", "_")
             UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED',
                            'Exported']
+            record.seq.alphabet = DNAAlphabet()
             if str(record.id).strip() in UNKNOWN_IDS:
                 record.id = name
             if str(record.name).strip() in UNKNOWN_IDS:

@@ -19,6 +19,7 @@ services:
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
       - website-dist:/website
+      - /cert:/cert
 
 volumes:
      website-dist:
