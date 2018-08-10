@@ -41,7 +41,7 @@ urlpatterns = [
         name='design_overhangs'),
     url(r'^api/start/domesticate_part_batches$',
         views.DomesticatePartBatchesView.as_view(),
-        name='design_overhangs'),
+        name='domesticate_part_batches'),
     url(r'^api/start/evaluate_manufacturability$',
         views.EvaluateManufacturabilityView.as_view(),
         name='evaluate_manufacturability'),
