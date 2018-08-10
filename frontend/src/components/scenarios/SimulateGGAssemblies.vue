@@ -101,7 +101,7 @@
 
       .didyoumean(v-if='queryStatus.result.unknown_parts')
         p There were parts in the assembly plan without any correspondance in the records:
-        .div(v-for='name, didyoumean in queryStatus.result.unknown_parts')
+        .div(v-for='didyoumean, name in queryStatus.result.unknown_parts')
           p Part {{name}}: did you mean...
           ul
             li(v-for='candidate in didyoumean') {{candidate}}

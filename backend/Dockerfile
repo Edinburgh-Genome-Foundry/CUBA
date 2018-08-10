@@ -47,8 +47,9 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=82
+ARG CACHEBUST=83
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
-
-# RUN pip install biopython==1.70
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Flametree
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron
+RUN pip install biopython==1.70

@@ -99,7 +99,15 @@ export default {
       var columns = ['label', 'category', 'reversed', 'subscript', 'sublabel', 'bg_color']
       data.constructs.map(function (construct) {
         console.log(construct)
-        var sheetData = construct.parts.map(part => (columns.map(c => part[c])))
+        var sheetData = construct.parts.map(part => (columns.map(function (c) {
+          var result = part[c]
+          if ((c === 'reversed') && (!result)) {
+            console.log('lol')
+            return ''
+          } else {
+            return result
+          }
+        })))
         sheet = XLSX.utils.aoa_to_sheet([ columns ].concat(sheetData))
         XLSX.utils.book_append_sheet(workbook, sheet, construct.name)
       })

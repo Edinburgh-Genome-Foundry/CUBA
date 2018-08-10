@@ -67,6 +67,7 @@ def records_from_zip_file(zip_file):
                     name = f._name_no_extension.replace(" ", "_") + number
                 record.id = name
                 record.name = name[:20]
+                record.file_name = f._name_no_extension
             records += new_records
     return records
 

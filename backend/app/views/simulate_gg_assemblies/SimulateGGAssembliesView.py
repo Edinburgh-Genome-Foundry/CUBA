@@ -53,7 +53,7 @@ class worker_class(AsyncWorker):
                 filelike = file_to_filelike_object(data.assembly_plan)
                 dataframe = pandas.read_excel(filelike, header=None)
             assembly_plan = AssemblyPlan.from_spreadsheet(dataframe=dataframe)
-            assembly_plan.parts_data = {r.id: {'record': r} for r in records}
+            assembly_plan.parts_data = {r.file_name: {'record': r} for r in records}
             parts_without_data = assembly_plan.parts_without_data()
             if len(parts_without_data):
                 return {

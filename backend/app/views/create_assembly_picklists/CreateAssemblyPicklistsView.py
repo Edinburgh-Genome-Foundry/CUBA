@@ -76,7 +76,7 @@ class worker_class(AsyncWorker):
             else:
                 records = records_from_data_files(data.parts_infos)
                 parts_data = {
-                    rec.id: {'record': rec}
+                    rec.file_name: {'record': rec}
                     for rec in records
                 }
             assembly_plan.parts_data = parts_data
@@ -142,7 +142,8 @@ class worker_class(AsyncWorker):
         if picklist is None:
             return {
                 'success': False,
-                'message': 'Some parts have no provided record or data.',
+                'message': 'Some parts in the assembly plan have no '
+                           'corresponding well.',
                 'picklist_data': picklist_data,
                 'missing_parts': picklist_data.get('missing_parts', None)
             }
@@ -157,6 +158,9 @@ class worker_class(AsyncWorker):
         ax, _ = plotter.plot_plate(future_plates[destination_plate], figsize=(20, 8))
 
         ziproot = flametree.file_tree("@memory", replace=True)
+
+        # MIXPLATE MAP PLOT
+
         ax.figure.savefig(
             ziproot._file("final_mixplate.pdf").open('wb'),
             format="pdf",
@@ -164,12 +168,18 @@ class worker_class(AsyncWorker):
         plt.close(ax.figure)
 
         self.logger(message="Writing report...")
+
+        # ASSEMBLY REPORT
+
         picklist_to_assembly_mix_report(
             picklist,
             ziproot._file("assembly_mix_picklist_report.pdf").open('wb'),
             data=picklist_data)
         assembly_plan.write_report(
             ziproot._file("assembly_plan_summary.pdf").open('wb'))
+
+        # MACHINE PICKLIST
+
         if data.dispenser_machine == 'labcyte_echo':
             picklist_to_labcyte_echo_picklist_file(
                 picklist, ziproot._file("ECHO_picklist.csv").open('w'))
