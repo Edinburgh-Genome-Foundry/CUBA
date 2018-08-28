@@ -62,7 +62,8 @@ def records_from_zip_file(zip_file):
             single_record = len(new_records) == 1
             for i, record in enumerate(new_records):
                 name = record.id
-                if name in [None, '', "<unknown id>", '.', ' ']:
+                if name in [None, '', "<unknown id>", '.', ' ',
+                            "<unknown name>"]:
                     number = ('' if single_record else ("%04d" % i))
                     name = f._name_no_extension.replace(" ", "_") + number
                 record.id = name
@@ -116,7 +117,7 @@ def records_from_data_files(data_files):
             name = name_no_extension + ('' if single_record else ("%04d" % i))
             name = name.replace(" ", "_")
             UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED',
-                           'Exported']
+                           "<unknown name>", 'Exported']
             record.seq.alphabet = DNAAlphabet()
             if str(record.id).strip() in UNKNOWN_IDS:
                 record.id = name
