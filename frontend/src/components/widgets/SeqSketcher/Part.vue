@@ -75,8 +75,11 @@ export default {
       ],
       categories: [
         'ATG',
+        'backbone',
         'CDS',
         'DNA-binding-element',
+        'expression-cassette',
+        'etc',
         'five-prime-overhang',
         'homology-arm',
         'insulator',
@@ -130,7 +133,8 @@ export default {
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 
-$categories: (ATG CDS DNA-binding-element five-prime-overhang homology-arm
+$categories: (ATG backbone CDS DNA-binding-element expression-cassette etc
+              five-prime-overhang homology-arm
               insulator IRES ITR LTR origin-of-replication p2A part-linker
               peptide-linker promoter protein-tag none recombinase-recognition-sequence
               restriction-enzyme-recognition-site ribosome-entry-site

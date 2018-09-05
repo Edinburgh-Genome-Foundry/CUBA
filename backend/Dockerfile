@@ -52,4 +52,5 @@ RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Flametree
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/caravagene
 RUN pip install biopython==1.70
