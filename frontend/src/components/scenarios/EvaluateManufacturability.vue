@@ -12,7 +12,7 @@
   .form
 
     h4.formlabel Sequence(s) to analyze
-    filesuploader(v-model='form.files', :multiple='true',
+    files-uploader(v-model='form.files', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
     .files-number(v-if='form.files.length > 0')
       p {{ form.files.length }} file{{ form.files.length > 1 ? 's' : '' }}  selected

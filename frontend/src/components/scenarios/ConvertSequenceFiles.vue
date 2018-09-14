@@ -19,7 +19,7 @@
       el-radio(v-model='form.format', class="radio", label='genbank') Genbank
       el-radio(v-model='form.format', class="radio", label='fasta') Fasta
     .checkbox
-      el-checkbox(v-if="(form.files.length > 1) && (form.format === 'fasta')"
+      el-checkbox(v-if="form.format === 'fasta'"
                   v-model='form.inSingleFile') All sequences in a single file
 
 

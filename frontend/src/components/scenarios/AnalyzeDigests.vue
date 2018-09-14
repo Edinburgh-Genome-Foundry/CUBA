@@ -131,6 +131,12 @@
                       :filedata='queryStatus.result.pdf_file')
       .center(v-if='queryStatus.result.figure_data')
         img(:src='queryStatus.result.figure_data')
+    .unknown-constructs(v-if='queryStatus.result.unknown_constructs')
+      el-alert(title="Couldn't find a corresponding record for some constructs in the plate."
+               type="error")
+      ul
+        li(v-for='data, cst in queryStatus.result.unknown_constructs').
+          #[b {{ cst }}] (well {{ data.well }}). <br/> Did you mean: {{ data.suggestions.join(', ')}}
   powered-by(:softwareNames='infos.poweredby')
 </template>
 

@@ -14,6 +14,12 @@ from snapgene_reader import snapgene_file_to_seqrecord
 import bandwagon as bw
 import crazydoc
 
+from fuzzywuzzy import process
+
+def did_you_mean(name, other_names, limit=5, min_score=50):
+    results = process.extract(name, list(other_names), limit=limit)
+    return [e for (e, score) in results if score >= min_score]
+
 def fix_ice_genbank(genbank_txt):
     lines = genbank_txt.splitlines()
     lines[0] += max(0, 80 - len(lines[0])) * ' '
@@ -66,10 +72,12 @@ def records_from_zip_file(zip_file):
                             "<unknown name>"]:
                     number = ('' if single_record else ("%04d" % i))
                     name = f._name_no_extension.replace(" ", "_") + number
+                name = name.split(".")[0]
                 record.id = name
                 record.name = name[:20]
                 record.file_name = f._name_no_extension
             records += new_records
+    print ([(r.name, r.id) for r in records])
     return records
 
 
@@ -119,11 +127,16 @@ def records_from_data_files(data_files):
             UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED',
                            "<unknown name>", 'Exported']
             record.seq.alphabet = DNAAlphabet()
+            # Sorry for this parts, it took a lot of "whatever works"
+            # keep your part names under 20c and pointless, and everything
+            # will be good
+            name = name.split(".")[0]
             if str(record.id).strip() in UNKNOWN_IDS:
                 record.id = name
             if str(record.name).strip() in UNKNOWN_IDS:
                 record.name = name
             record.name = record.name[:20]
+            record.id = record.split(".")
         records += recs
     return records
 

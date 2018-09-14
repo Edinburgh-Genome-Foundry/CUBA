@@ -34,10 +34,10 @@ class worker_class(AsyncWorker):
         logging.log(logging.ERROR, data)
 
         data.forbidden_overhangs = [] if (data.forbidden_overhangs == '') else [
-            s.strip() for s in data.forbidden_overhangs.split(',')
+            s.strip().upper() for s in data.forbidden_overhangs.split(',')
         ]
         data.mandatory_overhangs = [] if (data.mandatory_overhangs == '') else [
-            s.strip() for s in data.mandatory_overhangs.split(',')
+            s.strip().upper() for s in data.mandatory_overhangs.split(',')
         ]
 
         selector = OverhangsSelector(
@@ -51,8 +51,9 @@ class worker_class(AsyncWorker):
         )
 
         if data.goal == 'sequence_decomposition':
-            records, fmt = records_from_data_file(data.sequence)
+            records, _ = records_from_data_file(data.sequence)
             record = records[0]
+            record.seq = record.seq.upper()
             self.logger(message="Decomposing the sequence...")
             if data.cutting_mode == 'equal':
                 solution = selector.cut_sequence(

@@ -6,6 +6,7 @@ from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files, data_to_html_data,
                      file_to_filelike_object,
+                     did_you_mean,
                      matplotlib_figure_to_svg_base64_data)
 from ..serializers import FileSerializer
 
@@ -64,6 +65,19 @@ class worker_class(AsyncWorker):
             if 'construct' in well.data
             and str(well.data.construct) != 'nan'
         ])
+        unknown_constructs = {}
+        for well, construct in constructs_map.items():
+            if construct not in constructs_records:
+                unknown_constructs[construct] = {
+                    "well": well,
+                    "suggestions": did_you_mean(construct, constructs_records)
+                }
+        if len(unknown_constructs):
+            return {
+                "success": False,
+                "unknown_constructs": unknown_constructs
+            }
+
 
         if data.uniqueDigestion:
             digestion = tuple(data.digestion)
