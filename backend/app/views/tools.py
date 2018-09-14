@@ -136,7 +136,7 @@ def records_from_data_files(data_files):
             if str(record.name).strip() in UNKNOWN_IDS:
                 record.name = name
             record.name = record.name[:20]
-            record.id = record.split(".")
+            record.id = record.id.split(".")[0]
         records += recs
     return records
 
