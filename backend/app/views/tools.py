@@ -46,7 +46,6 @@ def string_to_record(string):
                 return (records, fmt)
         except:
             pass
-
     try:
         record = snapgene_file_to_seqrecord(filecontent=StringIO(string))
         return record
@@ -63,8 +62,26 @@ def records_from_zip_file(zip_file):
     zip_file = flametree.file_tree(file_to_filelike_object(zip_file))
     records = []
     for f in zip_file._all_files:
-        if f._extension.lower() in ['gb', 'fa']:
-            new_records, fmt = string_to_record(f.read())
+        ext =  f._extension.lower()
+        if ext in ['gb', 'fa', 'dna']:
+            try:
+                new_records, fmt = string_to_record(f.read())
+            except:
+                content_stream = BytesIO(f.read('rb'))
+                try:
+                    record = snapgene_file_to_seqrecord(
+                        fileobject=content_stream)
+                    new_records, fmt = [record], 'snapgene'
+                except:
+                    try:
+                        parser = crazydoc.CrazydocParser(
+                            ['highlight_color', 'bold', 'underline'])
+                        new_records = parser.parse_doc_file(content_stream)
+                        fmt = 'doc'
+                    except:
+                        raise ValueError("Format not recognized for file " +
+                                         f._path)
+            
             single_record = len(new_records) == 1
             for i, record in enumerate(new_records):
                 name = record.id

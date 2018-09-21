@@ -39,9 +39,10 @@ class worker_class(AsyncWorker):
                 name = f.name if (len(records) == 1) else f.name + ("%03d" % i)
                 name = name + "--" + record.name[:40]
                 figure.suptitle(name)
-                figures.append(figure)
+                figures.append((name, figure))
 
         self.logger(message='Generating report')
+        print ("AAAA", len(figures))
 
         if PDF_REPORT:
             pdf_io = BytesIO()
@@ -59,10 +60,10 @@ class worker_class(AsyncWorker):
             }
         else:
             figures_data = []
-            for _file, fig in zip(data.files, figures):
+            for name, fig in figures:
                 data = matplotlib_figure_to_svg_base64_data(
                     fig, bbox_inches="tight")
-                figures_data.append({'img_data': data, 'filename': _file.name})
+                figures_data.append({'img_data': data, 'name': name})
 
         return {
           'pdf_report': None if not PDF_REPORT else figures_data,

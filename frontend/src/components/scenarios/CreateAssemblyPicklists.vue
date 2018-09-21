@@ -12,7 +12,7 @@
   el-alert(title="This app is a stub. Not all features may work properly" type="warning" show-icon)
 
   .form
-    h4.formlabel Picklist
+    h4.formlabel Assembly Plan
     collapsible(title='Examples')
       file-example(filename='example_picklist.xls',
                    @input='function (e) {form.picklist = e}',

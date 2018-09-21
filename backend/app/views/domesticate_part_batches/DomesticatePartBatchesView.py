@@ -20,6 +20,7 @@ class worker_class(AsyncWorker):
     def work(self):
         data = self.data
         records = records_from_data_files(data.parts)
+        self.logger(message="Now domesticating the parts")
 
         if data.standard == 'EMMA':
             def domesticator(record):
@@ -28,12 +29,13 @@ class worker_class(AsyncWorker):
                 ID of the form ``position_partname``. We extract the
                 position and return the corresponding domesticator.
                 """
-                position = record.id.split("_")[0]
+                position = record.id.split("_")[0].lower()
                 return BUILTIN_DOMESTICATORS.EMMA[position]
         else:
             raise ValueError("Support for %s not implemented" % data.standard)
         nfails, zip_data = batch_domestication(
-            records, domesticator, '@memory', allow_edits=True)
+            records, domesticator, '@memory', allow_edits=True,
+            logger=self.logger)
         return dict(
           file=dict(data=data_to_html_data(zip_data, 'zip'),
                     name='domestication_report.zip',

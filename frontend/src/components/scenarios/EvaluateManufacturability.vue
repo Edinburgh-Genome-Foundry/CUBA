@@ -32,8 +32,8 @@
       .results-summary(v-if='queryStatus.result.preview',
                        v-html="queryStatus.result.preview.html")
       .figures-preview(v-if='queryStatus.result.figures_data')
-        .figure-preview(v-for='fig in queryStatus.result.figures_data')
-          h4 {{fig.filename}}
+        .figure-preview(v-for='fig in queryStatus.result.figures_data', key='fig.name')
+          h4 {{fig.name}}
           img(:src='fig.img_data')
 
   powered-by(:softwareNames='infos.poweredby')

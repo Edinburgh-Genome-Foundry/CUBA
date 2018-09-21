@@ -1,5 +1,7 @@
 """Bla."""
 
+from base64 import b64decode
+
 from rest_framework import serializers
 from plateo import AssemblyPlan
 import pandas
@@ -48,9 +50,9 @@ class worker_class(AsyncWorker):
         # root = flametree.file_tree(".")
         picklist_filelike = file_to_filelike_object(data.picklist)
         if data.picklist.name.endswith('.csv'):
-            dataframe = pandas.read_csv(picklist_filelike, index=0)
+            dataframe = pandas.read_csv(picklist_filelike, index_col=0)
         else:
-            dataframe = pandas.read_excel(picklist_filelike, index=0)
+            dataframe = pandas.read_excel(picklist_filelike, index_col=0)
         assembly_plan = AssemblyPlan(OrderedDict([
             (row[0], [e for e in row[1:] if str(e) not in ['-', 'nan']])
             for i, row in dataframe.iterrows()
@@ -76,7 +78,7 @@ class worker_class(AsyncWorker):
             else:
                 records = records_from_data_files(data.parts_infos)
                 parts_data = {
-                    rec.file_name: {'record': rec}
+                    rec.file_name.replace(" ", "_"): {'record': rec}
                     for rec in records
                 }
             assembly_plan.parts_data = parts_data
@@ -135,9 +137,7 @@ class worker_class(AsyncWorker):
         picklist, picklist_data = picklist_generator.make_picklist(
             assembly_plan,
             source_wells=source_plate.iter_wells(),
-            destination_wells=destination_plate.iter_wells(direction='column'),
-            # complement_well=source_plate.wells.O24,
-            # buffer_well=source_plate.wells.P24
+            destination_wells=destination_plate.iter_wells(direction='column')
         )
         if picklist is None:
             return {
@@ -155,7 +155,8 @@ class worker_class(AsyncWorker):
                 txt = "\n".join([w.data.construct, txt])
             return txt
         plotter = PlateTextPlotter(text)
-        ax, _ = plotter.plot_plate(future_plates[destination_plate], figsize=(20, 8))
+        ax, _ = plotter.plot_plate(future_plates[destination_plate],
+                                   figsize=(20, 8))
 
         ziproot = flametree.file_tree("@memory", replace=True)
 
@@ -186,6 +187,10 @@ class worker_class(AsyncWorker):
         else:
             picklist_to_tecan_evo_picklist_file(
                 picklist, ziproot._file("EVO_picklist.gwl").open('w'))
+        raw = file_to_filelike_object(data.source_plate).read()
+        print (len(raw))
+        f = ziproot._file(data.source_plate.name)
+        f.write(raw, mode='wb')
         zip_data = ziproot._close()
 
         return {
