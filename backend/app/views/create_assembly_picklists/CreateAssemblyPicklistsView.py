@@ -50,9 +50,9 @@ class worker_class(AsyncWorker):
         # root = flametree.file_tree(".")
         picklist_filelike = file_to_filelike_object(data.picklist)
         if data.picklist.name.endswith('.csv'):
-            dataframe = pandas.read_csv(picklist_filelike, index_col=0)
+            dataframe = pandas.read_csv(picklist_filelike)
         else:
-            dataframe = pandas.read_excel(picklist_filelike, index_col=0)
+            dataframe = pandas.read_excel(picklist_filelike)
         assembly_plan = AssemblyPlan(OrderedDict([
             (row[0], [e for e in row[1:] if str(e) not in ['-', 'nan']])
             for i, row in dataframe.iterrows()
