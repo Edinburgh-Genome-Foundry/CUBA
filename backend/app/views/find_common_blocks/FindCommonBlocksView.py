@@ -1,14 +1,14 @@
 """Bla."""
 
 from rest_framework import serializers
-from Bio import SeqIO
 import flametree
 from geneblocks import CommonBlocks
 
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files, data_to_html_data,
                      matplotlib_figure_to_svg_base64_data,
-                     figures_to_pdf_report_data)
+                     figures_to_pdf_report_data, write_record,
+                     autoname_genbank_file)
 
 
 class FileSerializer(serializers.Serializer):
@@ -58,14 +58,14 @@ class worker_class(AsyncWorker):
 
         blocks_gb_dir = root._dir('blocks_genbanks')
         for rec in common_blocks.common_blocks_records():
-            gb_file = blocks_gb_dir._file(rec.id + '.gb')
-            SeqIO.write(rec, gb_file.open('w'), 'genbank')
+            gb_file = blocks_gb_dir._file(autoname_genbank_file(rec))
+            write_record(rec, gb_file, 'genbank')
         seq_gb_dir = root._dir('sequences_genbanks')
         seq_records = common_blocks.sequences_with_annotated_blocks()
         for recname, rec in seq_records.items():
-            gb_file = seq_gb_dir._file("%s.gb" % recname)
             rec.id = recname
-            SeqIO.write(rec, gb_file.open('w'), 'genbank')
+            gb_file = seq_gb_dir._file(autoname_genbank_file(rec))
+            write_record(rec, gb_file, 'genbank')
         zip_data = root._close()
 
         return {

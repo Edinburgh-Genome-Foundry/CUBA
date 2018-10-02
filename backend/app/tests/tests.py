@@ -35,7 +35,8 @@ class SimulateGGAssemblies(AppTestCase):
         include_fragments=False,
         use_assembly_plan=False,
         single_assemblies=False,
-        assembly_plan=None
+        assembly_plan=None,
+        use_file_names_as_ids=True
     )
 
     def test_dual_assembly(self):

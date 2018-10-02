@@ -45,7 +45,7 @@
       h4.formlabel Provide an assembly list
         helper.
           Only the connector parts necessary to obtain assemblies will be
-          selected and added to the other parts.")
+          selected and added to the other parts.
       collapsible(title='Examples')
         file-example(filename='example_assembly_plan.xls',
                      fileHref='/static/file_examples/simulate_gg_assemblies/example_assembly_plan.xls',
@@ -54,6 +54,10 @@
           p.
             A picklist using the "example genetic parts" given as examples above.
       files-uploader(v-model='form.assembly_plan', :multiple='false')
+      p Part names in the picklist refer to <br/>
+        el-select(v-model='form.use_file_names_as_ids')
+          el-option(:value='false', label="The IDs of the provided records")
+          el-option(:value='true', label="The file names (without extension)")
       p: el-checkbox(v-model='form.single_assemblies') Ensure each line gives a single assembly
     p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
     .select-connectors(v-if='form.select_connectors').animated.flipInX
@@ -81,6 +85,8 @@
                     :validateForm='validateForm',
                     submitButtonText='Predict final construct(s)',
                     v-model='queryStatus')
+    progress-bars(:bars='queryStatus.polling.data.bars', :order="['assembly']"
+                  v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
     el-alert(v-if='queryStatus.requestError && !queryStatus.polling.inProgress',
              :title="queryStatus.requestError",
              type="error",
@@ -138,7 +144,8 @@ export default {
         include_fragments: false,
         use_assembly_plan: false,
         assembly_plan: null,
-        single_assemblies: true
+        single_assemblies: true,
+        use_file_names_as_ids: true
       },
       infos: infos,
       ladder_options: [

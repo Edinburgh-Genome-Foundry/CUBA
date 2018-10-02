@@ -23,6 +23,7 @@ class serializer_class(serializers.Serializer):
     include_fragments = serializers.BooleanField()
     use_assembly_plan = serializers.BooleanField()
     single_assemblies = serializers.BooleanField()
+    use_file_names_as_ids = serializers.BooleanField()
     assembly_plan = FileSerializer(allow_null=True)
 
 class worker_class(AsyncWorker):
@@ -32,6 +33,9 @@ class worker_class(AsyncWorker):
         data = self.data
 
         records = records_from_data_files(data.parts)
+        if data.use_file_names_as_ids:
+            for r in records:
+                r.id = r.name = r.file_name
         connector_records = records_from_data_files(data.connectors)
         for r in (records + connector_records):
             if not hasattr(r, 'linear'):
@@ -53,7 +57,9 @@ class worker_class(AsyncWorker):
                 filelike = file_to_filelike_object(data.assembly_plan)
                 dataframe = pandas.read_excel(filelike, header=None)
             assembly_plan = AssemblyPlan.from_spreadsheet(dataframe=dataframe)
-            assembly_plan.parts_data = {r.file_name: {'record': r} for r in records}
+            assembly_plan.parts_data = {
+                r.id: {'record': r} for r in records}
+            print (assembly_plan.assemblies)
             parts_without_data = assembly_plan.parts_without_data()
             if len(parts_without_data):
                 return {
@@ -82,10 +88,7 @@ class worker_class(AsyncWorker):
                 assemblies_prefix='assembly',
                 include_fragments_plots=data.include_fragments,
                 include_parts_plots=data.include_fragments
-
             )
-            # zip_data = ('data:application/zip;base64,' +
-            #             b64encode(zip_data).decode("utf-8"))
             infos = dict(nconstructs=nconstructs)
 
         return {

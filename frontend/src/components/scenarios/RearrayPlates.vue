@@ -21,50 +21,76 @@
         p.
           Picklist to build 7 assemblies using common parts of the EMMA standard
     files-uploader(v-model='form.source_plate', tip='Excel file or CSV', :multiple='false')
-    el-form(label-width='150px')
-      el-form-item(label='Sample by')
-        el-select(v-model='form.samples_source_by')
-          el-option(value='row' label='Row')
-          el-option(value='column' label='Column')
-    hr
-    h4.formlabel Destination Plate
-    el-form(label-width='150px')
-      el-form-item(label='Plate')
-        el-select(v-model='form.destination_type')
-          el-option(value='new', label='New Plate')
-          el-option(value='file', label='Existing Plate')
-      el-form-item(label='Plate size' v-if="form.destination_type === 'new'")
-        el-select(v-model='form.destination_size')
-          el-option(:value='96', label='96 wells')
-          el-option(:value='384', label='384 wells')
-          el-option(:value='1536', label='1536 wells')
-      el-form-item(label='Destination map' v-if="form.destination_type === 'file'")
-        files-uploader(v-model='form.destination_plate', :multiple='false')
-        collapsible(title='Examples')
-          file-example(filename='example_destination_plate.xlsx',
-                         @input='function (e) {form.destination_plate = e}',
-                         fileHref='/static/file_examples/rearray_plates/example_destination_plate.xlsx',
-                         imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
-              p.
-                Map of a plate with common genetic parts from the EMMA standard
+    
 
-      el-form-item(label='Fill by')
-        el-select(v-model='form.fill_by')
-          el-option(value='row' label='Row')
-          el-option(value='column' label='Column')
     hr
     h4.formlabel Rearraying
     el-form(label-width='250px')
-      el-form-item(label='Volume per well (µL)')
-        el-select(v-model='form.total_volume')
-      el-form-item(label='Normalize concentrations')
-        el-checkbox(v-model='form.normalize')
-      el-form-item(v-if='form.normalize' label='Concentration unit')
-        el-select(v-model='form.concentration_unit')
-          el-option(label='ng/µL', value='ngul')
-          el-option(label='fM', value='fM')
-      el-form-item(v-if='form.normalize', :label="'Concentration (' + concentrationUnit +')'")
-        el-input-number(v-model='form.concentration')
+      el-form-item(label='Type')
+        el-select(v-model='form.rearraying_type')
+          el-option(value='linear' label='Linear (by row/column)')
+          el-option(value='map' label='Follow a map')
+      .div(v-if='form.rearraying_type === "linear"')
+        el-form-item(label='Sample source by')
+          el-select(v-model='form.sample_source_by')
+            el-option(value='row' label='Row')
+            el-option(value='column' label='Column')
+        el-form-item(label='Fill destination by')
+          el-select(v-model='form.fill_destination_by')
+            el-option(value='row' label='Row')
+            el-option(value='column' label='Column')
+        el-form-item(label='Volume per well (µL)')
+          el-input-number(v-model='form.total_volume')
+        //- el-form-item(label='Normalize concentrations')
+        //-   el-checkbox(v-model='form.normalize')
+        //- el-form-item(v-if='form.normalize' label='Concentration unit')
+        //-   el-select(v-model='form.concentration_unit')
+        //-     el-option(label='ng/µL', value='ngul')
+        //-     el-option(label='fM', value='fM')
+        //- el-form-item(v-if='form.normalize', :label="'Concentration (' + concentrationUnit +')'")
+        //-   el-input-number(v-model='form.concentration')
+
+    hr
+    h4.formlabel Destination Plate
+    .div(v-if='form.rearraying_type === "map"')
+      p.
+        This is a map of the final destination plate you want to obtain.
+        It must be an Excel spreadsheet with sheets "content" (summarizing
+        part names) and volume (expressed in microliters). See example.
+      el-form
+        collapsible(title='Examples')
+          file-example(filename='example_destination_plate.xlsx',
+                        @input='function (e) {form.destination_plate = e}',
+                        fileHref='/static/file_examples/rearray_plates/example_destination_plate.xlsx',
+                        imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+              p.
+                Map of a plate with common genetic parts from the EMMA standard
+        files-uploader(v-model='form.destination_plate', :multiple='false')
+    .div(v-else)
+      p.
+        If you choose an existing plate, the picklist will start filling the
+        plate after the last empty well on that plate.
+      el-form(label-width='150px')
+        el-form-item(label='Plate')
+          el-select(v-model='form.destination_type')
+            el-option(value='new', label='New Plate')
+            el-option(value='file', label='Existing Plate')
+        el-form-item(label='Plate size' v-if="form.destination_type === 'new'")
+          el-select(v-model='form.destination_size')
+            el-option(:value='96', label='96 wells')
+            el-option(:value='384', label='384 wells')
+            el-option(:value='1536', label='1536 wells')
+        el-form-item(label='Destination map' v-if="form.destination_type === 'file'")
+          collapsible(title='Examples')
+            file-example(filename='example_destination_plate.xlsx',
+                          @input='function (e) {form.destination_plate = e}',
+                          fileHref='/static/file_examples/rearray_plates/example_destination_plate.xlsx',
+                          imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+              p.
+                Map of a plate with common genetic parts from the EMMA standard
+          files-uploader(v-model='form.destination_plate', :multiple='false')
+          
+   
     hr
     h4.formlabel Dispenser
     el-form(label-width='250px')
@@ -72,13 +98,18 @@
         el-select(v-model='form.dispenser_machine')
           el-option(label='Tecan EVO', value='tecan_evo')
           el-option(label='Labcyte ECHO', value='labcyte_echo')
+      div(v-if='form.dispenser_machine === "tecan_evo"')
+        el-form-item(label='Source name')
+          el-input(v-model='form.source_name')
+        el-form-item(label='Destination name')
+          el-input(v-model='form.destination_name')
       el-form-item(label='Min volume (nL)')
         el-input-number(v-model='form.dispenser_min_volume', :min='0', :max='1000', :step='0.5')
       el-form-item(label='Max one-time volume (µL)')
         el-input-number(v-model='form.dispenser_max_volume', :min='0', :max='2000', :step='0.5')
       el-form-item(label='Volume resolution (nL)')
         el-input-number(v-model='form.dispenser_resolution', :min='0', :max='1000', :step='0.5')
-      el-form-item(label='Dead volume (µL)')
+      el-form-item(label='Dead volume in wells (µL)')
         el-input-number(v-model='form.dispenser_dead_volume', :min='0', :max='1000', :step='0.1')
 
     .parts-infos(v-if="form.normalize && (form.concentration_unit === 'fM')")
@@ -138,23 +169,20 @@ export default {
   data () {
     return {
       form: {
-        picklist: null,
+        rearraying_type: 'linear',
+        sample_source_by: 'column',
+        fill_destination_by: 'column',
+        destination_plate: null,
+        source_name: 'Source',
+        destination_name: 'Destination',
         source_plate: null,
         destination_type: 'new',
         destination_size: 96,
-        destination_plate: null,
-        sample_source_by: 'column',
-        fill_by: 'column',
-        normalize: true,
-        concentration_unit: 'ngul',
-        concentration: 100,
-        total_volume: 50,
-        parts_infos: [],
-        dispenser_machine: 'labcyte_echo',
-        dispenser_max_volume: 0.5,
-        dispenser_min_volume: 5,
-        dispenser_resolution: 2.5,
-        dispenser_dead_volume: 8
+        dispenser_machine: 'tecan_evo',
+        dispenser_max_volume: 500,
+        dispenser_min_volume: 500,
+        dispenser_resolution: 0.1,
+        dispenser_dead_volume: 5
       },
       concentrationRanges: {
         'fM': {

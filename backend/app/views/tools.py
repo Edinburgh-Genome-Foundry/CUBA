@@ -2,6 +2,7 @@ import sys
 from io import StringIO, BytesIO
 import re
 from base64 import b64encode, b64decode
+from copy import deepcopy
 
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
@@ -24,6 +25,19 @@ def fix_ice_genbank(genbank_txt):
     lines = genbank_txt.splitlines()
     lines[0] += max(0, 80 - len(lines[0])) * ' '
     return '\n'.join(lines)
+
+def write_record(record, target, fmt='genbank'):
+    """Write a record as genbank, fasta, etc. via Biopython, with fixes"""
+    record = deepcopy(record)
+    record.name = record.name[:20]
+    if hasattr(target, 'open'):
+        target = target.open('w')
+    SeqIO.write(record, target, fmt)
+
+def autoname_genbank_file(record):
+    return record.id.replace('.', '_') + 'gb'
+
+
 
 def string_to_record(string):
     """Convert a string of a fasta, genbank... into a simple ATGC string.
@@ -89,12 +103,10 @@ def records_from_zip_file(zip_file):
                             "<unknown name>"]:
                     number = ('' if single_record else ("%04d" % i))
                     name = f._name_no_extension.replace(" ", "_") + number
-                name = name.split(".")[0]
                 record.id = name
-                record.name = name[:20]
+                record.name = name
                 record.file_name = f._name_no_extension
             records += new_records
-    print ([(r.name, r.id) for r in records])
     return records
 
 
@@ -121,7 +133,7 @@ def records_from_data_file(data_file):
 
 def record_to_formated_string(record, fmt='genbank'):
     fileobject = StringIO()
-    SeqIO.write(record, fileobject, fmt)
+    write_record(record, fileobject, fmt)
     return fileobject.getvalue().encode('utf-8')
 
 
@@ -129,7 +141,6 @@ def records_from_data_files(data_files):
     records = []
     for file_ in data_files:
         circular = ('circular' not in file_) or file_.circular
-
         if file_.name.lower().endswith('zip'):
             records += records_from_zip_file(file_)
             continue
@@ -144,16 +155,14 @@ def records_from_data_files(data_files):
             UNKNOWN_IDS = ['None', '', "<unknown id>", '.', 'EXPORTED',
                            "<unknown name>", 'Exported']
             record.seq.alphabet = DNAAlphabet()
-            # Sorry for this parts, it took a lot of "whatever works"
+            # Sorry for this parts, it took a lot of "whatever works".
             # keep your part names under 20c and pointless, and everything
             # will be good
-            name = name.split(".")[0]
             if str(record.id).strip() in UNKNOWN_IDS:
                 record.id = name
             if str(record.name).strip() in UNKNOWN_IDS:
                 record.name = name
-            record.name = record.name[:20]
-            record.id = record.id.split(".")[0]
+            record.file_name = name_no_extension
         records += recs
     return records
 

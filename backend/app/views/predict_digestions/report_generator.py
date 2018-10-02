@@ -3,7 +3,7 @@ import sys
 from collections import defaultdict
 from base64 import b64encode
 
-from Bio import Restriction, SeqIO
+from Bio import Restriction
 from Bio.SeqFeature import SeqFeature, FeatureLocation
 
 import matplotlib.pyplot as plt
@@ -15,6 +15,8 @@ import dna_features_viewer as dfw
 import bandwagon as bw
 
 import flametree
+
+from ..tools import write_record
 
 PYTHON3 = (sys.version_info > (3, 0))
 if PYTHON3:
@@ -164,7 +166,7 @@ def generate_report(records, digestions, ladder, group_by="digestions",
                     record, enzymes, ladder)
                 files_contents.append([
                     ("genbanks", basename + ".gb"),
-                    lambda fh: SeqIO.write(record_digestion, fh, "genbank")
+                    lambda fh: write_record(record_digestion, fh, "genbank")
                 ])
                 if full_report:
                     (ax, _, _) = plot_record_digestion(

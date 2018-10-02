@@ -4,7 +4,7 @@ from rest_framework import serializers
 from plateo import AssemblyPlan
 import pandas
 from plateo.parsers import plate_from_content_spreadsheet
-from plateo.containers.plates import Plate4ti0960
+from plateo.containers.plates import Plate4ti0960, Plate384, get_plate_class
 from plateo.exporters import (AssemblyPicklistGenerator,
                               picklist_to_assembly_mix_report)
 from plateo.exporters import (picklist_to_labcyte_echo_picklist_file,
@@ -22,21 +22,20 @@ from ..serializers import FileSerializer
 
 
 class serializer_class(serializers.Serializer):
-    source_plate = FileSerializer(allow_null=False)
+    rearraying_type = serializers.CharField()
     sample_source_by = serializers.CharField()
-    destination_type = serializers.CharField()
-    destination_size = serializers.IntegerField()
-    fill_by = serializers.CharField()
+    fill_destination_by = serializers.CharField()
     destination_plate = FileSerializer(allow_null=True)
-    concentration_unit = serializers.CharField()
-    concentration = serializers.FloatField()
-    normalize = serializers.BooleanField()
-    total_volume = serializers.FloatField()
-    parts_infos = serializers.ListField(child=FileSerializer())
+    source_name = serializers.CharField()
+    destination_name = serializers.CharField()
+    source_plate = FileSerializer(allow_null=True)
+    destination_type = serializers.CharField()
+    destination_size: serializers.IntegerField()
     dispenser_machine = serializers.CharField()
-    dispenser_min_volume = serializers.FloatField()
     dispenser_max_volume = serializers.FloatField()
+    dispenser_min_volume = serializers.FloatField()
     dispenser_resolution = serializers.FloatField()
+    dispenser_dead_volume = serializers.FloatField()
 
 
 class worker_class(AsyncWorker):
@@ -45,73 +44,40 @@ class worker_class(AsyncWorker):
         self.logger(message="Reading Data...")
         data = self.data
 
-        # root = flametree.file_tree(".")
-        picklist_filelike = file_to_filelike_object(data.picklist)
-        if data.picklist.name.endswith('.csv'):
-            dataframe = pandas.read_csv(picklist_filelike, index=0)
-        else:
-            dataframe = pandas.read_excel(picklist_filelike, index=0)
-        assembly_plan = AssemblyPlan(OrderedDict([
-            (row[0], [e for e in row[1:] if str(e) not in ['-', 'nan']])
-            for i, row in dataframe.iterrows()
-            if row[0] not in ['nan', 'Construct name']
-        ]))
-
-        if len(data.parts_infos):
-            first_file = data.parts_infos[0]
-            if first_file.name.endswith(('.csv', '.xls', '.xlsx')):
-                first_file_filelike = file_to_filelike_object(first_file)
-                if first_file.name.endswith('.csv'):
-                    dataframe = pandas.read_csv(first_file_filelike)
-                else:
-                    dataframe = pandas.read_excel(first_file_filelike)
-                parts_data = {
-                    row.part: {'size': row['size']}
-                    for i, row in dataframe.iterrows()
-                }
-            else:
-                records = records_from_data_files(data.parts_infos)
-                parts_data = {
-                    rec.id: {'record': rec}
-                    for rec in records
-                }
-            assembly_plan.parts_data = parts_data
-
-        if data.quantity_unit == 'fmol':
-            part_mol = data.part_quantity * 1e-15
-            part_g = None
-        if data.quantity_unit == 'nM':
-            part_mol = data.part_quantity * data.total_volume * 1e-15
-            part_g = None
-        if data.quantity_unit == 'fmol':
-            part_mol = None
-            part_g = data.part_quantity * 1e-9
-
-        picklist_generator = AssemblyPicklistGenerator(
-            part_mol=part_mol,
-            part_g=part_g,
-            complement_to=data.total_volume * 1e-6,
-            buffer_volume=data.buffer_volume * 1e-6,
-            volume_rounding=2.5e-9,
-            minimal_dispense_volume=5e-9
-        )
         source_filelike = file_to_filelike_object(data.source_plate)
-        source_plate = plate_from_content_spreadsheet(source_filelike)
+        source = plate_from_content_spreadsheet(source_filelike)
+        source.name = data.source_name
 
-        source_plate.name = "Source"
-        for well in source_plate.iter_wells():
-            if not well.is_empty:
-                content = well.content.components_as_string()
-                well.content.quantities[content] *= 1e-3
+        if ((data.destination_plate is not None) and
+            ((data.rearraying_type == 'map') or
+             (data.destination_type == 'existing'))):
+            destination = plate_from_content_spreadsheet(dest_filelike)
+            destination.name = destination_name
+        else:
+            destination = get_plate_class(data.destination_size)()
+            destination.name = destination_name
 
-        destination_plate = Plate4ti0960("Mixplate")
-        picklist, picklist_data = picklist_generator.make_picklist(
-            assembly_plan,
-            source_wells=source_plate.iter_wells(),
-            destination_wells=destination_plate.iter_wells(direction='column'),
-            complement_well=source_plate.wells.O24,
-            buffer_well=source_plate.wells.P24
-        )
+        if rearraying_type == 'map':
+            # for well in destination.iter_wells():
+                # well.content.volume *=  1e-6
+            picklist = PickList()
+            for well in source.iter_wells():
+                if well.is_empty:
+                    continue
+                part = (well.content.components_as_string())
+                destination_well = destination.find_unique_well(
+                    condition=lambda w: w.content.components_as_string() == part)
+                picklist.add_transfer(well, destination_well, destination_well.volume)
+                destination_well.empty_completely()
+            picklist.execute()
+            picklist_to_tecan_evo_picklist_file(picklist, "rearray_2018-10-02.gwl")
+            plate_to_content_spreadsheet(destination, "destination_after_picklist.xlsx")
+            
+
+
+        else:
+            pass
+
         future_plates = picklist.execute(inplace=False)
 
         def text(w):

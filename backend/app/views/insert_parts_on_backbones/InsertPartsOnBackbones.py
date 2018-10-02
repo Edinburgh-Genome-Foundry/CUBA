@@ -2,12 +2,12 @@
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_files, data_to_html_data)
+from ..tools import (records_from_data_files, data_to_html_data, write_record,
+                     autoname_genbank_file)
 from ..serializers import FileSerializer
 from dnacauldron import (swap_donor_vector_part, autoselect_enzyme,
                          BackboneChoice, insert_parts_on_backbones)
 import flametree
-from Bio import SeqIO
 
 
 digestion = serializers.ListField(child=serializers.CharField())
@@ -46,14 +46,12 @@ class worker_class(AsyncWorker):
         for insert in inserts:
             record = swap_donor_vector_part(backbone, insert, data.enzyme)
             record.id = insert.id
-            print ("record id", record.id)
-            SeqIO.write(record, zip_root._file(record.id + '.gb'), 'genbank')
+            write_record(record, zip_root._file(autoname_genbank_file(record)),
+                         'genbank')
 
         if len(inserts) == 1:
             f = zip_root._all_files[0]
             data = f.read('rb')
-            print (zip_root._all_files)
-            print ("DAAAATAAAA", data)
             return {
               'file': {
                   'data': data_to_html_data(data, 'genbank'),
@@ -79,10 +77,6 @@ class worker_class(AsyncWorker):
         data = self.data
         backbones = records_from_data_files(data.backbones)
         inserts = records_from_data_files(data.inserts)
-        # inserts = [
-        #     records_from_data_files([f])[0]
-        #     for f in data.inserts
-        # ]
         records = inserts + backbones
         for record in records:
             record.linear = False  # Trick
@@ -93,7 +87,8 @@ class worker_class(AsyncWorker):
         choices = insert_parts_on_backbones(
             inserts, backbones, process_parts_with_backbone=True)
         dataframe = BackboneChoice.list_to_infos_spreadsheet(choices)
-        dataframe.to_excel(zip_root._file('summary.xls').open('wb'), index=False)
+        dataframe.to_excel(zip_root._file('summary.xls').open('wb'),
+                           index=False)
         BackboneChoice.write_final_records(
             choices, zip_root._dir("records")._path)
 

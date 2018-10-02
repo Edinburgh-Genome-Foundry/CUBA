@@ -81,6 +81,7 @@
             Spreadsheet indicating the total size of EMMA parts (including vector backbone).
 
       files-uploader(v-model='form.parts_infos', tip='Genbank/Fasta/Snapgene sequences, or spreadsheet')
+      el-checkbox(v-model='form.use_file_names_as_ids') Use file names (not record IDs) to identify parts.
     hr
     h4.formlabel Source Plate
     collapsible(title='Examples')
@@ -176,7 +177,8 @@ export default {
         dispenser_max_volume: 0.5,
         dispenser_min_volume: 5,
         dispenser_resolution: 2.5,
-        dispenser_dead_volume: 8
+        dispenser_dead_volume: 8,
+        use_file_names_as_ids: true
       },
       quantityRanges: {
         'fmol': {

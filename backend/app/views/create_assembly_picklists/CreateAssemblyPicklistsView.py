@@ -39,6 +39,7 @@ class serializer_class(serializers.Serializer):
     dispenser_min_volume = serializers.FloatField()
     dispenser_max_volume = serializers.FloatField()
     dispenser_resolution = serializers.FloatField()
+    use_file_names_as_ids = serializers.BooleanField()
 
 
 class worker_class(AsyncWorker):
@@ -47,7 +48,8 @@ class worker_class(AsyncWorker):
         self.logger(message="Reading Data...")
         data = self.data
 
-        # root = flametree.file_tree(".")
+        # Reading picklist
+
         picklist_filelike = file_to_filelike_object(data.picklist)
         if data.picklist.name.endswith('.csv'):
             dataframe = pandas.read_csv(picklist_filelike)
@@ -63,6 +65,8 @@ class worker_class(AsyncWorker):
                 part.replace(" ", "_") for part in parts
             ]
 
+        # Reading part infos
+
         if len(data.parts_infos):
             first_file = data.parts_infos[0]
             if first_file.name.endswith(('.csv', '.xls', '.xlsx')):
@@ -77,8 +81,11 @@ class worker_class(AsyncWorker):
                 }
             else:
                 records = records_from_data_files(data.parts_infos)
+                if data.use_file_names_as_ids:
+                    for r in records:
+                        r.id = r.name = r.file_name
                 parts_data = {
-                    rec.file_name.replace(" ", "_"): {'record': rec}
+                    rec.id.replace(" ", "_"): {'record': rec}
                     for rec in records
                 }
             assembly_plan.parts_data = parts_data
@@ -90,6 +97,8 @@ class worker_class(AsyncWorker):
                     'missing_parts': parts_without_data
                 }
 
+        # Reading protocol
+        
         if data.quantity_unit == 'fmol':
             part_mol = data.part_quantity * 1e-15
             part_g = None
@@ -99,6 +108,8 @@ class worker_class(AsyncWorker):
         if data.quantity_unit == 'fmol':
             part_mol = None
             part_g = data.part_quantity * 1e-9
+
+        self.logger(message='Generating picklist')
 
         picklist_generator = AssemblyPicklistGenerator(
             part_mol=part_mol,
@@ -118,13 +129,11 @@ class worker_class(AsyncWorker):
             quantities.pop(part)
             quantities[part.replace(" ", "_")] = quantity
 
-        print (source_plate)
         parts_on_plate = set([
             well.content.components_as_string()
             for well in source_plate.iter_wells()
             ]
         ).difference({''})
-        print (parts_on_plate)
 
         source_plate.name = "Source"
         for well in source_plate.iter_wells():
@@ -196,7 +205,7 @@ class worker_class(AsyncWorker):
         return {
              'file': {
                  'data': data_to_html_data(zip_data, 'zip'),
-                 'name': 'assemblies.zip',
+                 'name': 'picklist.zip',
                  'mimetype': 'application/zip'
              },
              'success': True
