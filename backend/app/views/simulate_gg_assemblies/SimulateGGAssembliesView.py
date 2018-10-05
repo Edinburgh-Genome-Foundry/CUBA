@@ -48,13 +48,15 @@ class worker_class(AsyncWorker):
         self.logger(message="Generating a report, be patient.")
 
         if data.use_assembly_plan:
+            filelike = file_to_filelike_object(data.assembly_plan)
             if data.assembly_plan.name.lower().endswith('.csv'):
+                content = filelike.read().decode()
                 dataframe = pandas.DataFrame([
                     line.split(',')
-                    for line in data.assembly_plan.content.split('\n')
+                    for line in content.split('\n')
                 ])
             else:
-                filelike = file_to_filelike_object(data.assembly_plan)
+                
                 dataframe = pandas.read_excel(filelike, header=None)
             assembly_plan = AssemblyPlan.from_spreadsheet(dataframe=dataframe)
             assembly_plan.parts_data = {
