@@ -47,7 +47,7 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=83
+ARG CACHEBUST=84
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Plateo
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/Flametree

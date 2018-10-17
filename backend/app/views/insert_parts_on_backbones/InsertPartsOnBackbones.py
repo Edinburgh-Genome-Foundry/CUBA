@@ -90,7 +90,7 @@ class worker_class(AsyncWorker):
         dataframe.to_excel(zip_root._file('summary.xls').open('wb'),
                            index=False)
         BackboneChoice.write_final_records(
-            choices, zip_root._dir("records")._path)
+            choices, zip_root._dir("records"))
 
         return {
           'file': {
