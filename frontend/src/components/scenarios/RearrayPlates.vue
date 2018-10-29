@@ -3,7 +3,7 @@
   h1 {{infos.title}}
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             :tweetMessage="infos.tweetMessage",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Provide a source plate map and a list of constructs, get a robotic picklist (=spreadsheet)

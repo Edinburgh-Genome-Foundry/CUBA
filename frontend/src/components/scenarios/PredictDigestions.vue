@@ -4,7 +4,7 @@
   h1 Digestion Pattern Predictor
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Online restriction digest simulator:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description Submit sequences and an enzymatic mixes, get migration predictions.
 

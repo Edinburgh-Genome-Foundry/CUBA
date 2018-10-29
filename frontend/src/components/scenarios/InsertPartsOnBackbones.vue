@@ -3,7 +3,7 @@
   h1  {{ infos.title }}
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Automatically put part sequences on a backbone !",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Quickly swap a part (from a golden-gate-like based assembly standard) from

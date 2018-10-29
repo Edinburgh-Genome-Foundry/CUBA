@@ -10,7 +10,7 @@
 
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find common regions between different DNA sequences:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
 
   .form
 

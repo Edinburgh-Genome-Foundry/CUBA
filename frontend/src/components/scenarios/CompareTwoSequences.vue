@@ -5,7 +5,7 @@
   p.scenario-description Find out what has been added/deleted/changed between two sequences.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Quick sequence difference visualization app:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   //- learnmore Bla bla bla
 
   .form

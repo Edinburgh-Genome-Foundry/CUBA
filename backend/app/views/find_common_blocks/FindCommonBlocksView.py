@@ -42,7 +42,6 @@ class worker_class(AsyncWorker):
             sequences, block_selection=data.block_selection,
             min_block_size=data.min_block_size
         )
-        common_blocks = CommonBlocks(sequences)
 
 
         self.logger(message='Generating the report')

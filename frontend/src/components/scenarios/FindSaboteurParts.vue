@@ -5,7 +5,7 @@
   p.scenario-description Generate the #[a(href='https://github.com/Edinburgh-Genome-Foundry/sequenticon') sequenticons] corresponding to your sequences.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Sequenticons are human-friendly, visual DNA sequence identifiers.",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   //- learnmore Bla bla bla
 
   .form

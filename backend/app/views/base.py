@@ -107,7 +107,7 @@ class StartJobView(SerializerView, LoggingMixin):
         #     return self.worker_class.run(data)
         # else:
         job = django_rq.get_queue("default").enqueue(
-            self.worker_class.run, data)
+            self.worker_class.run, data, result_ttl=180)
         return Response({"job_id": job.id}, status=status.HTTP_200_OK)
 
 class JobResult:

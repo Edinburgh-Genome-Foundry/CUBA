@@ -3,7 +3,7 @@
   h1  {{ infos.title }}
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Simple online cloning simulator for Golden Gate:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Submit parts and a receptor vector. Get an annotated Genbank of the
@@ -145,7 +145,7 @@ export default {
         use_assembly_plan: false,
         assembly_plan: null,
         single_assemblies: true,
-        use_file_names_as_ids: true
+        use_file_names_as_ids: false
       },
       infos: infos,
       ladder_options: [
@@ -174,7 +174,7 @@ export default {
     validateForm () {
       var errors = []
       if (this.form.parts.length === 0) {
-        errors.push('Provide at least 2 files: one or more parts and a receptor.')
+        errors.push('Provide at least some parts.')
       }
       return errors
     }

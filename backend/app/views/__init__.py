@@ -19,3 +19,4 @@ from .select_digestions import SelectDigestionsView
 from .select_primers import SelectPrimersView
 from .simulate_gg_assemblies import SimulateGGAssembliesView
 from .sketch_constructs import SketchConstructsView
+from .transfer_features import TransferFeaturesView

@@ -5,7 +5,7 @@
   p.scenario-description Generate the #[a(href='https://github.com/Edinburgh-Genome-Foundry/sequenticon') sequenticons] corresponding to your sequences.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Sequenticons are human-friendly, visual DNA sequence identifiers.",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   //- learnmore Bla bla bla
 
   .form
@@ -15,7 +15,7 @@
       file-example(filename='Example sequences',
                    fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
                    @input='function (e) { form.files.push(e) }'
-                   imgSrc='/static/file_examples/simulate_gg_assemblies/generic_logos/sequences_records.png')
+                   imgSrc='/static/file_examples/generic_logos/sequences_records.png')
     files-uploader(v-model='form.files', text="Drop files (or click to select)",
                   help='Fasta or genbank. No file too large please :)', :multiple='true')
     p.inline

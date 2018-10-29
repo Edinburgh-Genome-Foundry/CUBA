@@ -3,7 +3,7 @@
   h1 {{infos.title}}
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Get enzyme suggestions for your restriction digests:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon' title='NOT a proto-nazi symbol !')
   p.scenario-description.
     Find the best enzymes to digest your constructs, for verification or

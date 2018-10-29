@@ -9,7 +9,8 @@ export default {
         require('./InsertPartsOnBackbones').default,
         require('./SketchConstructs').default,
         require('./ConvertSequenceFiles').default,
-        require('./DomesticatePartBatches').default
+        require('./DomesticatePartBatches').default,
+        require('./TransferFeatures').default
       ]
     },
     {

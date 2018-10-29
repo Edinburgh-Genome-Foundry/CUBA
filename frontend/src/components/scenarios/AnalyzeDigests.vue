@@ -3,7 +3,7 @@
   h1 {{infos.title}}
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Convert sequences formats to Genbank or Fasta",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Provide the results of an automated restriction digestion, and get a complete

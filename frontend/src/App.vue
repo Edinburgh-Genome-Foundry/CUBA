@@ -153,4 +153,8 @@ h4.formlabel {
   margin-left: 10px;
   width: 130px;
 }
+
+.el-tooltip__popper {
+  font-family: 'Raleway' !important;
+}
 </style>

@@ -5,30 +5,37 @@
   p.scenario-description Find sets of compatible overhangs for your assembly problem.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find common regions between different DNA sequences:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   //- learnmore Bla bla bla
 
   .form
 
     h4.formlabel Upload sequence files
+    collapsible(title='Examples')
+      file-example(filename='Example sequences',
+                   fileHref='/static/file_examples/find_common_blocks/sequences.zip',
+                   @input='function (e) { form.files.push(e) }'
+                   imgSrc='/static/file_examples/generic_logos/sequences_records.png')
     files-uploader(v-model='form.files',
                    tip='Fasta or genbank, or zip', :multiple='true')
-    p.inline Minimal block size in basepairs:
+    p.inline Minimal block size (in nucleotides):
       el-input-number.inline(v-model="form.min_block_size", size="small",
                              :min=10, :max=5000)
-    p.inline Block selection:
+    p.inline
+      span(style='margin-right: 15px') Block selection:
       el-radio(class='radio' v-model='form.block_selection' label='larger_first') Larger first
       el-radio(class='radio' v-model='form.block_selection' label='most_coverage_first') Most coverage first
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Evaluate',
+                    :validateForm='validateForm', submitButtonText='Find blocks',
                     v-model='queryStatus')
     el-alert(v-show='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result')
     download-button(v-if='queryStatus.result.zip_file',
-                    :filedata='queryStatus.result.zip_file')
+                    :filedata='queryStatus.result.zip_file',
+                    text='Download Sequences')
     img.result_image(:src='queryStatus.result.figure_data')
 
 

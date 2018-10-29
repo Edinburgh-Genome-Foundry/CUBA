@@ -3,7 +3,7 @@
   h1  {{ infos.title }}
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Simple online DNA construct sketcher:",
-            :tweetUrl="'http://cuba.genomefoundry.org/' + infos.path")
+            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Sketch one or several assemblies below, then export as PDF or PNG.

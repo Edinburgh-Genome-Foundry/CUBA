@@ -3,8 +3,8 @@
 .home.page
   h1 The EGF's Collection <br /> of Useful Biological Apps
   web-links(emailSubject='[CUBA] Some user feedback',
-            tweetMessage="The Edinburgh Genome Foundry's Collection of Useful Bio Apps",
-            tweetUrl='http://cuba.genomefoundry.org')
+            tweetMessage="CUBA - free synthetic biology and bioinformatics web apps",
+            tweetUrl='https://cuba.genomefoundry.org')
   .scenarios
     .scenario-category(v-for='category in scenarios', :key='category.category')
       h3 {{category.category}}

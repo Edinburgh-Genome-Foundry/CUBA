@@ -81,6 +81,9 @@ urlpatterns = [
     url(r'^api/start/insert_parts_on_backbones$',
         views.InsertPartsOnBackbonesView.as_view(),
         name='insert_parts_on_backbones'),
+     url(r'^api/start/transfer_features$',
+        views.TransferFeaturesView.as_view(),
+        name='transfer_features'),
 
     url(r'^api/docs/', include('rest_framework_docs.urls')),
     url(r'^api/django-rq/', include('django_rq.urls')),
