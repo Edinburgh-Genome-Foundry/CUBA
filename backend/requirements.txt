@@ -33,3 +33,5 @@ git+git://github.com/Edinburgh-Genome-Foundry/sequenticon.git
 git+git://github.com/Edinburgh-Genome-Foundry/crazydoc.git
 git+git://github.com/Edinburgh-Genome-Foundry/saboteurs.git
 git+git://github.com/Edinburgh-Genome-Foundry/genedom.git
+git+git://github.com/Edinburgh-Genome-Foundry/tatapov.git
+

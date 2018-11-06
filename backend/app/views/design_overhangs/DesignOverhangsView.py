@@ -7,7 +7,6 @@ from ..serializers import FileSerializer
 from goldenhinges import OverhangsSelector
 from goldenhinges.reports import write_report_for_cutting_solution
 
-
 class serializer_class(serializers.Serializer):
     """Serializer."""
     sequence = FileSerializer(allow_null=True, required=False)
@@ -39,6 +38,8 @@ class worker_class(AsyncWorker):
         data.mandatory_overhangs = [] if (data.mandatory_overhangs == '') else [
             s.strip().upper() for s in data.mandatory_overhangs.split(',')
         ]
+
+        # if data.use_potapov_data
 
         selector = OverhangsSelector(
             gc_min=data.gc_content[0] / 100.0,

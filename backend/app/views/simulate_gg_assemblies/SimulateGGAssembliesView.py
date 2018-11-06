@@ -25,6 +25,7 @@ class serializer_class(serializers.Serializer):
     single_assemblies = serializers.BooleanField()
     use_file_names_as_ids = serializers.BooleanField()
     assembly_plan = FileSerializer(allow_null=True)
+    show_overhangs = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -75,7 +76,8 @@ class worker_class(AsyncWorker):
                 logger=self.logger, connector_records=connector_records,
                 fail_silently=True,
                 include_fragments_plots=data.include_fragments,
-                include_parts_plots=data.include_fragments
+                include_parts_plots=data.include_fragments,
+                show_overhangs_in_genbank=data.show_overhangs
             )
             infos = dict(errors=errors)
 
@@ -86,10 +88,12 @@ class worker_class(AsyncWorker):
                 connector_records=connector_records,
                 target='@memory',
                 enzyme=data.enzyme,
-                max_assemblies=40, fragments_filters='auto',
+                max_assemblies=40,
+                fragments_filters='auto',
                 assemblies_prefix='assembly',
                 include_fragments_plots=data.include_fragments,
-                include_parts_plots=data.include_fragments
+                include_parts_plots=data.include_fragments,
+                show_overhangs_in_genbank=data.show_overhangs
             )
             infos = dict(nconstructs=nconstructs)
 

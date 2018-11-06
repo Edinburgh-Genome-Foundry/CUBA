@@ -12,14 +12,23 @@
 
   .form
 
-    h4.formlabel What do you wish to design ?
+    h4.formlabel What do you wish to do ?
 
     el-select(v-model='form.goal', placeholder='Select')
-      el-option(v-for='item in goal_options', :label='item.label',
-                :value='item.value', :key='item.value')
+      el-option(label='Find a collection of compatible overhangs', value='overhangs_set')
+      el-option(label='Decompose a sequence into compatible overhangs', value='sequence_decomposition')
+      
 
     div(v-show='form.goal')
+      div(v-show="form.goal === 'view_overhangs_crosstalk'")
+        el-input(type='textarea',
+               :rows='4'
+               v-model='form.forbidden_overhangs',
+               placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+        
+
       div(v-show="form.goal === 'sequence_decomposition'")
+
 
 
         h4.formlabel Sequence
@@ -133,7 +142,7 @@
                v-model='form.forbidden_overhangs',
                placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
 
-      div(v-show="form.goal === 'overhangs_set'")
+      div
         h4.formlabel
           span External overhangs
           helper.
@@ -225,17 +234,7 @@ export default {
         polling: {},
         result: {},
         requestError: ''
-      },
-      goal_options: [
-        {
-          label: 'A collection of compatible overhangs',
-          value: 'overhangs_set'
-        },
-        {
-          label: 'A sequence decomposition, with compatible overhangs',
-          value: 'sequence_decomposition'
-        }
-      ]
+      }
     }
   },
   components: {

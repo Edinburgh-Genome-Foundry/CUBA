@@ -1,6 +1,6 @@
 <template lang='pug'>
 .weblinks-bar
-  a(v-if='tweetMessage', :href='twitterHref') <icon name='twitter' scale='1.5'></icon> Tweet
+  a(v-if='tweetMessage', :href='twitterHref' target='blank_') <icon name='twitter' scale='1.5'></icon> Tweet
   a(v-if='emailSubject', :href='emailHref') <icon name='envelope' scale='1.3'></icon> Send feedback
 </template>
 

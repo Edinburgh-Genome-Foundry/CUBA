@@ -29,7 +29,12 @@ def fix_ice_genbank(genbank_txt):
 def write_record(record, target, fmt='genbank'):
     """Write a record as genbank, fasta, etc. via Biopython, with fixes"""
     record = deepcopy(record)
-    record.name = record.name[:20]
+    if fmt == 'genbank':
+        if isinstance(record, (list, tuple)):
+            for r in record:
+                r.name = r.name[:20]
+        else:
+            record.name = record.name[:20]
     if hasattr(target, 'open'):
         target = target.open('w')
     SeqIO.write(record, target, fmt)

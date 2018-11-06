@@ -77,7 +77,10 @@
 
       files-uploader(v-model='form.connectors', :multiple='true',
                      text="Drop multiple Genbank/Fasta (or click to select)")
-    p: el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
+    p
+      el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
+    p
+      el-checkbox(v-model='form.show_overhangs') Annotate overhangs in genbanks 
 
 
     backend-querier(:form='form',
@@ -140,6 +143,7 @@ export default {
         enzyme: 'Autoselect',
         parts: [],
         connectors: [],
+        show_overhangs: false,
         select_connectors: false,
         include_fragments: false,
         use_assembly_plan: false,

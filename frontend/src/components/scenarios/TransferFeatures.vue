@@ -19,8 +19,8 @@
       
     p.
       For instance, many DNA manufacturers provide unannotated
-      plasmid records when you order a genetic part (you know who you are !).
-      This app allows to reannotate the manufacturer's record using the annotations from your own part record.
+      plasmid records when you order genetic parts. This app enables to
+      manufacturer records using the annotations from your original part records.
 
   
 

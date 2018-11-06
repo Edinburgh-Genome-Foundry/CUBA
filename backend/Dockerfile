@@ -50,3 +50,5 @@ ADD . /code/
 ARG CACHEBUST=2
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/geneblocks
 RUN pip install biopython==1.70
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/GoldenHinges
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/tatapov

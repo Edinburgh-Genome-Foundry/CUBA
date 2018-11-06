@@ -2,12 +2,12 @@
   .powered-by
     p Powered by
     .powered-by-logo(v-if='softwareInfos.length == 1')
-      a(:href='softwareInfos[0].href')
+      a(:href='softwareInfos[0].href' target='blank_')
         img(:src='softwareInfos[0].logoSrc')
         span.software-name {{softwareInfos[0].name}}
     el-row(v-else).powered-by-logos
       el-col.powered-by-logo(:xs="24", :sm="12", :md="12", :lg="12" v-for='item in softwareInfos', :key='item.name')
-        a(:href='item.href')
+        a(:href='item.href' target='blank_')
           img(:src='item.logoSrc')
           span.software-name {{item.name}}
 </template>
@@ -84,6 +84,11 @@ var allSoftwareInfos = {
     name: 'Sequenticon',
     logoSrc: '/static/logos/sequenticon.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/sequenticon'
+  },
+  tatapov: {
+    name: 'tatapov',
+    logoSrc: '/static/logos/tatapov.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/tatapov'
   }
 }
 export default {

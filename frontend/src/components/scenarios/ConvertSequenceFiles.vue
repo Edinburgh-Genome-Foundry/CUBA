@@ -21,6 +21,8 @@
     .checkbox
       el-checkbox(v-if="form.format === 'fasta'"
                   v-model='form.inSingleFile') All sequences in a single file
+    .checkbox
+      el-checkbox(v-model='form.use_file_names_as_ids') Use file names as sequence identifiers
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
@@ -54,6 +56,7 @@ export default {
       form: {
         format: 'genbank',
         inSingleFile: false,
+        use_file_names_as_ids: false,
         files: []
       },
       infos: infos,

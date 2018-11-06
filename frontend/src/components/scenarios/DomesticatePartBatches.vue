@@ -42,7 +42,7 @@
        type="error", :closable="false")
 
     .results(v-if='!queryStatus.polling.inProgress')
-      p(v-if='queryStatus.result.nfails > 0') There were {{mqueryStatus.result.nfails}} errors, see report for more.
+      p(v-if='queryStatus.result.nfails > 0') There were {{queryStatus.result.nfails}} errors, see report for more.
       p(v-else) Everything seems to be fine. See report.
       download-button(v-if='queryStatus.result.file',
         text='Download Report',

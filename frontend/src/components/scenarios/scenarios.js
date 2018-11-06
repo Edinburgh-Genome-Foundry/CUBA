@@ -20,7 +20,8 @@ export default {
         require('./EvaluateManufacturability.vue').default,
         require('./FindCommonBlocks.vue').default,
         require('./CompareTwoSequences.vue').default,
-        require('./RenderSequenticons.vue').default
+        require('./RenderSequenticons.vue').default,
+        require('./ViewOverhangsCrosstalk.vue').default
       ]
     },
     {

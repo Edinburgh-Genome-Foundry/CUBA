@@ -17,6 +17,7 @@ class serializer_class(serializers.Serializer):
     format = serializers.CharField()
     inSingleFile = serializers.BooleanField()
     files = serializers.ListField(child=FileSerializer())
+    use_file_names_as_ids = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -25,11 +26,15 @@ class worker_class(AsyncWorker):
         data = self.data
         fmt = data.format
         records = records_from_data_files(data.files)
+        if data.use_file_names_as_ids:
+            for r in records:
+                r.id = r.name = r.file_name
         for r in records:
             r.id = r.name = r.id.replace(' ', '_')
         extension = {'fasta': '.fa', 'genbank': '.gb'}[fmt]
         if (fmt == 'fasta') and (len(records) > 1) and data.inSingleFile:
             file_content = record_to_formated_string(records, fmt=fmt)
+            file_content = file_content.decode().replace(' .\n', '\n').encode()
             return JobResult(
                 file_name='sequences.fasta',
                 file_data=data_to_html_data(bytes(file_content), 'fasta'),
