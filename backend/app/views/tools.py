@@ -16,6 +16,7 @@ import bandwagon as bw
 import crazydoc
 
 from fuzzywuzzy import process
+import pandas
 
 def did_you_mean(name, other_names, limit=5, min_score=50):
     results = process.extract(name, list(other_names), limit=limit)
@@ -76,6 +77,13 @@ def file_to_filelike_object(file_, type='byte'):
     content = file_.content.split("base64,")[1]
     filelike = BytesIO if (type == 'byte') else StringIO
     return filelike(b64decode(content))
+
+def spreadsheet_file_to_dataframe(filedict):
+    filelike = file_to_filelike_object(filedict)
+    if filedict.name.endswith('.csv'):
+        return pandas.read_csv(filelike)
+    else:
+        return pandas.read_excel(filelike)
 
 def records_from_zip_file(zip_file):
     zip_file = flametree.file_tree(file_to_filelike_object(zip_file))

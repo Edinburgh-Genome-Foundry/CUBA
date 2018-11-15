@@ -2,9 +2,11 @@
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
-from ..tools import records_from_data_files, data_to_html_data
+from ..tools import (records_from_data_files, data_to_html_data,
+                     spreadsheet_file_to_dataframe)
 from ..serializers import FileSerializer
-from genedom import batch_domestication, BUILTIN_DOMESTICATORS
+from genedom import (batch_domestication, BUILTIN_DOMESTICATORS,
+                     GoldenGateDomesticator)
 import flametree
 
 
@@ -23,16 +25,20 @@ class worker_class(AsyncWorker):
         self.logger(message="Now domesticating the parts")
 
         if data.standard == 'EMMA':
-            def domesticator(record):
+            domesticators = BUILTIN_DOMESTICATORS.EMMA
+        elif data.standard == 'custom':
+            dataframe = spreadsheet_file_to_dataframe(data.standard_definition)
+            domesticators = GoldenGateDomesticator.from_spreadsheet(
+                dataframe=dataframe, name_prefix=data.standard_name
+            )
+        def domesticator(record):
                 """Find which domesticator to use for the given part.
                 Here we use the fact that all records will have an
                 ID of the form ``position_partname``. We extract the
                 position and return the corresponding domesticator.
                 """
-                position = record.id.split("_")[0].lower()
-                return BUILTIN_DOMESTICATORS.EMMA[position]
-        else:
-            raise ValueError("Support for %s not implemented" % data.standard)
+                position = record.id.split("_")[0]
+                return domesticators[position]
         nfails, zip_data = batch_domestication(
             records, domesticator, '@memory', allow_edits=True,
             logger=self.logger)

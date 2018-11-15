@@ -11,13 +11,6 @@
   el-alert(title="This app is a stub. Not all features may work properly" type="warning" show-icon)
 
   .form
-    //- collapsible(title='Examples')
-    //-   file-example(filename='emma_parts.zip',
-    //-                @input='function (e) {form.parts_infos.push(e)}',
-    //-                fileHref='/static/file_examples/create_assembly_picklists/emma_parts.zip',
-    //-                imgSrc='/static/file_examples/generic_logos/sequences_records.png')
-    //-     p.
-    //-       ZIP archive containing the sequences of standard EMMA parts.
     h4.formlabel Standard
 
     p
