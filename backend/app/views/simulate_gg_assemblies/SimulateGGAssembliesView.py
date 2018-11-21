@@ -34,6 +34,12 @@ class worker_class(AsyncWorker):
         data = self.data
 
         records = records_from_data_files(data.parts)
+        for record in records:
+            # location-less features can cause bug when concatenating records.
+            record.features = [
+                f for f in record.features
+                if f.location is not None
+            ]
         if data.use_file_names_as_ids:
             for r in records:
                 r.id = r.name = r.file_name

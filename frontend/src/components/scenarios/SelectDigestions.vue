@@ -190,7 +190,7 @@ export default {
       if (this.form.possibleEnzymes.length < 2) {
         errors.push('Provide at least two different restriction enzymes.')
       }
-      if (this.form.files.possibleEnzymes === 0) {
+      if (this.form.files.length === 0) {
         errors.push('Provide at least one construct file')
       }
       return errors

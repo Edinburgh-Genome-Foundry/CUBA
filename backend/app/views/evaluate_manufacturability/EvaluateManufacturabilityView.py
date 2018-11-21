@@ -10,7 +10,6 @@ from ..tools import (records_from_data_file,
 from io import BytesIO
 from dnachisel.reports import plot_sequence_manufacturability_difficulties
 
-
 class FileSerializer(serializers.Serializer):
     name = serializers.CharField()
     content = serializers.CharField()
@@ -48,7 +47,7 @@ class worker_class(AsyncWorker):
             pdf_io = BytesIO()
 
             with PdfPages(pdf_io) as pdf:
-                for fig in figures:
+                for (name, fig) in figures:
                     pdf.savefig(fig, bbox_inches="tight")
 
             data = ('data:application/pdf;base64,' +
