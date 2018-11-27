@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import data_to_html_data, records_from_data_file
+from ..tools import data_to_html_data, records_from_data_files
 from bandwitch import LADDERS
 import bandwagon
 from .report_generator import generate_report
@@ -20,8 +20,11 @@ class serializer_class(serializers.Serializer):
         child=serializers.ListField(
             child=serializers.CharField()))
     files = serializers.ListField(child=FileSerializer())
-    makeReport = serializers.BooleanField()
-    showBandsSizes = serializers.BooleanField()
+    make_report = serializers.BooleanField()
+    show_band_sizes = serializers.BooleanField()
+    use_file_names_as_ids = serializers.BooleanField()
+    use_ordering_list = serializers.BooleanField()
+    ordering_list = serializers.CharField(allow_blank=True)
 
 class worker_class(AsyncWorker):
     generate_report = True
@@ -30,13 +33,17 @@ class worker_class(AsyncWorker):
     def work(self):
         self.logger(message="Reading Data...")
         data = self.data
-        records = [
-            records_from_data_file(f)[0][0]
-            for f in data.files
-        ]
+        records = records_from_data_files(data.files)
         for f, record in zip(data.files, records):
             record.linear = not f.circularity
-            record.id = f.name
+        if data.use_file_names_as_ids:
+            for r in records:
+                r.id = r.name = r.file_name
+        if data.use_ordering_list:
+            order = data.ordering_list.replace('\n', ",").split(",")
+            order = [e.strip() for e in order]
+            print (order, [r.id for r in records])
+            records = sorted(records, key=lambda r: order.index(r.id))
         ladder = bandwagon.custom_ladder(None, LADDERS[data.ladder].bands)
         digestions = data.digestions
 
@@ -45,9 +52,9 @@ class worker_class(AsyncWorker):
                                           digestions=digestions,
                                           ladder=ladder,
                                           group_by="digestions",
-                                          full_report=data.makeReport,
-                                          show_band_sizes=data.showBandsSizes)
-        if data.makeReport:
+                                          full_report=data.make_report,
+                                          show_band_sizes=data.show_band_sizes)
+        if data.make_report:
             report = data_to_html_data(report, 'zip')
         return JobResult(
             preview_html='<img src="%s"/>' % preview,

@@ -18,15 +18,24 @@
     h4.formlabel Sequences
     sequencesuploader(v-model='form.files')
     p
-      el-checkbox(v-model='form.makeReport') Generate report
+      el-checkbox(v-model='form.use_file_names_as_ids') Use file names as sequence IDs
     p
-      el-checkbox(v-model='form.showBandsSizes') Show band sizes in plot.
+      el-checkbox(v-model='form.make_report') Generate report
+    p
+      el-checkbox(v-model='form.show_band_sizes') Show band sizes in plot.
+    p
+      el-checkbox(v-model='form.use_ordering_list') Provide a sequences ordering list
+    div(v-if='form.use_ordering_list')
+      h4.formlabel Sequences Plotting Order
+      el-input(type='textarea', v-model='form.ordering_list', :rows=3,
+               placeholder='Write sequence names in new lines or separated by commas')
+
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Predict patterns',
                     v-model='queryStatus')
-    el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
+    el-alert(v-if='!queryStatus.polling.inProgress && queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
-    .results(v-if='!queryStatus.polling.inProgress')
+    .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.file')
       download-button(v-if='queryStatus.result.file',
                       :filedata='queryStatus.result.file')
       .results-summary(v-if='queryStatus.result.preview',
@@ -56,9 +65,12 @@ export default {
       form: {
         ladder: '100_to_4k',
         digestions: [],
-        makeReport: false,
+        make_report: false,
         files: [],
-        showBandsSizes: false
+        show_band_sizes: false,
+        use_ordering_list: false,
+        use_file_names_as_ids: true,
+        ordering_list: ''
       },
       infos: infos,
       queryStatus: {

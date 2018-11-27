@@ -10,7 +10,8 @@ export default {
         require('./SketchConstructs').default,
         require('./ConvertSequenceFiles').default,
         require('./DomesticatePartBatches').default,
-        require('./TransferFeatures').default
+        require('./TransferFeatures').default,
+        require('./SubstitutePartsOverhangs').default
       ]
     },
     {

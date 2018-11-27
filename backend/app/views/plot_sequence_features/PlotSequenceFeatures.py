@@ -81,9 +81,11 @@ class worker_class(AsyncWorker):
                 if (keep and not in_types) or (in_types and not keep):
                     return False
             text = feature_text(f)
-            if len(must_contain) and not any([c in text for c in must_contain]):
+            if len(must_contain) and not any([c in text
+                                              for c in must_contain]):
                 return False
-            if len(must_not_contain) and any([c in text for c in must_not_contain]):
+            if len(must_not_contain) and any([c in text
+                                              for c in must_not_contain]):
                 return False
             return True
 
@@ -125,7 +127,7 @@ class worker_class(AsyncWorker):
         records = records_from_data_files(data.files)
         figures = []
         for rec in self.logger.iter_bar(record=records):
-            gr = translator.translate_record(rec, grecord_class=display_class)
+            gr = translator.translate_record(rec, record_class=display_class)
             if not data.plot_full_sequence:
                 gr = gr.crop((data.plot_from_position, data.plot_to_position))
             ax, _ = gr.plot(figure_width=data.plot_width,
@@ -133,8 +135,6 @@ class worker_class(AsyncWorker):
                             annotate_inline=data.inline_labels)
             if data.plot_nucleotides:
                 gr.plot_sequence(ax)
-            # if data.plot_translation:
-            #     gr.plot_translation
             figure = ax.figure
             figure.suptitle(rec.id)
             figures.append(figure)
