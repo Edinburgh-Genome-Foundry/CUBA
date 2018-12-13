@@ -8,7 +8,7 @@
     center
       img.small-image(v-if='imgSrc', :src='imgSrc' @click="dialogVisible = true")
       h3
-        .filename {{dataFilename}}
+        .filename {{filename}}
       el-row(:gutter='60')
         span.use-file(v-if='useFileButton')
           el-tooltip(content='use this file')
@@ -37,7 +37,6 @@ export default {
   data () {
     return {
       defaultImgSrc: null,
-      dataFilename: this.filename,
       dialogVisible: false
     }
   },

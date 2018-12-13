@@ -3,60 +3,42 @@
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    Find which parts are associated with assembly failure!
+    If you are going to do many (combinatorial) assemblies in parralel, this app
+    can help you select a few assemblies to run first to test no part is
+    corrupted.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Sequenticons are human-friendly, visual DNA sequence identifiers.",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   //- learnmore Bla bla bla
 
   .form
-
-    h4.formlabel Method
-    el-select(v-model='form.method')
-      el-option(value='statistical' label='Use a statistical method')
-      el-option(value='logical' label='Use a logical method')
-      
-
-    h4.formlabel Assemblies data for {{form.method}} method
+    
+    el-select(v-model='form.input_format')
+      el-option(value='list' label='I will provide a list of assemblies')
+      el-option(value='combinatorial' label='I will provide a combinatorial design')
+    p Max. expected number of saboteur parts: &nbsp; &nbsp;
+      el-input-number(v-model='form.max_saboteurs', :min='1', :max='10' size='mini')
+    h4.formlabel {{ form.input_format === 'list' ? 'Assembly list' : 'Combinatorial design'}}
     collapsible(title='Examples')
-      file-example(:filename='`${form.method}_assembly_data.csv`',
-                   :fileHref='`/static/file_examples/find_saboteur_parts/${form.method}_assembly_data.csv`',
-                   @input='function (e) { form.assemblies_data_file = e }'
+      file-example(:filename='`${form.input_format}_assembly_plan.csv`',
+                   :fileHref='`/static/file_examples/design_part_test_batches/${form.input_format}_assembly_plan.csv`',
+                   @input='function (e) { form.input_file = e }'
                    imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
-    files-uploader(v-model='form.assemblies_data_file', text="Drop files (or click to select)",
+    files-uploader(v-model='form.input_file', text="Drop files (or click to select)",
                   help='CSV files only :)', :multiple='false')
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Find saboteurs',
+                    :validateForm='validateForm', submitButtonText='Design a test batch',
                     v-model='queryStatus')
     el-alert(v-show='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
 
   .results(v-if='!queryStatus.polling.inProgress && Object.keys(queryStatus.result).length')
+    p(align='center').
+      A batch with #[b {{ queryStatus.result.n_selected }}] selected assemblies was designed.
     download-button(v-if='queryStatus.result.report',
                     text='Download the report',
                     :filedata='queryStatus.result.report')
-    .textual-report(v-if='queryStatus.result.suspicious')
-      div(v-if='queryStatus.result.saboteurs.length')
-        h3 Bad parts identified !
-        p.
-          The following parts appear only in failed assemblies and for each of
-          them there is at least one assembly in which all other parts
-          appear in successful assemblies. Therefore these parts are
-          #[b probably bad].
-          :
-        ul
-          li(v-for='partName in queryStatus.result.suspicious', :key='partName') {{partName}}
-      div(v-else)
-        p No saboteur parts were found
-      div(v-if='queryStatus.result.suspicious.length')
-        h3 Suspicious parts identified !
-        p.
-          The following parts appear only in failed assemblies but are #[b only suspicious]
-          as there is no other evidence that they are bad (some of them may be,
-          some may not be).
-        ul
-          li(v-for='partName in queryStatus.result.suspicious', :key='partName') {{partName}}
 
 
   powered-by(:softwareNames='infos.poweredby')
@@ -66,12 +48,12 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Find Saboteur Parts',
-  navbarTitle: 'Find Saboteur Parts',
-  path: 'find_saboteur_parts',
+  title: 'Design Part Test Batches',
+  navbarTitle: 'Design Part Test Batches',
+  path: 'design_part_test_batches',
   description: '',
-  backendUrl: 'start/find_saboteur_parts',
-  icon: require('../../assets/images/find_saboteur_parts.svg'),
+  backendUrl: 'start/design_part_test_batches',
+  icon: require('../../assets/images/design_part_test_batches.svg'),
   poweredby: ['saboteurs']
 }
 
@@ -80,8 +62,9 @@ export default {
     return {
       infos: infos,
       form: {
-        method: 'statistical',
-        assemblies_data_file: null
+        input_format: 'list',
+        input_file: null,
+        max_saboteurs: 1
       },
       queryStatus: {
         polling: {},
@@ -97,7 +80,7 @@ export default {
   methods: {
     validateForm () {
       var errors = []
-      if (!this.form.assemblies_data_file) {
+      if (!this.form.input_file) {
         errors.push('Provide files !')
       }
       return errors

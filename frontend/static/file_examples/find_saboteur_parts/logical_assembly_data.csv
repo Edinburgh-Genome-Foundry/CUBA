@@ -1,0 +1,5 @@
+id,result,members
+M1,success, A, C, D
+M2,failure, B, C, E
+M3,success, A, B, D
+M4,failure, D, F, G

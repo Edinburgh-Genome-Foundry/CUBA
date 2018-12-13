@@ -32,7 +32,8 @@ export default {
         require('./SelectDigestions').default,
         require('./AnalyzeDigests').default,
         require('./SelectPrimers').default,
-        require('./FindSaboteurParts').default
+        require('./FindSaboteurParts').default,
+        require('./DesignPartTestBatches').default
       ]
     },
     {

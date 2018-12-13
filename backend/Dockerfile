@@ -47,9 +47,10 @@ RUN fc-cache -f
 
 ADD . /code/
 
-ARG CACHEBUST=4
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/geneblocks
 RUN pip install biopython==1.70
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/GoldenHinges
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/tatapov
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron
+ARG CACHEBUST=1
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/saboteurs

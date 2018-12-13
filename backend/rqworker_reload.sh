@@ -2,5 +2,5 @@
 ./rqworker_start.sh & watchmedo shell-command \
     --patterns="*.py;*.txt" \
     --recursive \
-    --command='kill -2 $(cat rqworker_pid) ; ./rqworker_start.sh'
+    --command='kill $(cat rqworker_pid) ; ./rqworker_start.sh'
     .

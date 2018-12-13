@@ -1,0 +1,13 @@
+id,attempts,failures,members
+Mission 1,8,7,Alice,Bob,Charlie,David,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 2,8,1,Alice,Bob,Quincy,Raul,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 3,8,4,Alice,Bob,Stephany,Teo,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 4,8,3,Alice,Bob,Ursula,David,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 5,8,7,Alice,Bob,Charlie,Raul,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 6,8,2,Alice,Bob,Quincy,Teo,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 7,8,5,Alice,Bob,Stephany,David,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 8,8,2,Alice,Bob,Ursula,Raul,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 9,8,5,Alice,Bob,Charlie,Teo,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 10,8,3,Alice,Bob,Quincy,David,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 11,8,8,Alice,Bob,Stephany,Raul,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
+Mission 12,8,5,Alice,Bob,Ursula,Teo,Emily,Frank,Gloria,Hille,Ian,Jules,Kevin,Linda,Matt,Noah,Oprah,Paul
