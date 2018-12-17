@@ -52,13 +52,18 @@ class worker_class(AsyncWorker):
 
         picklist_filelike = file_to_filelike_object(data.picklist)
         if data.picklist.name.endswith('.csv'):
-            dataframe = pandas.read_csv(picklist_filelike)
-        else:
+            csv = picklist_filelike.read().decode()
+            rows = [l.split(',') for l in csv.split("\n") if len(l)]
+            print (rows)
             dataframe = pandas.read_excel(picklist_filelike)
+            rows = [row for i, row in dataframe.iterrows()]
         assembly_plan = AssemblyPlan(OrderedDict([
-            (row[0], [e for e in row[1:] if str(e) not in ['-', 'nan']])
-            for i, row in dataframe.iterrows()
-            if row[0] not in ['nan', 'Construct name']
+            (row[0], [str(e).strip()
+                      for e in row[1:]
+                      if str(e).strip() not in ['-', 'nan', '']])
+            for row in rows
+            if row[0] not in ['nan', 'Construct name', 'constructs',
+                              'construct']
         ]))
         for assembly, parts in assembly_plan.assemblies.items():
             assembly_plan.assemblies[assembly] = [

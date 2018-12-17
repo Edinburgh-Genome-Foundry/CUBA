@@ -14,7 +14,11 @@ class serializer_class(serializers.Serializer):
 class worker_class(AsyncWorker):
 
     def work(self):
-        overhangs = [s.strip().upper() for s in self.data.overhangs.split(',')]
+        overhangs = [
+            s.strip().upper()
+            for s in self.data.overhangs.split(',')
+            if len(s.strip())
+        ]
         temperature, incubation = self.data.temperature, self.data.incubation
         data = tatapov.annealing_data[temperature][incubation]
         subset = tatapov.data_subset(data, overhangs, add_reverse=True)

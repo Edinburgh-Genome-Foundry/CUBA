@@ -59,9 +59,11 @@ class worker_class(AsyncWorker):
             if data.assembly_plan.name.lower().endswith('.csv'):
                 content = filelike.read().decode()
                 dataframe = pandas.DataFrame([
-                    line.split(',')
+                    [e.strip() for e in line.split(',') if len(e.strip())]
                     for line in content.split('\n')
+                    if len(line)
                 ])
+                print (dataframe)
             else:
                 
                 dataframe = pandas.read_excel(filelike, header=None)

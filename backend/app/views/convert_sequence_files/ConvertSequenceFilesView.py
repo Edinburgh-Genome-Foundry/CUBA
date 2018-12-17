@@ -31,7 +31,17 @@ class worker_class(AsyncWorker):
                 r.id = r.name = r.file_name
         for r in records:
             r.id = r.name = r.id.replace(' ', '_')
-        extension = {'fasta': '.fa', 'genbank': '.gb'}[fmt]
+        extension = {'fasta': '.fa', 'genbank': '.gb', 'csv': '.csv'}[fmt]
+        if fmt == 'csv':
+            file_content = ("name,sequence\n" + "\n".join([
+                ",".join([r.id, str(r.seq)])
+                for r in records
+            ]))
+            return JobResult(
+                file_name='sequences.csv',
+                file_data=file_content,
+                file_mimetype='application/csv'
+            )
         if (fmt == 'fasta') and (len(records) > 1) and data.inSingleFile:
             file_content = record_to_formated_string(records, fmt=fmt)
             file_content = file_content.decode().replace(' .\n', '\n').encode()

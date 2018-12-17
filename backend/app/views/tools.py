@@ -90,7 +90,7 @@ def records_from_zip_file(zip_file):
     records = []
     for f in zip_file._all_files:
         ext =  f._extension.lower()
-        if ext in ['gb', 'fa', 'dna']:
+        if ext in ['gb', 'gbk', 'fa', 'dna']:
             try:
                 new_records, fmt = string_to_record(f.read())
             except:

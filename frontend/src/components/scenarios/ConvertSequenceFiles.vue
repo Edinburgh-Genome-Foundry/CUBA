@@ -18,6 +18,7 @@
     .report-radio
       el-radio(v-model='form.format', class="radio", label='genbank') Genbank
       el-radio(v-model='form.format', class="radio", label='fasta') Fasta
+      el-radio(v-model='form.format', class="radio", label='csv') CSV
     .checkbox
       el-checkbox(v-if="form.format === 'fasta'"
                   v-model='form.inSingleFile') All sequences in a single file

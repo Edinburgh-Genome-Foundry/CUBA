@@ -20,12 +20,6 @@
       
 
     div(v-show='form.goal')
-      div(v-show="form.goal === 'view_overhangs_crosstalk'")
-        el-input(type='textarea',
-               :rows='4'
-               v-model='form.forbidden_overhangs',
-               placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
-        
 
       div(v-show="form.goal === 'sequence_decomposition'")
 
@@ -135,12 +129,15 @@
                          :max=100, :min=0, :step=25, :style="{width: '100px'}")
         span {{ form.gc_content[0] }}% to {{ form.gc_content[1] }}%:
 
-      h4.formlabel Forbidden overhangs
+      h4.formlabel {{form.specify_possible_overhangs ? 'Possible' : 'Forbidden'}} overhangs
+      el-checkbox(v-model='form.specify_possible_overhangs') Specify possible overhangs rather than forbidden
 
-      el-input(type='textarea',
-               :rows='4'
+      el-input(v-if='form.specify_possible_overhangs' type='textarea', :rows='4'
+               v-model='form.possible_overhangs',
+               placeholder='Enter possible overhangs, e.g. "ATTG, TTAC, ..."')
+      el-input(v-else type='textarea', :rows='4'
                v-model='form.forbidden_overhangs',
-               placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+               placeholder='Enter forbidden overhangs, e.g. "ATTG, TTAC, ..."')
 
       div
         h4.formlabel
@@ -222,7 +219,8 @@ export default {
         forbidden_overhangs: '',
         forbidden_overhangs_is_text: false,
         forbidden_overhangs_text: '',
-
+        specify_possible_overhangs: false,
+        possible_overhangs: '',
         cutting_mode: 'equal',
         n_overhangs: 10,
         n_fragments: 1,

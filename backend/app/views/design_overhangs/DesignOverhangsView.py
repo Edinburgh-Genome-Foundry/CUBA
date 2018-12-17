@@ -4,7 +4,7 @@ from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_file, data_to_html_data)
 from ..serializers import FileSerializer
-from goldenhinges import OverhangsSelector
+from goldenhinges import OverhangsSelector, list_overhangs
 from goldenhinges.reports import write_report_for_cutting_solution
 
 class serializer_class(serializers.Serializer):
@@ -23,6 +23,8 @@ class serializer_class(serializers.Serializer):
     left_flank_sequence = serializers.CharField(allow_blank=True)
     right_flank_sequence = serializers.CharField(allow_blank=True)
     allow_edits = serializers.BooleanField()
+    specify_possible_overhangs = serializers.BooleanField()
+    possible_overhangs = serializers.CharField()
 
 class worker_class(AsyncWorker):
 
@@ -32,11 +34,20 @@ class worker_class(AsyncWorker):
         import logging
         logging.log(logging.ERROR, data)
 
-        data.forbidden_overhangs = [] if (data.forbidden_overhangs == '') else [
-            s.strip().upper() for s in data.forbidden_overhangs.split(',')
-        ]
+        if data.specify_possible_overhangs:
+          possible_overhangs = [
+              s.strip().upper() for s in data.possible_overhangs.split(',')
+              if len(s.strip())
+          ]
+        else:
+            possible_overhangs = None
+            data.forbidden_overhangs = [] if (data.forbidden_overhangs == '') else [
+                s.strip().upper() for s in data.forbidden_overhangs.split(',')
+                if len(s.strip())
+            ]
         data.mandatory_overhangs = [] if (data.mandatory_overhangs == '') else [
             s.strip().upper() for s in data.mandatory_overhangs.split(',')
+            if len(s.strip())
         ]
 
         # if data.use_potapov_data
@@ -47,6 +58,7 @@ class worker_class(AsyncWorker):
             differences=data.overhangs_differences,
             forbidden_overhangs=data.forbidden_overhangs,
             external_overhangs=data.mandatory_overhangs,
+            possible_overhangs=possible_overhangs,
             time_limit=2,
             progress_logger=self.logger
         )
