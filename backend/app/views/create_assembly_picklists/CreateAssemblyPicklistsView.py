@@ -54,7 +54,7 @@ class worker_class(AsyncWorker):
         if data.picklist.name.endswith('.csv'):
             csv = picklist_filelike.read().decode()
             rows = [l.split(',') for l in csv.split("\n") if len(l)]
-            print (rows)
+        else:
             dataframe = pandas.read_excel(picklist_filelike)
             rows = [row for i, row in dataframe.iterrows()]
         assembly_plan = AssemblyPlan(OrderedDict([
