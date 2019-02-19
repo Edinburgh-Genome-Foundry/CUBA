@@ -15,7 +15,6 @@ class FileSerializer(serializers.Serializer):
     content = serializers.CharField()
 
 class serializer_class(serializers.Serializer):
-    report = serializers.CharField()
     files = serializers.ListField(child=FileSerializer())
     show_features = serializers.BooleanField()
 
@@ -24,7 +23,6 @@ class worker_class(AsyncWorker):
     def work(self):
 
         data = self.data
-        PDF_REPORT = (data.report == "pdf_report")
         figures = []
         for f in data.files:
             self.logger(message='Processing file %s' % f.name)
@@ -41,32 +39,21 @@ class worker_class(AsyncWorker):
                 figures.append((name, figure))
 
         self.logger(message='Generating report')
-        print ("AAAA", len(figures))
 
-        if PDF_REPORT:
-            pdf_io = BytesIO()
+        pdf_io = BytesIO()
 
-            with PdfPages(pdf_io) as pdf:
-                for (name, fig) in figures:
-                    pdf.savefig(fig, bbox_inches="tight")
+        with PdfPages(pdf_io) as pdf:
+            for (name, fig) in figures:
+                pdf.savefig(fig, bbox_inches="tight")
 
-            data = ('data:application/pdf;base64,' +
-                    b64encode(pdf_io.getvalue()).decode("utf-8"))
-            figures_data = {
+        data = ('data:application/pdf;base64,' +
+                b64encode(pdf_io.getvalue()).decode("utf-8"))
+        return {
+            'pdf_report': {
                 'data': data,
-                'name': 'manufacturability.pdf',
+                'name': 'manufacturability_report.pdf',
                 'mimetype': 'application/pdf'
             }
-        else:
-            figures_data = []
-            for name, fig in figures:
-                data = matplotlib_figure_to_svg_base64_data(
-                    fig, bbox_inches="tight")
-                figures_data.append({'img_data': data, 'name': name})
-
-        return {
-          'pdf_report': None if not PDF_REPORT else figures_data,
-          'figures_data': None if PDF_REPORT else figures_data
         }
 
 class EvaluateManufacturabilityView(StartJobView):

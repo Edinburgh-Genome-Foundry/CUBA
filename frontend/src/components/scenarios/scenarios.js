@@ -11,7 +11,8 @@ export default {
         require('./ConvertSequenceFiles').default,
         require('./DomesticatePartBatches').default,
         require('./TransferFeatures').default,
-        require('./SubstitutePartsOverhangs').default
+        require('./SubstitutePartsOverhangs').default,
+        require('./DesignSitesArrays').default
       ]
     },
     {
@@ -23,6 +24,7 @@ export default {
         require('./CompareTwoSequences.vue').default,
         require('./RenderSequenticons.vue').default,
         require('./ViewOverhangsCrosstalk.vue').default
+        // require('./PredictBadCloneRates.vue').default
       ]
     },
     {

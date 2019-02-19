@@ -41,7 +41,7 @@ def write_record(record, target, fmt='genbank'):
     SeqIO.write(record, target, fmt)
 
 def autoname_genbank_file(record):
-    return record.id.replace('.', '_') + 'gb'
+    return record.id.replace('.', '_') + '.gb'
 
 
 
@@ -179,14 +179,20 @@ def records_from_data_files(data_files):
         records += recs
     return records
 
-def data_to_html_data(data, datatype):
+def data_to_html_data(data, datatype, filename=None):
+    """Data types: zip, genbank, fasta, pdf"""
     datatype = {
         'zip': 'application/zip',
         'genbank': 'application/genbank',
         'fasta': 'application/fasta',
         'pdf': 'application/pdf',
     }.get(datatype, datatype)
-    return 'data:%s;base64,%s' % (datatype, b64encode(data).decode("utf-8"))
+    datatype = 'data:%s;' % datatype
+    data64 = 'base64,%s' % b64encode(data).decode("utf-8")
+    headers = ''
+    if filename is not None:
+        headers += 'headers=filename%3D' + filename + ';'
+    return datatype + headers + data64
 
 def zip_data_to_html_data(data):
     return data_to_html_data(data, 'application/zip')
@@ -220,3 +226,11 @@ def figures_to_pdf_report_data(figures, filename='report.pdf'):
         'name': filename,
         'mimetype': 'application/pdf'
     }
+
+def csv_to_list(csv_string, sep=','):
+    return [
+        element.strip()
+        for line in csv_string.split("\n")
+        for element in line.split(sep)
+        if len(element.strip())
+    ]

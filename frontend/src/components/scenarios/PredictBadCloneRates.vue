@@ -14,20 +14,14 @@
     ladderselector(v-model='form.ladder')
 
     h4.formlabel Digestions
-    .example(@click="form.digestions = [['PvuI'], ['EcoRI', 'XbaI'], ['ApaLI', 'HindIII']]",
-             style='cursor: pointer; color: grey; margin: 0.5em;') Click me to load an example
+    
     digestionset(v-model='form.digestions')
     h4.formlabel Sequences
-    collapsible(title='Examples')
-      file-example(filename='emma_constructs.zip',
-                  @input='function (e) {form.files = [e]}',
-                  fileHref='/static/file_examples/predict_digestions/emma_constructs.zip',
-                  imgSrc='/static/file_examples/generic_logos/part.svg')
     sequencesuploader(v-model='form.files')
     p
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names as sequence IDs
     p
-      el-checkbox(v-model='form.make_cuts_position_report') Generate report
+      el-checkbox(v-model='form.make_report') Generate report
     p
       el-checkbox(v-model='form.show_band_sizes') Show band sizes in plot.
     p
@@ -42,12 +36,11 @@
                     v-model='queryStatus')
     el-alert(v-if='!queryStatus.polling.inProgress && queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
-  .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.figure_data')
-    center
-      img(:src='queryStatus.result.figure_data')
-      iframe(:src="queryStatus.result.pdf_data" 
-              style="width: 90%; max-width: 1000px; height:800px;"
-              frameborder="0")
+    .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.file')
+      download-button(v-if='queryStatus.result.file',
+                      :filedata='queryStatus.result.file')
+      .results-summary(v-if='queryStatus.result.preview',
+                       v-html="queryStatus.result.preview.html")
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
@@ -58,13 +51,13 @@ import digestionset from '../../components/widgets/DigestionSelectorSet'
 import ladderselector from '../../components/widgets/LadderSelector'
 
 var infos = {
-  title: 'Predict Digestions',
-  navbarTitle: 'Predict Digestions',
-  path: 'predict-digestions',
+  title: 'Predict Bad Clone Rates',
+  navbarTitle: 'Predict Bad Clone Rates',
+  path: 'predict-bad-clone-rates',
   description: '',
-  backendUrl: 'start/predict_digestions',
-  icon: require('../../assets/images/predict-icon.svg'),
-  poweredby: ['bandwagon']
+  backendUrl: 'start/predict_bad_clone_rates',
+  icon: require('../../assets/images/predict_bad_clone_rates.svg'),
+  poweredby: ['kappagate']
 }
 
 export default {
@@ -73,7 +66,7 @@ export default {
       form: {
         ladder: '100_to_4k',
         digestions: [],
-        make_cuts_position_report: false,
+        make_report: false,
         files: [],
         show_band_sizes: false,
         use_ordering_list: false,

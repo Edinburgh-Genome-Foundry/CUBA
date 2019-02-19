@@ -140,6 +140,12 @@
               li(v-for='part in didYouMean.did_you_mean') {{part[0]}}, {{part[1]}}
             ul(v-else)
               li(v-for='part in didYouMean') {{part}}
+      div(v-if='queryStatus.result.picklist_data && queryStatus.result.picklist_data.duplicates'
+          style='color: red')
+        ul
+          li(v-for='duplicates, part_name in queryStatus.result.picklist_data.duplicates').
+            Duplicates wells for #[b {{part_name}}]: {{duplicates.wells}}
+            ({{duplicates.selected}} was selected)
       download-button(v-if='queryStatus.result.file',
         text='Download Picklist',
         :filedata='queryStatus.result.file')

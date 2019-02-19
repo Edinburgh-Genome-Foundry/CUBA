@@ -8,7 +8,10 @@ from ..tools import (records_from_data_files,
                      matplotlib_figure_to_svg_base64_data)
 from bandwitch import (IdealDigestionsProblem, SeparatingDigestionsProblem,
                        LADDERS)
-from bandwitch.plots import plot_all_constructs_cuts_maps
+import bandwagon
+import flametree
+from bandwagon import plot_records_digestions
+from io import BytesIO
 
 
 digestion = serializers.ListField(child=serializers.CharField())
@@ -22,15 +25,15 @@ class ComaSeparatedList(serializers.CharField):
 
 class serializer_class(serializers.Serializer):
     goal = serializers.CharField()
-    bandsRange = serializers.ListField(child=serializers.IntegerField())
+    bands_range = serializers.ListField(child=serializers.IntegerField())
     files = serializers.ListField(child=FileSerializer())
     ladder = serializers.CharField()
-    maxDigestions = serializers.IntegerField()
-    maxEnzymes = serializers.IntegerField()
-    circularSequences = serializers.BooleanField()
-    possibleEnzymes = ComaSeparatedList()
-    showBandsSizes = serializers.BooleanField()
-    plotCuts = serializers.BooleanField()
+    max_digestions = serializers.IntegerField()
+    max_enzymes = serializers.IntegerField()
+    circular_sequences = serializers.BooleanField()
+    possible_enzymes = ComaSeparatedList()
+    show_bands_sizes = serializers.BooleanField()
+    plot_cuts = serializers.BooleanField()
 
 class worker_class(AsyncWorker):
 
@@ -40,7 +43,7 @@ class worker_class(AsyncWorker):
 
         data = self.data
         ladder = LADDERS[data.ladder]
-        enzymes = data.possibleEnzymes
+        enzymes = data.possible_enzymes
         records = records_from_data_files(data.files)
         sequences = OrderedDict([
             (record.id, str(record.seq))
@@ -50,23 +53,23 @@ class worker_class(AsyncWorker):
         self.logger(message="Initializing...")
 
         if (data.goal == 'ideal'):
-            mini, maxi = data.bandsRange
+            mini, maxi = data.bands_range
             problem = IdealDigestionsProblem(
                 sequences=sequences, enzymes=enzymes, ladder=ladder,
-                linear=not data.circularSequences,
+                linear=not data.circular_sequences,
                 min_bands=mini, max_bands=maxi,
-                max_enzymes_per_digestion=data.maxEnzymes
+                max_enzymes_per_digestion=data.max_enzymes
             )
         else:
             problem = SeparatingDigestionsProblem(
                  sequences=sequences, enzymes=enzymes, ladder=ladder,
-                 linear=not data.circularSequences,
-                 max_enzymes_per_digestion=data.maxEnzymes
+                 linear=not data.circular_sequences,
+                 max_enzymes_per_digestion=data.max_enzymes
             )
         self.logger(message='Selecting digestions...')
         score, selected_digestions = problem.select_digestions(
-            max_digestions=data.maxDigestions, search='full')
-        bands_props = None if not data.showBandsSizes else dict(
+            max_digestions=data.max_digestions, search='full')
+        bands_props = None if not data.show_bands_sizes else dict(
             label='=size',
             label_fontdict=dict(size=6)
         )
@@ -78,25 +81,30 @@ class worker_class(AsyncWorker):
         figure_data = matplotlib_figure_to_svg_base64_data(
             axes[0].figure, bbox_inches='tight'
         )
-
-        if data.plotCuts:
+        
+        if data.plot_cuts:
+            ladder = bandwagon.custom_ladder(None, ladder.bands)
             self.logger(message="Plotting cuts maps...")
-            pdf_data = plot_all_constructs_cuts_maps([
-                (rec, digestion)
-                for rec in records
-                for digestion in selected_digestions
-            ])
-            pdf_file = dict(data=data_to_html_data(pdf_data, 'pdf'),
-                            name='restrictions_cuts.pdf',
-                            mimetype='application/pdf')
+            zip_root = flametree.file_tree("@memory")
+            bandwagon.plot_records_digestions(
+                target=zip_root._file("Details.pdf").open("wb"),
+                ladder=ladder,
+                records_and_digestions=[
+                    (rec, digestion)
+                    for rec in records
+                    for digestion in selected_digestions
+                ]
+            )
+            pdf_data = zip_root["Details.pdf"].read('rb')
+            pdf_data = data_to_html_data(pdf_data, datatype='pdf')
         else:
-            pdf_file = None
+            pdf_data = None
 
         return {
-          'figure_data': figure_data,
-          'digestions': selected_digestions,
-          'score': score,
-          'pdf_file': pdf_file
+            'figure_data': figure_data,
+            'digestions': selected_digestions,
+            'score': score,
+            'pdf_data': pdf_data
         }
 
 class SelectDigestionsView(StartJobView):

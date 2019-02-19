@@ -54,11 +54,21 @@ class worker_class(AsyncWorker):
             figure, bbox_inches="tight")
         figure.savefig(root._file('report.pdf').open('wb'), format='pdf',
                     bbox_inches='tight')
+        
+        blocks = {'common': common_blocks.common_blocks_records(),
+                  'unique': common_blocks.unique_blocks_records()}
 
-        blocks_gb_dir = root._dir('blocks_genbanks')
-        for rec in common_blocks.common_blocks_records():
-            gb_file = blocks_gb_dir._file(autoname_genbank_file(rec))
-            write_record(rec, gb_file, 'genbank')
+        for folder, blocks_list in blocks.items():
+            gb_folder = root._dir('%s_blocks_genbanks' % folder)
+            for rec in blocks_list:
+                gb_file = gb_folder._file(autoname_genbank_file(rec))
+                write_record(rec, gb_file, 'genbank')
+        
+        root._file('all_blocks.fa').write("\n\n".join(
+            "> %s\n%s" % (rec.id, rec.seq)
+            for rec in (blocks['common'] + blocks['unique'])
+        ))
+
         seq_gb_dir = root._dir('sequences_genbanks')
         seq_records = common_blocks.sequences_with_annotated_blocks()
         for recname, rec in seq_records.items():
@@ -70,7 +80,7 @@ class worker_class(AsyncWorker):
         return {
           'zip_file': {
               'data': data_to_html_data(zip_data, 'zip'),
-              'name': 'optimization_report.zip',
+              'name': 'common_blocks_report.zip',
               'mimetype': 'application/zip'
           },
           'figure_data': figure_data

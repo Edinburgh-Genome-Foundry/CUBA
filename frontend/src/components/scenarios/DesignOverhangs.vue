@@ -103,7 +103,7 @@
             el-form-item(label='Left flank:')
               el-input(v-model='left_flank_sequence', placeholder="e.g. CGTCTCA")
             el-form-item(label='Right flank:')
-              el-input(v-model='right_flank_sequence', placeholder="e.g. GAGACGT")
+              el-input(v-model='right_flank_sequence', placeholder="e.g. TGAGACG")
 
 
       h4.formlabel Overhangs parameters
@@ -159,7 +159,7 @@
     p(v-if='queryStatus.polling.inProgress && queryStatus.polling.data.n_overhangs').center.
       Attempting to find {{queryStatus.polling.data.n_overhangs}} overhangs
 
-    progress-bars(:bars='queryStatus.polling.data.bars', :order="['radius']"
+    progress-bars(:bars='queryStatus.polling.data.bars', :order="['radius', 'interval']"
                   v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
 
     el-alert(v-show='queryStatus.requestError  && !queryStatus.polling.inProgress',

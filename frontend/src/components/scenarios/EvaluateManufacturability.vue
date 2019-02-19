@@ -16,9 +16,6 @@
                       text="Drop multiple Genbank/Fasta (or click to select)")
     .files-number(v-if='form.files.length > 0')
       p {{ form.files.length }} file{{ form.files.length > 1 ? 's' : '' }}  selected
-    .report-radio
-      el-radio(v-model='form.report', class="radio", label='quick_view') Quick view
-      el-radio(v-model='form.report', class="radio", label='pdf_report') PDF report
 
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
@@ -26,15 +23,10 @@
                     v-model='queryStatus')
     el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
-    .results(v-if='!queryStatus.polling.inProgress')
-      download-button(v-if='queryStatus.result.pdf_report',
-                      :filedata='queryStatus.result.pdf_report')
-      .results-summary(v-if='queryStatus.result.preview',
-                       v-html="queryStatus.result.preview.html")
-      .figures-preview(v-if='queryStatus.result.figures_data')
-        .figure-preview(v-for='fig in queryStatus.result.figures_data', key='fig.name')
-          h4 {{fig.name}}
-          img(:src='fig.img_data')
+  .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.pdf_report')
+    center
+      iframe(:src="queryStatus.result.pdf_report.data" 
+              style="width: 90%; max-width: 1000px; height:800px;" frameborder="0")
 
   powered-by(:softwareNames='infos.poweredby')
 </template>
@@ -57,7 +49,6 @@ export default {
     return {
       enzymes: ['BsaI', 'BsmBI', 'BbsI'],
       form: {
-        report: 'quick_view',
         show_features: true,
         files: []
       },

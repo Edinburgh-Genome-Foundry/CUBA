@@ -1,5 +1,5 @@
 <template lang="pug">
-el-select(v-model='value', placeholder='Enzymes in this digestion', filterable, :multiple='true')
+el-select(v-model='selectedEnzymes', placeholder='Enzymes in this digestion', filterable, :multiple='true')
   el-option(v-for='enzyme in enzymes.list', :label='enzyme', :value='enzyme', :key='enzyme')
 </template>
 
@@ -8,19 +8,28 @@ import enzymes from '../../assets/enzymes'
 
 export default {
   props: {
-    originalValue: {
+    value: {
       default: () => ([])
     }
   },
   data () {
     return {
       enzymes: enzymes,
-      value: this.originalValue
+      selectedEnzymes: this.value
     }
   },
   watch: {
-    value (val) {
-      this.$emit('input', val)
+    value: {
+      deep: true,
+      handler (val) {
+        this.selectedEnzymes = val
+      }
+    },
+    selectedEnzymes: {
+      deep: true,
+      handler (val) {
+        this.$emit('input', val)
+      }
     }
   }
 }

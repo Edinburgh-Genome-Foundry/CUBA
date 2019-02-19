@@ -24,7 +24,7 @@ class serializer_class(serializers.Serializer):
     right_flank_sequence = serializers.CharField(allow_blank=True)
     allow_edits = serializers.BooleanField()
     specify_possible_overhangs = serializers.BooleanField()
-    possible_overhangs = serializers.CharField()
+    possible_overhangs = serializers.CharField(allow_blank=True)
 
 class worker_class(AsyncWorker):
 
@@ -69,10 +69,11 @@ class worker_class(AsyncWorker):
             record.seq = record.seq.upper()
             self.logger(message="Decomposing the sequence...")
             if data.cutting_mode == 'equal':
+                print (data.allow_edits, data.extremities)
                 solution = selector.cut_sequence(
                     sequence=record,
                     equal_segments=data.n_fragments,
-                    max_radius=30,
+                    max_radius=20,
                     include_extremities=data.extremities,
                     allow_edits=data.allow_edits)
             else:
@@ -84,7 +85,7 @@ class worker_class(AsyncWorker):
                 return {
                   'success': False
                 }
-
+            self.logger(message="Writing the report...")
             zip_data = write_report_for_cutting_solution(
                 solution=solution, target="@memory", sequence=record,
                 left_flank=data.left_flank_sequence,

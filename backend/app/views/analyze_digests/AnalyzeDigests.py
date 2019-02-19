@@ -13,7 +13,7 @@ from ..serializers import FileSerializer
 import flametree
 from plateo.parsers import plate_from_platemap_spreadsheet
 from bandwitch import Clone, BandsObservation, ClonesObservations
-from bandwitch.plots import plot_all_constructs_cuts_maps
+from bandwagon import plot_records_digestions
 
 
 digestion = serializers.ListField(child=serializers.CharField())
@@ -164,11 +164,16 @@ class worker_class(AsyncWorker):
         if data.includeDigestionPlots:
             self.logger(message="Plotting cuts maps...")
             co = clones_observations
-            pdf_data = plot_all_constructs_cuts_maps([
-                (co.constructs_records[cst], digestion_)
-                for cst, digestions in co.constructs_digestions.items()
-                for digestion_ in digestions
-            ])
+
+            pdf_data = plot_records_digestions(
+                target=zip_root._file('digestions.pdf').open('wb'),
+                ladder=observations.ladder,
+                records_and_digestions=[
+                    (co.constructs_records[cst], digestion_)
+                    for cst, digestions in co.constructs_digestions.items()
+                    for digestion_ in digestions
+                ]
+            )
             zip_root._file('digestions.pdf').write(pdf_data)
 
         self.logger(message="Generating the success plate map...")

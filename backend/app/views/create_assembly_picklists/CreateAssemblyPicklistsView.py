@@ -134,11 +134,11 @@ class worker_class(AsyncWorker):
             quantities.pop(part)
             quantities[part.replace(" ", "_")] = quantity
 
-        parts_on_plate = set([
-            well.content.components_as_string()
-            for well in source_plate.iter_wells()
-            ]
-        ).difference({''})
+        # parts_on_plate = set([
+        #     well.content.components_as_string()
+        #     for well in source_plate.iter_wells()
+        #     ]
+        # ).difference({''})
 
         source_plate.name = "Source"
         for well in source_plate.iter_wells():
@@ -213,6 +213,7 @@ class worker_class(AsyncWorker):
                  'name': 'picklist.zip',
                  'mimetype': 'application/zip'
              },
+             'picklist_data': picklist_data,
              'success': True
         }
 

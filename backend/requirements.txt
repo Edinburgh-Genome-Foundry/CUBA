@@ -34,4 +34,4 @@ git+git://github.com/Edinburgh-Genome-Foundry/crazydoc.git
 git+git://github.com/Edinburgh-Genome-Foundry/saboteurs.git
 git+git://github.com/Edinburgh-Genome-Foundry/genedom.git
 git+git://github.com/Edinburgh-Genome-Foundry/tatapov.git
-
+git+git://github.com/Edinburgh-Genome-Foundry/zymp.git

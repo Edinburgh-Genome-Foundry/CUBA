@@ -21,8 +21,8 @@
                 :value='item.value', :key='item.value')
 
     .bands-range(v-if="form.goal === 'ideal'")
-      p.inline Bands in <i>sensitivity</i> zone: {{ form.bandsRange[0] }} to {{ form.bandsRange[1] }}
-        el-slider(range show-stops v-if="" v-model='form.bandsRange',
+      p.inline Bands in <i>sensitivity</i> zone: {{ form.bands_range[0] }} to {{ form.bands_range[1] }}
+        el-slider(range show-stops v-if="" v-model='form.bands_range',
                        :max=10, :min=1)
         helper.
           Bands in the <i>central</i> zone,
@@ -59,7 +59,7 @@
 
 
     files-uploader(v-model='form.files', help='Fasta or Genbank files')
-    el-checkbox(v-model='form.circularSequences') Sequences are circular
+    el-checkbox(v-model='form.circular_sequences') Sequences are circular
 
     h4.formlabel Ladder
     ladderselector(v-model='form.ladder')
@@ -71,38 +71,41 @@
       el-option(v-for='i, set in enzymesPreselections', :value='set', :label='set', :key='set')
 
     el-input(type='textarea', :rows='6', placeholder='Example: EcoRI, XbaI, XhoI, ...',
-             v-model="form.possibleEnzymes")
+             v-model="form.possible_enzymes")
 
     p.inline Max. enzymes in one digestion
-      el-input-number.inline(v-model="form.maxEnzymes", size="small", :min='1', :max='3')
+      el-input-number.inline(v-model="form.max_enzymes", size="small", :min='1', :max='3')
     p.inline Number of digestions: &nbsp; &nbsp;
-      el-radio(v-model='form.maxDigestions', label='1') 1
-      el-radio(v-model='form.maxDigestions', label='2') 2
+      el-radio(v-model='form.max_digestions', label='1') 1
+      el-radio(v-model='form.max_digestions', label='2') 2
 
-    el-checkbox(v-model='form.showBandsSizes') Show bands sizes in plot.
-    el-checkbox(v-model='form.plotCuts') Plot constructs cuts maps (long !).
+    el-checkbox(v-model='form.show_bands_sizes') Show bands sizes in plot.
+    el-checkbox(v-model='form.plot_cuts') Plot constructs cuts maps (long !).
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Select digestions',
                     v-model='queryStatus')
     el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
-    .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.digestions')
-      .results-summary(v-if='queryStatus.result.digestions')
-        p <b>Results</b>
-        p(v-if='queryStatus.result.digestions.length').
-          The solution found involves {{ queryStatus.result.digestions.length}} digestions
-        p(v-else).
-          No solution found :'(
-      .center
-        img(v-if='queryStatus.result.figure_data', :src='queryStatus.result.figure_data')
-      p(:class='{warn: scoreIsLow}') Score: {{Math.round(queryStatus.result.score * 100)}}%.
-        span(v-if='scoreIsLow').
-          &nbsp; This is very low and means that no digestion fitted your constraints.
-          Try with another ladder, enzyme set, number of bands etc.
-      download-button(v-if='queryStatus.result.pdf_file',
-                      :filedata='queryStatus.result.pdf_file',
-                      text='Download cut maps')
+  .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.digestions')
+    .results-summary(v-if='queryStatus.result.digestions')
+      p <b>Results</b>
+      p(v-if='queryStatus.result.digestions.length').
+        The solution found involves {{ queryStatus.result.digestions.length}} digestions
+      p(v-else).
+        No solution found :'(
+    .center
+      img(v-if='queryStatus.result.figure_data', :src='queryStatus.result.figure_data')
+    p(:class='{warn: scoreIsLow}') Score: {{Math.round(queryStatus.result.score * 100)}}%.
+      span(v-if='scoreIsLow').
+        &nbsp; This is very low and means that no digestion fitted your constraints.
+        Try with another ladder, enzyme set, number of bands etc.
+    iframe(:src="queryStatus.result.pdf_data" 
+            style="width: 90%; max-width: 1000px; height:800px;"
+            frameborder="0")
+    download-button(v-if='queryStatus.result.pdf_file',
+                    :filedata='queryStatus.result.pdf_file',
+                    text='Download cut maps')
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
@@ -127,15 +130,15 @@ export default {
     return {
       form: {
         ladder: '100_to_4k',
-        possibleEnzymes: 'EcoRI, XbaI, XhoI',
-        maxEnzymes: 1,
-        maxDigestions: '1',
+        possible_enzymes: 'EcoRI, XbaI, XhoI',
+        max_enzymes: 1,
+        max_digestions: '1',
         make_report: false,
         goal: 'ideal',
-        bandsRange: [3, 6],
-        circularSequences: true,
-        showBandsSizes: false,
-        plotCuts: false,
+        bands_range: [3, 6],
+        circular_sequences: true,
+        show_bands_sizes: false,
+        plot_cuts: false,
         files: []
       },
       infos: infos,
@@ -187,7 +190,7 @@ export default {
     },
     validateForm () {
       var errors = []
-      if (this.form.possibleEnzymes.length < 2) {
+      if (this.form.possible_enzymes.length < 2) {
         errors.push('Provide at least two different restriction enzymes.')
       }
       if (this.form.files.length === 0) {
@@ -198,7 +201,7 @@ export default {
   },
   watch: {
     selectedEnzymeSet (val) {
-      this.form.possibleEnzymes = this.enzymesPreselections[val]
+      this.form.possible_enzymes = this.enzymesPreselections[val]
     }
   }
 }

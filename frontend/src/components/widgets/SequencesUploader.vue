@@ -5,9 +5,9 @@
                 tip="Accepted formats: FASTA, Genbank, Snapgene")
   p.num-files(v-if='files.length') {{files.length}} {{files.length > 1 ? 'files' : 'file'}} selected
   .sequences-list
-    el-row(v-for='(file, index) in filesWithLinearities', :key='index', :gutter='20')
+    el-row(v-for='(file, index) in files', :key='index', :gutter='20')
       el-col(:span='6')
-        el-select(v-model='circularities[index]', size='mini')
+        el-select(v-model='files[index].circularity', size='mini')
           el-option(label='circular', :value='true')
           el-option(label='linear', :value='false')
       el-col(:span='18') {{file.name}}
@@ -18,6 +18,7 @@ import filesuploader from './FilesUploader'
 
 export default {
   props: {
+    value: {default: () => ([])},
     text: {default: 'Drop files here or click to select'},
     help: {default: 'Accepted formats: genbank, fasta'},
     multiple: {default: true},
@@ -26,35 +27,27 @@ export default {
   },
   data () {
     return {
-      files: [],
-      circularities: [],
+      files: this.value,
       hovering: false
     }
   },
-  computed: {
-    filesWithLinearities () {
-      var result = []
-      var self = this
-      this.files.forEach(function (f, i) {
-        f.circularity = self.circularities[i]
-        result.push(f)
-      })
-      return result
-    }
-  },
   watch: {
-    files (val) {
-      var self = this
-      self.circularities = []
-      val.forEach(function (f) {
-        self.circularities.push(true)
-      })
+    value: {
+      deep: true,
+      handler (val) {
+        val.map(function (file) {
+          if (file.circularity !== true) {
+            file.circularity = false
+          }
+        })
+        this.files = val
+      }
     },
-    circularities (val) {
-      console.log(val)
-    },
-    filesWithLinearities (val) {
-      this.$emit('input', this.multiple ? val : val[0])
+    files: {
+      deep: true,
+      handler (val) {
+        this.$emit('input', this.multiple ? val : val[0])
+      }
     }
   },
   components: {

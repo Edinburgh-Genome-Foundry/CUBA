@@ -18,9 +18,23 @@ export default {
       default: () => ([[]])
     }
   },
+  data () {
+    return {
+      digestions: this.value
+    }
+  },
   watch: {
-    value (val) {
-      this.$emit('input', val)
+    digestions: {
+      deep: true,
+      handler (val) {
+        this.$emit('input', val)
+      }
+    },
+    value: {
+      deep: true,
+      handler (val) {
+        this.digestions = val
+      }
     }
   },
   components: { digestionselector }

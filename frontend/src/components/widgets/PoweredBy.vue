@@ -65,6 +65,11 @@ var allSoftwareInfos = {
     logoSrc: '/static/logos/geneblocks.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/Geneblocks'
   },
+  kappagate: {
+    name: 'Kappagate',
+    logoSrc: '/static/logos/kappagate.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/kappagate'
+  },
   plateo: {
     name: 'Plateo',
     logoSrc: '/static/logos/plateo.png',
@@ -89,6 +94,11 @@ var allSoftwareInfos = {
     name: 'tatapov',
     logoSrc: '/static/logos/tatapov.png',
     href: 'https://github.com/Edinburgh-Genome-Foundry/tatapov'
+  },
+  zymp: {
+    name: 'Zymp',
+    logoSrc: '/static/logos/zymp.png',
+    href: 'https://github.com/Edinburgh-Genome-Foundry/zymp'
   }
 }
 export default {
