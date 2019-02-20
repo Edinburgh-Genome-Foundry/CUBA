@@ -141,10 +141,6 @@ class worker_class(AsyncWorker):
         # ).difference({''})
 
         source_plate.name = "Source"
-        for well in source_plate.iter_wells():
-            if not well.is_empty:
-                content = well.content.components_as_string()
-                well.content.quantities[content] *= 1e-3
 
         self.logger(message="Generating Picklist...")
         destination_plate = Plate4ti0960("Mixplate")
