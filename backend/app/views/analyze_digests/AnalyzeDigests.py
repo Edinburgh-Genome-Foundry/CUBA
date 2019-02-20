@@ -153,6 +153,8 @@ class worker_class(AsyncWorker):
             max_band_cutoff=data.bandsRange[1],
             relative_tolerance=data.tolerance
         )
+        first_validation = list(validations.values())[0]
+        ladder = list(first_validation.clone.digestions.values())[0].ladder
 
         # CREATE A ZIP WITH VALIDATION REPORTS
 
@@ -167,14 +169,14 @@ class worker_class(AsyncWorker):
 
             pdf_data = plot_records_digestions(
                 target=zip_root._file('digestions.pdf').open('wb'),
-                ladder=observations.ladder,
+                ladder=ladder,
                 records_and_digestions=[
                     (co.constructs_records[cst], digestion_)
                     for cst, digestions in co.constructs_digestions.items()
                     for digestion_ in digestions
                 ]
             )
-            zip_root._file('digestions.pdf').write(pdf_data)
+            # zip_root._file('digestions.pdf').write(pdf_data)
 
         self.logger(message="Generating the success plate map...")
         ax = clones_observations.plot_validations_plate_map(validations)
