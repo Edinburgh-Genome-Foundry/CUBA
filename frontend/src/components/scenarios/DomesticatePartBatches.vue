@@ -8,24 +8,45 @@
   p.scenario-description.
     Provide parts and have them domesticated for EMMA assembly or another standard.
 
-  el-alert(title="This app is a stub. Not all features may work properly" type="warning" show-icon)
-
   .form
     h4.formlabel Standard
 
-    p
-      el-select(v-model='form.standard')
-        el-option(value='EMMA', label='EMMA')
-        el-option(value='custom', label='Custom')
-    el-form(v-if="form.standard == 'custom'")
+    //- p
+    //-   el-select(v-model='form.standard')
+    //-     el-option(value='EMMA', label='EMMA')
+    //-     el-option(value='custom', label='Custom')
+    el-form
+      collapsible(title='Examples')
+        file-example(filename='EMMA_standard.csv',
+                      @input="function (e) { \
+                        form.standard_definition = e; \
+                        form.standard_name = 'EMMA'; \
+                      }",
+                      fileHref='/static/file_examples/domesticate_part_batches/EMMA.csv',
+                      imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+          p.
+            A table representing the EMMA standard. This standard requires
+            2-nucleotide additions in some slots for the parts to follow
+            in frame: the two nucleotides and the 4-nucleotide overhang
+            create a 6-nucleotide scar (2 amino acids in the translated
+            sequence).
       el-form-item(label='Name')
         el-input(v-model='form.standard_name', placeholder='Name of the standard')
       el-form-item(label='Definition')
         files-uploader(v-model='form.standard_definition', tip='csv or excel', :multiple='false')
     hr
     h4.formlabel Parts
+    collapsible(title='Examples')
+      file-example(filename='EMMA_undomesticated_parts.zip',
+                    @input="function (e) { \
+                      form.parts = [e]; \
+                    }",
+                    fileHref='/static/file_examples/domesticate_part_batches/EMMA_undomesticated_parts.zip',
+                    imgSrc='/static/file_examples/generic_logos/linear_part_records.svg')
+        p.
+          Linear records of parts to be domesticated for the EMMA standard
     files-uploader(v-model='form.parts', tip='Genbank/Fasta/Snapgene sequences, or spreadsheet')
-
+    el-checkbox(v-model='form.allow_edits') Allow sequence edits
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Domesticate',
                     v-model='queryStatus')
@@ -60,8 +81,9 @@ export default {
     return {
       form: {
         parts: [],
-        standard: 'EMMA',
+        standard: 'custom',
         standard_name: '',
+        allow_edits: false,
         standard_definition: null
       },
       queryStatus: {
