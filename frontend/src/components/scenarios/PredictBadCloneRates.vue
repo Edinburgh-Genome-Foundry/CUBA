@@ -9,7 +9,7 @@
   p.scenario-description.
     Find out how much unwanted parts cross-talk there will be in your next assemblies,
     and which proportion of clones will have the right constructs. 
-
+  el-alert(title="This is a very young and very experimental app coming with absolutely no warranties." type="warning" show-icon)
   .form
 
     h4.formlabel Choose your input
