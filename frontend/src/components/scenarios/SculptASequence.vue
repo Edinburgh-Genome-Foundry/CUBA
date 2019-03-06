@@ -5,10 +5,12 @@
             tweetMessage="Optimize DNA sequences online",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Optimize a sequence with annotations representing constraints and objectives.
-
-  learnmore(title='About this scenario')
-    p Documentation in progress, come back later !
+  p.scenario-description.
+    Optimize a sequence with annotations representing constraints and objectives.
+    See #[a(href='https://github.com/Edinburgh-Genome-Foundry/DnaChisel') the library docs]
+    for more infos, in particular
+    #[a(href='https://edinburgh-genome-foundry.github.io/DnaChisel/ref/builtin_specifications.html') this page]
+    for available constraints.
 
 
 

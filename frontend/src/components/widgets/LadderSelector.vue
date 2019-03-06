@@ -34,8 +34,8 @@ export default {
           value: '500_to_10k'
         },
         {
-          label: 'Ladder 50 bp - 1350 bp (NEB 50bp)',
-          value: '50_to_1350'
+          label: 'Ladder 100 bp - 1350 bp (NEB 50bp)',
+          value: '100_to_1350'
         }
       ]
     }

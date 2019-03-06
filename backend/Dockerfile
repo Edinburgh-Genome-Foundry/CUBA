@@ -52,3 +52,5 @@ RUN pip install biopython==1.70
 ARG CACHEBUST=1
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/tatapov
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/kappagate
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primavera
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnachisel
