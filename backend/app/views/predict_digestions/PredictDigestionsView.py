@@ -12,7 +12,6 @@ digestion = serializers.ListField(child=serializers.CharField())
 class FileSerializer(serializers.Serializer):
     name = serializers.CharField()
     content = serializers.CharField()
-    circularity = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):
     ladder = serializers.CharField()
@@ -20,6 +19,7 @@ class serializer_class(serializers.Serializer):
         child=serializers.ListField(
             child=serializers.CharField()))
     files = serializers.ListField(child=FileSerializer())
+    circular_sequences = serializers.BooleanField()
     make_cuts_position_report = serializers.BooleanField()
     show_band_sizes = serializers.BooleanField()
     use_file_names_as_ids = serializers.BooleanField()
@@ -35,7 +35,7 @@ class worker_class(AsyncWorker):
         data = self.data
         records = records_from_data_files(data.files)
         for f, record in zip(data.files, records):
-            record.linear = not f.circularity
+            record.linear = not data.circular_sequences
         if data.use_file_names_as_ids:
             for r in records:
                 r.id = r.name = r.file_name

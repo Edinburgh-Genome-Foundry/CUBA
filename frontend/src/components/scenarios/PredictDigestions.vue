@@ -20,10 +20,11 @@
     h4.formlabel Sequences
     collapsible(title='Examples')
       file-example(filename='emma_constructs.zip',
-                  @input='function (e) {form.files = [e]}',
+                  @input='function (e) {e.circularity = true; form.files = [e]}',
                   fileHref='/static/file_examples/predict_digestions/emma_constructs.zip',
                   imgSrc='/static/file_examples/generic_logos/part.svg')
-    sequencesuploader(v-model='form.files')
+    files-uploader(v-model='form.files', help='Fasta or Genbank files')
+    el-checkbox(v-model='form.circular_sequences') Sequences are circular
     p
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names as sequence IDs
     p
@@ -72,6 +73,7 @@ export default {
     return {
       form: {
         ladder: '100_to_4k',
+        circular_sequences: true,
         digestions: [],
         make_cuts_position_report: false,
         files: [],
