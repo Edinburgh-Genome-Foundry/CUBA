@@ -53,6 +53,7 @@
 
 <script>
 import sketcher from '../widgets/SeqSketcher/SeqSketcher.vue'
+import tools from '../../tools'
 
 var infos = {
   title: 'Sketch Constructs',
@@ -80,7 +81,7 @@ export default {
             {
               name: '',
               note: '',
-              id: 0,
+              id: tools.generateRandomID(),
               parts: [
                 {
                   category: 'promoter',
