@@ -2,7 +2,6 @@
 
 from rest_framework import serializers
 from ..serializers import FileSerializer
-from dnachisel.reports import optimization_with_report
 from dnachisel import (DnaOptimizationProblem, sequence_to_biopython_record,
                        annotate_record)
 
@@ -42,10 +41,11 @@ class worker_class(AsyncWorker):
             records, fmt = records_from_data_file(data.file)
             record = records[0]
         problem = DnaOptimizationProblem.from_record(record)
+        print (problem.constraints)
         problem.max_random_iters = 1000
         problem.logger = self.logger
-        success, summary, zip_data = optimization_with_report(
-            target="@memory", problem=problem, project_name=record.id)
+        success, summary, zip_data = problem.optimize_with_report(
+            target="@memory", project_name=record.id)
         return {
           'zip_file': {
               'data': data_to_html_data(zip_data, 'zip'),

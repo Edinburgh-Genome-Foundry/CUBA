@@ -49,9 +49,10 @@ ADD . /code/
 
 
 RUN pip install biopython==1.70
-ARG CACHEBUST=2
+ARG CACHEBUST=5
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/tatapov
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/kappagate
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primavera
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnachisel
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/geneblocks
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom

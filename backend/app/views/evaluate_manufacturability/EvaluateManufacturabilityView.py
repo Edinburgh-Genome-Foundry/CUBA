@@ -8,7 +8,7 @@ from ..base import AsyncWorker, StartJobView, JobResult
 from ..tools import (records_from_data_file,
                      matplotlib_figure_to_svg_base64_data)
 from io import BytesIO
-from dnachisel.reports import plot_sequence_manufacturability_difficulties
+from dnachisel.utils import plot_sequence_manufacturability_difficulties
 
 class FileSerializer(serializers.Serializer):
     name = serializers.CharField()
