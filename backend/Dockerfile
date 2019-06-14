@@ -56,3 +56,4 @@ RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primaver
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnachisel
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/geneblocks
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwitch

@@ -80,7 +80,12 @@
     p
       el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
     p
-      el-checkbox(v-model='form.show_overhangs') Annotate overhangs in genbanks 
+      el-checkbox(v-model='form.show_overhangs') Annotate overhangs in genbanks
+    p
+      el-checkbox(v-model='form.backbone_first') Force the backbone to be in first position
+    p(v-if='form.backbone_first') Backbone name:
+      el-input(v-model='form.backbone_name' size='mini',
+               style='width: 250px; margin-left: 10px;')
 
 
     backend-querier(:form='form',
@@ -149,7 +154,9 @@ export default {
         use_assembly_plan: false,
         assembly_plan: null,
         single_assemblies: true,
-        use_file_names_as_ids: false
+        use_file_names_as_ids: false,
+        backbone_first: false,
+        backbone_name: ''
       },
       infos: infos,
       ladder_options: [

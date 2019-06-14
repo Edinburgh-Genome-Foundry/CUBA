@@ -163,6 +163,8 @@ class worker_class(AsyncWorker):
         zip_root._file('validations.pdf').write(
             clones_observations.plot_all_validations_patterns(validations)
         )
+        clones_observations.validations_summary_table(
+            validations, zip_root._file('summary.csv').open('w'))
         if data.includeDigestionPlots:
             self.logger(message="Plotting cuts maps...")
             co = clones_observations

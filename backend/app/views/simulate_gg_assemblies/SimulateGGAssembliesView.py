@@ -26,6 +26,9 @@ class serializer_class(serializers.Serializer):
     use_file_names_as_ids = serializers.BooleanField()
     assembly_plan = FileSerializer(allow_null=True)
     show_overhangs = serializers.BooleanField()
+    backbone_first = serializers.BooleanField()
+    backbone_name = serializers.CharField()
+
 
 class worker_class(AsyncWorker):
 
@@ -39,10 +42,13 @@ class worker_class(AsyncWorker):
             record.features = [
                 f for f in record.features
                 if f.location is not None
+                and f.location.start <= f.location.end
             ]
         if data.use_file_names_as_ids:
             for r in records:
                 r.id = r.name = r.file_name
+                if data.backbone_first and r.id == data.backbone_name:
+                    r.is_backbone = True
         connector_records = records_from_data_files(data.connectors)
         for r in (records + connector_records):
             if not hasattr(r, 'linear'):

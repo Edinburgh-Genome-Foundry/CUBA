@@ -17,7 +17,7 @@
   .form
     h4.formlabel Provide an annotated sequence
     collapsible(title='Examples')
-      file-example(filename='example_sequenc.gbk',
+      file-example(filename='example_sequence.gbk',
                    @input='function (e) {form.file = e}',
                    fileHref='/static/file_examples/sculpt_a_sequence/example_sequence.gbk',
                    imgSrc='/static/file_examples/sculpt_a_sequence/example_sequence_Map.svg')

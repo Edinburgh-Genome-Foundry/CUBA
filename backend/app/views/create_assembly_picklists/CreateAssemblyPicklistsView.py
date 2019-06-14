@@ -11,6 +11,7 @@ from plateo.exporters import (AssemblyPicklistGenerator,
                               picklist_to_assembly_mix_report)
 from plateo.exporters import (picklist_to_labcyte_echo_picklist_file,
                               picklist_to_tecan_evo_picklist_file,
+                              plate_to_platemap_spreadsheet,
                               PlateTextPlotter)
 from plateo.tools import human_volume
 import flametree
@@ -171,6 +172,10 @@ class worker_class(AsyncWorker):
             format="pdf",
             bbox_inches="tight")
         plt.close(ax.figure)
+        plate_to_platemap_spreadsheet(
+            future_plates[destination_plate],
+            lambda w: w.data.get('construct', ''),
+            filepath=ziproot._file('final_mixplate.xls').open('wb'))
 
         self.logger(message="Writing report...")
 
@@ -192,7 +197,6 @@ class worker_class(AsyncWorker):
             picklist_to_tecan_evo_picklist_file(
                 picklist, ziproot._file("EVO_picklist.gwl").open('w'))
         raw = file_to_filelike_object(data.source_plate).read()
-        print (len(raw))
         f = ziproot._file(data.source_plate.name)
         f.write(raw, mode='wb')
         zip_data = ziproot._close()

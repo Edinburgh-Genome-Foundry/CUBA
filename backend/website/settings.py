@@ -37,7 +37,7 @@ except IOError:
     except IOError:
         Exception('Please create a %s file with random characters \
         to generate your secret key!' % SECRET_FILE)
-SECRET_KEY = '$^w)ki!o4e415@l@^8n1*cy6q8wfo#wul0wj^q6q0wqu4$c*o!'
+# SECRET_KEY = '$^w)ki!o4e415@l@^8n1*cy6q8wfo#wul0wj^q6q0wqu4$c*o!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.getenv('DEBUG', 'true').lower() in ['true', '1', 'yes'])
