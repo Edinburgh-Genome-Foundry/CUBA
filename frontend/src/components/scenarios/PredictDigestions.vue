@@ -46,6 +46,9 @@
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.figure_data')
     center
       img(:src='queryStatus.result.figure_data')
+      download-button(style='background: none; border: none; color: #409eff;'
+                      text="Download patterns as PNG",
+                      :filedata='queryStatus.result.figure_bitmap_file')
       iframe(:src="queryStatus.result.pdf_data" 
               style="width: 90%; max-width: 1000px; height:800px;"
               frameborder="0")

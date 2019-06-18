@@ -46,7 +46,12 @@
         p.
           Linear records of parts to be domesticated for the EMMA standard
     files-uploader(v-model='form.parts', tip='Genbank/Fasta/Snapgene sequences, or spreadsheet')
+    el-select(v-model='form.part_id_source')
+      el-option(value='file_name' label='Use file names (without extensions) as part IDs')
+      el-option(value='record_id' label='Use Genbank/Fasta record ID/name as part IDs')
+    hr
     el-checkbox(v-model='form.allow_edits') Allow sequence edits
+    
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Domesticate',
                     v-model='queryStatus')
@@ -81,6 +86,7 @@ export default {
     return {
       form: {
         parts: [],
+        part_id_source: 'record_id',
         standard: 'custom',
         standard_name: '',
         allow_edits: false,

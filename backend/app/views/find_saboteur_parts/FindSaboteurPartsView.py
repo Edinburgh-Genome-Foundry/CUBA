@@ -12,6 +12,9 @@ class serializer_class(serializers.Serializer):
     """Serializer."""
     assemblies_data_file = FileSerializer()
     method = serializers.CharField()
+    parts_input_type = serializers.CharField()
+    constructs = serializers.ListField(child=FileSerializer(), allow_null=True,
+                                       required=False)
 
 class worker_class(AsyncWorker):
 

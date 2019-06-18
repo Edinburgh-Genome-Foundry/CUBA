@@ -3,7 +3,8 @@
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
 from ..tools import (data_to_html_data, records_from_data_files,
-                     matplotlib_figure_to_svg_base64_data, csv_to_list)
+                     matplotlib_figure_to_svg_base64_data,
+                     matplotlib_figure_to_bitmap_base64_data, csv_to_list)
 from bandwitch import LADDERS
 import bandwagon
 import flametree
@@ -68,7 +69,13 @@ class worker_class(AsyncWorker):
             success=True,
             pdf_data=pdf_data,
             figure_data=matplotlib_figure_to_svg_base64_data(
-                axes[0].figure, bbox_inches='tight')
+                axes[0].figure, bbox_inches='tight'),
+            figure_bitmap_file=dict(
+                name='predicted_band_patterns.png',
+                mimetype='image/png',
+                data=matplotlib_figure_to_bitmap_base64_data(
+                    axes[0].figure, bbox_inches='tight')
+            )
         )
 
 

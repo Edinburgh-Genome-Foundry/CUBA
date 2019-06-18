@@ -25,7 +25,16 @@
                    imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
     files-uploader(v-model='form.assemblies_data_file', text="Drop files (or click to select)",
                   help='CSV files only :)', :multiple='false')
-
+    h4.formlabel Parts-per-construct data
+    el-select(v-model='form.parts_input_type')
+      el-option(value='in_data' label='It is provided in the above spreadsheet')
+      el-option(value='assembly_plan' label="I'll provide it as an assembly plan")
+      el-option(value='records' label="I'll provide final constructs records")
+    div(v-if="form.parts_input_type !== 'in_data'")
+      h4.formlabel(v-if="form.parts_input_type === 'assembly_plan'") Assembly plan
+      h4.formlabel(v-if="form.parts_input_type === 'records'") Assembly records
+      files-uploader(v-model='form.parts_data_files', text="Drop files (or click to select)",
+                    help='CSV files only :)', :multiple='true')
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Find saboteurs',
                     v-model='queryStatus')
@@ -81,7 +90,9 @@ export default {
       infos: infos,
       form: {
         method: 'statistical',
-        assemblies_data_file: null
+        assemblies_data_file: null,
+        parts_input_type: 'in_data',
+        parts_data_files: []
       },
       queryStatus: {
         polling: {},

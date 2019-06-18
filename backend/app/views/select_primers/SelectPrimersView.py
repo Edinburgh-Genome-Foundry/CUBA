@@ -61,7 +61,7 @@ class worker_class(AsyncWorker):
         )
         df = selector.write_primers_table(
             selected_primers=selected_primers,
-            csv_path=zip_root._file('primers_list.csv')
+            csv_path=zip_root._file('primers_list.csv').open('w')
         )
 
         n_available = df['available'].sum()

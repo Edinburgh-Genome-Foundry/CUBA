@@ -215,6 +215,16 @@ def matplotlib_figure_to_svg_base64_data(fig, **kwargs):
 
     return result
 
+def matplotlib_figure_to_bitmap_base64_data(fig, fmt='png', **kwargs):
+    """Return a string of the form 'data:image/png;base64,XXX' where XXX
+    is the base64-encoded svg version of the figure."""
+    output = BytesIO()
+    fig.savefig(output, format=fmt, **kwargs)
+    bitmap = output.getvalue()
+    content = b64encode(bitmap)
+    result = (b"data:image/%s;base64,%s" % (fmt.encode('utf-8'), content)).decode("utf-8")
+    return result
+
 def figures_to_pdf_report_data(figures, filename='report.pdf'):
     pdf_io = BytesIO()
     with PdfPages(pdf_io) as pdf:
