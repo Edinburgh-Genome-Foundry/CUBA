@@ -43,7 +43,8 @@ class worker_class(AsyncWorker):
                 file_mimetype='application/csv'
             )
         if (fmt == 'fasta') and (len(records) > 1) and data.inSingleFile:
-            file_content = record_to_formated_string(records, fmt=fmt)
+            file_content = record_to_formated_string(records, fmt=fmt,
+                                                     remove_descr=True)
             file_content = file_content.decode().replace(' .\n', '\n').encode()
             return JobResult(
                 file_name='sequences.fasta',
@@ -52,7 +53,8 @@ class worker_class(AsyncWorker):
             )
         elif (len(records) == 1):
             record = records[0]
-            file_content = record_to_formated_string(record, fmt=fmt)
+            file_content = record_to_formated_string(record, fmt=fmt,
+                                                     remove_descr=True)
             return JobResult(
                 file_name=record.id + extension,
                 file_data=data_to_html_data(file_content, fmt),

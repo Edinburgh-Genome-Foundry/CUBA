@@ -169,6 +169,7 @@ export default {
         if (newval) {
           var [mimetype, content] = newval.content.split(',')
           if (mimetype.indexOf('json') >= 0) {
+            console.log(atob(content))
             this.sketchesData = JSON.parse(atob(content))
           } else {
             var colorReplacements = {

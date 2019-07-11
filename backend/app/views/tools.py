@@ -161,9 +161,9 @@ def records_from_data_file(data_file):
                         sequence_to_biopython_record(
                             sequence=seq, id=name, name=name
                         )
-                        for seq, name in df.values
+                        for name, seq in df.values
                     ]
-                    fmt='spreadsheet'
+                    fmt = 'spreadsheet'
                 except:
                     raise ValueError(
                         "Format not recognized for file " + data_file.name
@@ -173,7 +173,14 @@ def records_from_data_file(data_file):
     return records, fmt
 
 
-def record_to_formated_string(record, fmt="genbank"):
+def record_to_formated_string(record, fmt="genbank", remove_descr=False):
+    if remove_descr:
+        record = deepcopy(record)
+        if isinstance(record, (list, tuple)):
+            for r in record:
+                r.description = ''
+        else:
+            record.description = ''
     fileobject = StringIO()
     write_record(record, fileobject, fmt)
     return fileobject.getvalue().encode("utf-8")

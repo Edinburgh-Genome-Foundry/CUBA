@@ -95,7 +95,7 @@ export default {
         'protein-tag',
         'recombinase-recognition-sequence',
         'restriction-enzyme-recognition-site',
-        'ribosome-entry-site',
+        'RBS',
         'RNA-stability-sequence',
         'terminator',
         'three-prime-overhang',
@@ -137,7 +137,7 @@ $categories: (ATG backbone CDS DNA-binding-element expression-cassette etc
               five-prime-overhang homology-arm
               insulator IRES ITR LTR origin-of-replication p2A part-linker
               peptide-linker promoter protein-tag none recombinase-recognition-sequence
-              restriction-enzyme-recognition-site ribosome-entry-site
+              restriction-enzyme-recognition-site RBS
               RNA-stability-sequence terminator
               three-prime-overhang user-defined UTR);
 
