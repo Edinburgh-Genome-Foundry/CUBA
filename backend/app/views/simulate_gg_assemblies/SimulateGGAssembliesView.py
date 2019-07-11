@@ -27,7 +27,7 @@ class serializer_class(serializers.Serializer):
     assembly_plan = FileSerializer(allow_null=True)
     show_overhangs = serializers.BooleanField()
     backbone_first = serializers.BooleanField()
-    backbone_name = serializers.CharField()
+    backbone_name = serializers.CharField(allow_blank=True)
 
 
 class worker_class(AsyncWorker):
@@ -69,14 +69,12 @@ class worker_class(AsyncWorker):
                     for line in content.split('\n')
                     if len(line)
                 ])
-                print (dataframe)
             else:
                 
                 dataframe = pandas.read_excel(filelike, header=None)
             assembly_plan = AssemblyPlan.from_spreadsheet(dataframe=dataframe)
             assembly_plan.parts_data = {
                 r.id: {'record': r} for r in records}
-            print (assembly_plan.assemblies)
             parts_without_data = assembly_plan.parts_without_data()
             if len(parts_without_data):
                 return {
