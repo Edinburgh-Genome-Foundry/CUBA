@@ -159,7 +159,7 @@ export default {
         use_file_names_as_ids: false,
         backbone_first: false,
         backbone_name: '',
-        no_skipped_parts: true,
+        no_skipped_parts: true
       },
       infos: infos,
       ladder_options: [
