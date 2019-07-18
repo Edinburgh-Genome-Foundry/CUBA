@@ -28,6 +28,8 @@ class serializer_class(serializers.Serializer):
     show_overhangs = serializers.BooleanField()
     backbone_first = serializers.BooleanField()
     backbone_name = serializers.CharField(allow_blank=True)
+    no_skipped_parts = serializers.BooleanField()
+
 
 
 class worker_class(AsyncWorker):
@@ -89,7 +91,8 @@ class worker_class(AsyncWorker):
                 fail_silently=True,
                 include_fragments_plots=data.include_fragments,
                 include_parts_plots=data.include_fragments,
-                show_overhangs_in_genbank=data.show_overhangs
+                show_overhangs_in_genbank=data.show_overhangs,
+                no_skipped_parts=data.no_skipped_parts
             )
             infos = dict(errors=errors)
 

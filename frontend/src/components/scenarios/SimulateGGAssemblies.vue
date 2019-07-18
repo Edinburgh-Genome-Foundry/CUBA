@@ -59,6 +59,7 @@
           el-option(:value='false', label="The IDs of the provided records")
           el-option(:value='true', label="The file names (without extension)")
       p: el-checkbox(v-model='form.single_assemblies') Ensure each line gives a single assembly
+      p: el-checkbox(v-model='form.no_skipped_parts') Ensure that no part is forgotten in the assemblies
     p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
     .select-connectors(v-if='form.select_connectors').animated.flipInX
       h4.formlabel Provide connectors
@@ -83,6 +84,7 @@
       el-checkbox(v-model='form.show_overhangs') Annotate overhangs in genbanks
     p
       el-checkbox(v-model='form.backbone_first') Force the backbone to be in first position
+    
     p(v-if='form.backbone_first') Backbone name:
       el-input(v-model='form.backbone_name' size='mini',
                style='width: 250px; margin-left: 10px;')
@@ -156,7 +158,8 @@ export default {
         single_assemblies: true,
         use_file_names_as_ids: false,
         backbone_first: false,
-        backbone_name: ''
+        backbone_name: '',
+        no_skipped_parts: true,
       },
       infos: infos,
       ladder_options: [
