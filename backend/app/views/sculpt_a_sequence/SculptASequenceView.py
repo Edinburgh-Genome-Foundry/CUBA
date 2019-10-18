@@ -7,7 +7,7 @@ from dnachisel import (DnaOptimizationProblem, sequence_to_biopython_record,
 
 
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_file, data_to_html_data)
+from ..tools import (records_from_data_files, data_to_html_data)
 
 
 class LabeledFeatureSerializer(serializers.Serializer):
@@ -38,12 +38,9 @@ class worker_class(AsyncWorker):
                                 location=(feature.start, feature.end),
                                 label=feature.label)
         else:
-            records, fmt = records_from_data_file(data.file)
-            record = records[0]
-        problem = DnaOptimizationProblem.from_record(record)
-        print (problem.constraints)
-        problem.max_random_iters = 1000
-        problem.logger = self.logger
+            record = records_from_data_files([data.file])[0]
+        problem = DnaOptimizationProblem.from_record(record, logger=self.logger)
+        problem.optimization_stagnation_tolerance = 30
         success, summary, zip_data = problem.optimize_with_report(
             target="@memory", project_name=record.id)
         return {

@@ -7,6 +7,7 @@ from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files, data_to_html_data,
                      file_to_filelike_object,
                      did_you_mean,
+                     set_record_topology,
                      matplotlib_figure_to_svg_base64_data)
 from ..serializers import FileSerializer
 
@@ -23,7 +24,6 @@ class SequenceFileSerializer(FileSerializer):
 
 class serializer_class(serializers.Serializer):
     constructsMap = FileSerializer(allow_null=True)
-    circularSequences = serializers.BooleanField()
     clonesMap = FileSerializer(allow_null=True)
     constructsSequences = serializers.ListField(child=FileSerializer())
     goal = serializers.CharField()
@@ -36,6 +36,7 @@ class serializer_class(serializers.Serializer):
     includeDigestionPlots = serializers.BooleanField()
     ignoreBandsUnder = serializers.IntegerField()
     subanalysis = serializers.CharField()
+    topology = serializers.CharField()
 
 def file_type(f):
     return 'csv' if f.name.lower().endswith('csv') else 'excel'
@@ -49,9 +50,8 @@ class worker_class(AsyncWorker):
         # PARSE ALL FILES
 
         constructs_records = records_from_data_files(data.constructsSequences)
-        if data.circularSequences:
-            for record in constructs_records:
-                record.linear = False
+        for record in constructs_records:
+            set_record_topology(record, data.topology)
         constructs_records = {r.id: r for r in constructs_records}
         constructs_records = OrderedDict(sorted(constructs_records.items()))
 
@@ -169,7 +169,7 @@ class worker_class(AsyncWorker):
             self.logger(message="Plotting cuts maps...")
             co = clones_observations
 
-            pdf_data = plot_records_digestions(
+            plot_records_digestions(
                 target=zip_root._file('digestions.pdf').open('wb'),
                 ladder=ladder,
                 records_and_digestions=[

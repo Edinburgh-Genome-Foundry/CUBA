@@ -4,6 +4,7 @@ from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
 from ..tools import (data_to_html_data, records_from_data_files,
                      matplotlib_figure_to_svg_base64_data,
+                     set_record_topology,
                      matplotlib_figure_to_bitmap_base64_data, csv_to_list)
 from bandwitch import LADDERS
 import bandwagon
@@ -16,11 +17,11 @@ class FileSerializer(serializers.Serializer):
 
 class serializer_class(serializers.Serializer):
     ladder = serializers.CharField()
+    topology = serializers.CharField()
     digestions = serializers.ListField(
         child=serializers.ListField(
             child=serializers.CharField()))
     files = serializers.ListField(child=FileSerializer())
-    circular_sequences = serializers.BooleanField()
     make_cuts_position_report = serializers.BooleanField()
     show_band_sizes = serializers.BooleanField()
     use_file_names_as_ids = serializers.BooleanField()
@@ -36,7 +37,7 @@ class worker_class(AsyncWorker):
         data = self.data
         records = records_from_data_files(data.files)
         for f, record in zip(data.files, records):
-            record.linear = not data.circular_sequences
+            set_record_topology(record, data.topology)
         if data.use_file_names_as_ids:
             for r in records:
                 r.id = r.name = r.file_name

@@ -25,7 +25,14 @@ ENV QT_QPA_PLATFORM offscreen
 # ENV QT_QPA_FONTDIR=/usr/share/fonts
 RUN apt-get install -y fontconfig libfontconfig1 libfreetype6 libx11-6 libxext6 libxrender1
 RUN apt-get install -y xfonts-base xfonts-75dpi fonts-font-awesome fonts-lato
-RUN apt-get install -y xvfb wkhtmltopdf
+RUN apt-get install -y xvfb
+
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+RUN tar xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+RUN mv wkhtmltox/bin/wkhtmlto* /usr/bin/
+RUN ln -nfs /usr/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
+
+
 RUN apt-get install -y unzip
 ENV QT_QPA_FONTDIR=/root/.fonts/
 RUN wget -O "Raleway.zip" "https://fonts.google.com/download?family=Raleway" \
@@ -48,12 +55,17 @@ RUN fc-cache -f
 ADD . /code/
 
 
-RUN pip install biopython==1.70
-ARG CACHEBUST=5
+RUN pip install biopython==1.71
+ARG CACHEBUST=7
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/tatapov
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/kappagate
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primavera
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnachisel
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/geneblocks
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwitch
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/genedom
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/pdf_reports
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/SnapGeneReader
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwagon

@@ -14,7 +14,14 @@
 
   .form
 
-    h4.formlabel Upload sequence files
+    h4.formlabel Upload a sequence files
+    collapsible(title='Examples')
+      file-example(filename='num1_record.gbk',
+                   @input='function (e) {form.files = [e]}',
+                   fileHref='/static/file_examples/sculpt_a_sequence/num1_record.gbk',
+                   imgSrc='/static/file_examples/sculpt_a_sequence/num1_record.jpeg')
+        p.
+          Gene Num 1 of E. coli, annotated for optimization.
     files-uploader(v-model='form.files', text="Drop files (or click to select)",
                   help='Fasta, Genbank, or Snapgene files. No file too large please :)',
                   :multiple='true')
@@ -148,7 +155,7 @@ export default {
         default_thickness: 1,
         plot_width: 12,
         plot_ruler: true,
-        inline_labels: false,
+        inline_labels: true,
         plot_full_sequence: true,
         plot_from_position: 1,
         plot_to_position: 10000,

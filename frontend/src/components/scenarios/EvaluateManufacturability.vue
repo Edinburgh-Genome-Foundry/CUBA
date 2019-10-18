@@ -12,6 +12,15 @@
   .form
 
     h4.formlabel Sequence(s) to analyze
+    collapsible(title='Examples')
+      file-example(filename='example_records.zip',
+                    @input="function (e) { \
+                      form.files = [e]; \
+                    }",
+                    fileHref='/static/file_examples/evaluate_manufacturability/example_records.zip',
+                    imgSrc='/static/file_examples/generic_logos/linear_part_records.svg')
+        p.
+          Some example records to be checked for manufacturability-impacting patterns
     files-uploader(v-model='form.files', :multiple='true',
                       text="Drop multiple Genbank/Fasta (or click to select)")
     .files-number(v-if='form.files.length > 0')
@@ -25,8 +34,17 @@
        type="error", :closable="false")
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.pdf_report')
     center
+      download-button(text='Summary spreadsheet',
+                     :filedata='queryStatus.result.spreadsheet')
+      download-button(text='Annotated records',
+                     :filedata='queryStatus.result.records')
+      p(style='max-width: 500px;').
+        Note: the feature labels indicate the constraints that are
+        breached. For instance a "No BsaI" label means that there is indeed
+        a BsaI site at this location, breaching the "No BsaI" constraint.
       iframe(:src="queryStatus.result.pdf_report.data" 
               style="width: 90%; max-width: 1000px; height:800px;" frameborder="0")
+      
 
   powered-by(:softwareNames='infos.poweredby')
 </template>
@@ -47,7 +65,6 @@ var infos = {
 export default {
   data () {
     return {
-      enzymes: ['BsaI', 'BsmBI', 'BbsI'],
       form: {
         show_features: true,
         files: []

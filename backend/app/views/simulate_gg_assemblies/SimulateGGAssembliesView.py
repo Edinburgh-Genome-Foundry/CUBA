@@ -4,17 +4,25 @@ from base64 import b64decode, b64encode
 
 from rest_framework import serializers
 from ..base import AsyncWorker, StartJobView, JobResult
-from ..tools import (records_from_data_files, file_to_filelike_object,
-                     data_to_html_data)
+from ..tools import (
+    records_from_data_files,
+    file_to_filelike_object,
+    data_to_html_data,
+    set_record_topology,
+)
 from ..serializers import FileSerializer
-from dnacauldron import (full_assembly_report, autoselect_enzyme,
-                         full_assembly_plan_report)
+from dnacauldron import (
+    full_assembly_report,
+    autoselect_enzyme,
+    full_assembly_plan_report,
+)
 from plateo import AssemblyPlan
 import pandas
 
 digestion = serializers.ListField(child=serializers.CharField())
 # class SequenceFileSerializer(FileSerializer):
 #     circularity = serializers.BooleanField()
+
 
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
@@ -29,11 +37,10 @@ class serializer_class(serializers.Serializer):
     backbone_first = serializers.BooleanField()
     backbone_name = serializers.CharField(allow_blank=True)
     no_skipped_parts = serializers.BooleanField()
-
+    topology = serializers.CharField()
 
 
 class worker_class(AsyncWorker):
-
     def work(self):
         self.logger(message="Reading Data...")
         data = self.data
@@ -42,7 +49,8 @@ class worker_class(AsyncWorker):
         for record in records:
             # location-less features can cause bug when concatenating records.
             record.features = [
-                f for f in record.features
+                f
+                for f in record.features
                 if f.location is not None
                 and f.location.start <= f.location.end
             ]
@@ -52,47 +60,46 @@ class worker_class(AsyncWorker):
                 if data.backbone_first and r.id == data.backbone_name:
                     r.is_backbone = True
         connector_records = records_from_data_files(data.connectors)
-        for r in (records + connector_records):
-            if not hasattr(r, 'linear'):
-                r.linear = False
+        for r in records + connector_records:
+            set_record_topology(r, topology=data.topology)
             r.seq = r.seq.upper()
-        if data.enzyme == "Autoselect":
-            possible_enzymes = ["BsaI", "BsmBI", "BbsI"]
+        if data.enzyme == "autoselect":
+            possible_enzymes = ["BsaI", "BsmBI", "BbsI", "SapI"]
             data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)
 
         self.logger(message="Generating a report, be patient.")
 
         if data.use_assembly_plan:
             filelike = file_to_filelike_object(data.assembly_plan)
-            if data.assembly_plan.name.lower().endswith('.csv'):
+            if data.assembly_plan.name.lower().endswith(".csv"):
                 content = filelike.read().decode()
-                dataframe = pandas.DataFrame([
-                    [e.strip() for e in line.split(',') if len(e.strip())]
-                    for line in content.split('\n')
-                    if len(line)
-                ])
+                dataframe = pandas.DataFrame(
+                    [
+                        [e.strip() for e in line.split(",") if len(e.strip())]
+                        for line in content.split("\n")
+                        if len(line)
+                    ]
+                )
             else:
-                
+
                 dataframe = pandas.read_excel(filelike, header=None)
             assembly_plan = AssemblyPlan.from_spreadsheet(dataframe=dataframe)
-            assembly_plan.parts_data = {
-                r.id: {'record': r} for r in records}
+            assembly_plan.parts_data = {r.id: {"record": r} for r in records}
             parts_without_data = assembly_plan.parts_without_data()
             if len(parts_without_data):
-                return {
-                    'success': False,
-                    'unknown_parts': parts_without_data
-                }
+                return {"success": False, "unknown_parts": parts_without_data}
             errors, zip_data = full_assembly_plan_report(
-                assembly_plan.assemblies_with_records(), target="@memory",
+                assembly_plan.assemblies_with_records(),
+                target="@memory",
                 enzyme=data.enzyme,
                 assert_single_assemblies=data.single_assemblies,
-                logger=self.logger, connector_records=connector_records,
+                logger=self.logger,
+                connector_records=connector_records,
                 fail_silently=True,
                 include_fragments_plots=data.include_fragments,
                 include_parts_plots=data.include_fragments,
                 show_overhangs_in_genbank=data.show_overhangs,
-                no_skipped_parts=data.no_skipped_parts
+                no_skipped_parts=data.no_skipped_parts,
             )
             infos = dict(errors=errors)
 
@@ -101,26 +108,27 @@ class worker_class(AsyncWorker):
             nconstructs, zip_data = full_assembly_report(
                 records,
                 connector_records=connector_records,
-                target='@memory',
+                target="@memory",
                 enzyme=data.enzyme,
                 max_assemblies=40,
-                fragments_filters='auto',
-                assemblies_prefix='assembly',
+                fragments_filters="auto",
+                assemblies_prefix="assembly",
                 include_fragments_plots=data.include_fragments,
                 include_parts_plots=data.include_fragments,
-                show_overhangs_in_genbank=data.show_overhangs
+                show_overhangs_in_genbank=data.show_overhangs,
             )
             infos = dict(nconstructs=nconstructs)
 
         return {
-             'file': {
-                 'data': data_to_html_data(zip_data, 'zip'),
-                 'name': 'assemblies.zip',
-                 'mimetype': 'application/zip'
-             },
-             'success': True,
-             'infos': infos
+            "file": {
+                "data": data_to_html_data(zip_data, "zip"),
+                "name": "assemblies.zip",
+                "mimetype": "application/zip",
+            },
+            "success": True,
+            "infos": infos,
         }
+
 
 class SimulateGGAssembliesView(StartJobView):
     serializer_class = serializer_class

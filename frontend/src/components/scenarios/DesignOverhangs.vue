@@ -96,7 +96,7 @@
           span Number of fragments:
           el-input-number.inline(v-model="form.n_fragments",
                                  size="small",
-                                 :min=2, :max=60)
+                                 :min='2', :max='60')
         p Add sequences (e.g. enzyme sites) at the end of each fragment ? <br>
         p
           el-form(label-width="100px")
@@ -112,12 +112,12 @@
         span How many overhangs ?
         el-input-number.inline(v-show='!form.auto_overhangs'
                                v-model="form.n_overhangs", size="small",
-                               :min=1, :max=50)
+                               :min='1', :max='50')
         el-checkbox.inline(v-model='form.auto_overhangs') as many as possible
 
       p.inline Differences between overhangs:
         el-input-number.inline(v-model="form.overhangs_differences", size="small",
-                               :min=1, :max=4)
+                               :min='1', :max='4')
         //- helper(help='Number of basepairs by which every overhang pair should\
         //-              differ (this includes reverse complements).')
         helper.

@@ -1,12 +1,12 @@
 <template lang="pug">
 
 .page
-  h1 Digestion Pattern Predictor
+  h1 Predict digestion patterns
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Online restriction digest simulator:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Submit sequences and an enzymatic mixes, get migration predictions.
+  p.scenario-description Submit sequences and enzymatic mixes, get migration predictions.
 
 
   .form
@@ -15,7 +15,7 @@
 
     h4.formlabel Digestions
     .example(@click="form.digestions = [['PvuI'], ['EcoRI', 'XbaI'], ['ApaLI', 'HindIII']]",
-             style='cursor: pointer; color: grey; margin: 0.5em;') Click me to load an example
+             style='cursor: pointer; color: grey; margin: 0.5em;') (click me to load an example)
     digestionset(v-model='form.digestions')
     h4.formlabel Sequences
     collapsible(title='Examples')
@@ -24,9 +24,17 @@
                   fileHref='/static/file_examples/predict_digestions/emma_constructs.zip',
                   imgSrc='/static/file_examples/generic_logos/part.svg')
     files-uploader(v-model='form.files', help='Fasta or Genbank files')
-    el-checkbox(v-model='form.circular_sequences') Sequences are circular
+    p
+      el-select(v-model='form.topology' size='small')
+        el-option(value='circular' label='All sequences are circular')
+        el-option(value='linear' label='All sequences are linear')
+        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
+    
     p
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names as sequence IDs
+    
+    h4.formlabel Other options
     p
       el-checkbox(v-model='form.make_cuts_position_report') Generate report
     p
@@ -76,14 +84,14 @@ export default {
     return {
       form: {
         ladder: '100_to_4k',
-        circular_sequences: true,
         digestions: [],
         make_cuts_position_report: false,
         files: [],
         show_band_sizes: false,
         use_ordering_list: false,
         use_file_names_as_ids: true,
-        ordering_list: ''
+        ordering_list: '',
+        topology: 'default-circular'
       },
       infos: infos,
       queryStatus: {

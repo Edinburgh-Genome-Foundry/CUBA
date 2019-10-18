@@ -5,6 +5,7 @@ from collections import OrderedDict
 from ..base import AsyncWorker, StartJobView
 from ..tools import (records_from_data_files,
                      data_to_html_data,
+                     set_record_topology,
                      matplotlib_figure_to_svg_base64_data)
 from bandwitch import (IdealDigestionsProblem, SeparatingDigestionsProblem,
                        LADDERS)
@@ -34,6 +35,7 @@ class serializer_class(serializers.Serializer):
     possible_enzymes = ComaSeparatedList()
     show_bands_sizes = serializers.BooleanField()
     plot_cuts = serializers.BooleanField()
+    topology = serializers.CharField()
 
 class worker_class(AsyncWorker):
 
@@ -45,6 +47,8 @@ class worker_class(AsyncWorker):
         ladder = LADDERS[data.ladder]
         enzymes = data.possible_enzymes
         records = records_from_data_files(data.files)
+        for record in records:
+            set_record_topology(record, data.topology)
         sequences = OrderedDict([
             (record.id, str(record.seq))
             for record in records
@@ -55,8 +59,8 @@ class worker_class(AsyncWorker):
         if (data.goal == 'ideal'):
             mini, maxi = data.bands_range
             problem = IdealDigestionsProblem(
-                sequences=sequences, enzymes=enzymes, ladder=ladder,
-                linear=not data.circular_sequences,
+                sequences=records, enzymes=enzymes, ladder=ladder,
+                topology='auto',
                 min_bands=mini, max_bands=maxi,
                 max_enzymes_per_digestion=data.max_enzymes
             )

@@ -230,6 +230,7 @@ def data_to_html_data(data, datatype, filename=None):
         "genbank": "application/genbank",
         "fasta": "application/fasta",
         "pdf": "application/pdf",
+        "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     }.get(datatype, datatype)
     datatype = "data:%s;" % datatype
     data64 = "base64,%s" % b64encode(data).decode("utf-8")
@@ -296,3 +297,11 @@ def csv_to_list(csv_string, sep=","):
         for element in line.split(sep)
         if len(element.strip())
     ]
+
+def set_record_topology(record, topology):
+    annotations = record.annotations
+    if topology.startswith('default-'):
+        if 'topology' not in annotations:
+            annotations['topology'] = topology[len('default-'):]
+    else:
+        annotations['topology'] = topology

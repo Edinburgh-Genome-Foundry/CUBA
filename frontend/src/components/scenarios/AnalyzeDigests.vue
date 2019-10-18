@@ -36,7 +36,13 @@
           Unzip the file and drag the genbank files into the file upload area.
 
     files-uploader(v-model='form.constructsSequences', help='Fasta/Genbank/Zip files')
-    el-checkbox(v-model='form.circularSequences') Sequences are circular
+    p
+      el-select(v-model='form.topology' size='small')
+        el-option(value='circular' label='All sequences are circular')
+        el-option(value='linear' label='All sequences are linear')
+        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
+    
 
 
 
@@ -168,12 +174,12 @@ export default {
         digestionsMap: null,
         goal: 'validation',
         fragmentAnalysisArchive: null,
-        circularSequences: true,
         tolerance: 0.05,
         bandsRange: [10, 15000],
         includeDigestionPlots: true,
         subanalysis: 'standard',
-        ignoreBandsUnder: 0
+        ignoreBandsUnder: 0,
+        topology: 'default-circular'
       },
       infos: infos,
       ladder_options: [

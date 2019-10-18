@@ -38,8 +38,8 @@ class worker_class(AsyncWorker):
         }
 
         self.logger(message='Analyzing the sequence...')
-        common_blocks = CommonBlocks(
-            sequences, block_selection=data.block_selection,
+        common_blocks = CommonBlocks.from_sequences(
+            sequences, block_selection_method=data.block_selection,
             min_block_size=data.min_block_size
         )
 

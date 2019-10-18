@@ -23,7 +23,7 @@
     .bands-range(v-if="form.goal === 'ideal'")
       p.inline Bands in <i>sensitivity</i> zone: {{ form.bands_range[0] }} to {{ form.bands_range[1] }}
         el-slider(range show-stops v-if="" v-model='form.bands_range',
-                       :max=10, :min=1)
+                       :max='10', :min='1')
         helper.
           Bands in the <i>central</i> zone,
           between 10% and 90% of the maximal migration distance.
@@ -59,6 +59,13 @@
 
 
     files-uploader(v-model='form.files', help='Fasta or Genbank files')
+    p
+      el-select(v-model='form.topology' size='small')
+        el-option(value='circular' label='All sequences are circular')
+        el-option(value='linear' label='All sequences are linear')
+        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
+    
     el-checkbox(v-model='form.circular_sequences') Sequences are circular
 
     h4.formlabel Ladder
@@ -139,7 +146,8 @@ export default {
         circular_sequences: true,
         show_bands_sizes: false,
         plot_cuts: false,
-        files: []
+        files: [],
+        topology: 'default-circular'
       },
       infos: infos,
       goal_options: [

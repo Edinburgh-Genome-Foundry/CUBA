@@ -11,14 +11,9 @@
 
 
   .form
-    h4.formlabel Select an enzyme
-    .enzymes-radio
-      el-row(:gutter='60')
-        el-col(v-for='enzyme in enzymes', :md='6', :sm='6', :xs='24', :key='enzyme')
-          el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
 
     h4.formlabel Provide parts to assemble
-      helper Upload parts sequences for one or several assemblies. Don't forget the receptor vector(s).
+      helper Upload all the parts sequences for your assembli(es). Don't forget the receptor vector(s).
     collapsible(title='Examples')
       file-example(filename='example_genetic_parts_and_backbone.zip',
                    fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
@@ -27,6 +22,13 @@
         p.
           Genbank records of five parts (A, A2, B, B2, C) and receptor vector. the parts can go into
           one of 3 possible slots, forming a total of four possible assemblies.
+      
+      file-example(filename='parts_for_sapI_assembly.zip',
+                   fileHref='/static/file_examples/simulate_gg_assemblies/parts_for_sapI_assembly.zip',
+                   @input='function (e) {form.parts.push(e)}',
+                   imgSrc='/static/file_examples/generic_logos/sequences_records.png')
+        p.
+          SapI-based single assembly
       file-example(filename='parts_missing_connectors.zip',
                    fileHref='/static/file_examples/simulate_gg_assemblies/parts_missing_connectors.zip',
                    @input='function (e) {form.parts.push(e)}',
@@ -40,6 +42,42 @@
                    tip="Accepted formats: FASTA, Genbank, Snapgene")
     //- sequencesuploader(v-model='form.parts', :multiple='true',
     //-                   text="Drop multiple Genbank/Fasta (or click to select)")
+
+    p
+      el-select(v-model='form.topology' size='small')
+        el-option(value='circular' label='All sequences are circular')
+        el-option(value='linear' label='All sequences are linear')
+        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
+    
+    h4.formlabel Restriction enzyme
+    .enzymes-radio
+      el-select(v-model='form.enzyme')
+      
+        el-option(v-for="enzyme in ['BsaI', 'BsmBI', 'BbsI', 'SapI']",
+                  :key='enzyme', :value='enzyme', :label='enzyme')
+        el-option(value='autoselect' label='Autoselect from part sequences')
+    h4.formlabel Other options
+
+    p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
+    .select-connectors(v-if='form.select_connectors').animated.flipInX
+      h4.formlabel Provide connectors
+        helper.
+          Connectors are neutral parts used to fill gaps in some assemblies.
+          Drop here all the connector sequences you have, only the connectors
+          necessary to obtain assemblies will be selected and added to the other parts.
+      collapsible(title='Examples')
+        file-example(filename='emma_connectors.zip',
+                     fileHref='/static/file_examples/simulate_gg_assemblies/emma_connectors.zip',
+                     @input='function (e) {form.connectors.push(e)}',
+                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+          p.
+            Connectors part, some of which can complete the parts given above as an example of
+            "parts missing connectors".
+
+      files-uploader(v-model='form.connectors', :multiple='true',
+                     text="Drop multiple Genbank/Fasta (or click to select)")
+
     p: el-checkbox(v-model='form.use_assembly_plan') Provide a list of assemblies
     .use-assembly-plan(v-if='form.use_assembly_plan').animated.flipInX
       h4.formlabel Provide an assembly list
@@ -60,24 +98,8 @@
           el-option(:value='true', label="The file names (without extension)")
       p: el-checkbox(v-model='form.single_assemblies') Ensure each line gives a single assembly
       p: el-checkbox(v-model='form.no_skipped_parts') Ensure that no part is forgotten in the assemblies
-    p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
-    .select-connectors(v-if='form.select_connectors').animated.flipInX
-      h4.formlabel Provide connectors
-        helper.
-          Connectors are neutral parts used to fill gaps in some assemblies.
-          Drop here all the connector sequences you have, only the connectors
-          necessary to obtain assemblies will be selected and added to the other parts.
-      collapsible(title='Examples')
-        file-example(filename='emma_connectors.zip',
-                     fileHref='/static/file_examples/simulate_gg_assemblies/emma_connectors.zip',
-                     @input='function (e) {form.connectors.push(e)}',
-                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
-          p.
-            Connectors part, some of which can complete the parts given above as an example of
-            "parts missing connectors".
-
-      files-uploader(v-model='form.connectors', :multiple='true',
-                     text="Drop multiple Genbank/Fasta (or click to select)")
+    p(v-if='!form.use_assembly_plan')
+      el-checkbox(v-model='form.use_file_names_as_ids') Use file names as part IDs
     p
       el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
     p
@@ -145,9 +167,8 @@ var infos = {
 export default {
   data () {
     return {
-      enzymes: ['BsaI', 'BsmBI', 'BbsI', 'Autoselect'],
       form: {
-        enzyme: 'Autoselect',
+        enzyme: 'autoselect',
         parts: [],
         connectors: [],
         show_overhangs: false,
@@ -159,7 +180,8 @@ export default {
         use_file_names_as_ids: false,
         backbone_first: false,
         backbone_name: '',
-        no_skipped_parts: true
+        no_skipped_parts: true,
+        topology: 'default-circular'
       },
       infos: infos,
       ladder_options: [

@@ -6,13 +6,10 @@
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    Optimize a sequence with annotations representing constraints and objectives.
-    See #[a(href='https://github.com/Edinburgh-Genome-Foundry/DnaChisel') the library docs]
-    for more infos, in particular
-    #[a(href='https://edinburgh-genome-foundry.github.io/DnaChisel/ref/builtin_specifications.html') this page]
-    for available constraints.
-
-
+    Annotate a Genbank (or Snapgene) record with constraints and objectives, and
+    drag it in the window below to start the optimization. See
+    #[a(href='https://edinburgh-genome-foundry.github.io/DnaChisel/genbank/genbank_api.html') this page]
+    for the list of annotations recognized by the app.
 
   .form
     h4.formlabel Provide an annotated sequence
@@ -20,10 +17,15 @@
       file-example(filename='example_sequence.gbk',
                    @input='function (e) {form.file = e}',
                    fileHref='/static/file_examples/sculpt_a_sequence/example_sequence.gbk',
-                   imgSrc='/static/file_examples/sculpt_a_sequence/example_sequence_Map.svg')
+                   imgSrc='/static/file_examples/sculpt_a_sequence/example_sequence.jpeg')
         p.
-          Collection of constructs assembled using random parts from the EMMA standard.
-          Unzip the file and drag the genbank files into the file upload area.
+          A plasmid with some genes to optimize.
+      file-example(filename='num1_record.gbk',
+                   @input='function (e) {form.file = e}',
+                   fileHref='/static/file_examples/sculpt_a_sequence/num1_record.gbk',
+                   imgSrc='/static/file_examples/sculpt_a_sequence/num1_record.jpeg')
+        p.
+          Gene Num 1 of E. coli, annotated for optimization.
     files-uploader(v-model='form.file', tip="Genbank/Snapgene format only",
                    :multiple='false')
     el-checkbox.animated.fadeIn(v-if='Object.keys(form.editedFeatures).length > 0',
@@ -41,10 +43,11 @@
   el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
      type="error", :closable="false")
   .results(v-if='!queryStatus.polling.inProgress')
-    p.results-summary(v-if='queryStatus.result.summary',
-                     v-html="queryStatus.result.summary")
-    download-button(v-if='queryStatus.result.zip_file',
-                    :filedata='queryStatus.result.zip_file')
+    center
+      p.results-summary(v-if='queryStatus.result.summary',
+                      v-html="queryStatus.result.summary")
+      download-button(v-if='queryStatus.result.zip_file',
+                      :filedata='queryStatus.result.zip_file')
   powered-by(:softwareNames='infos.poweredby')
 </template>
 

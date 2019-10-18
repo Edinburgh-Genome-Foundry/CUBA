@@ -11,6 +11,14 @@
   .form
 
     h4.formlabel Sequence(s) to convert
+    collapsible(title='Examples')
+      file-example(filename='example_genetic_parts_and_backbone.zip',
+                   fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
+                   @input='function (e) {form.files.push(e)}',
+                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
+        p.
+          Genbank records of five parts (A, A2, B, B2, C) and receptor vector. the parts can go into
+          one of 3 possible slots, forming a total of four possible assemblies.
     files-uploader(v-model='form.files', :multiple='true',
                    tip="Accepted formats: Genbank/Fasta/Snapgene/MSDoc")
 

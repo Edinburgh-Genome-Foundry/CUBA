@@ -34,8 +34,6 @@
         el-input-number(v-model='form.fontsize', :min='5', :max='18' size='small')
 
 
-
-
   backend-querier(:form='form', :backendUrl='infos.backendUrl',
                   :validateForm='validateForm', submitButtonText='Render',
                   v-model='queryStatus')
