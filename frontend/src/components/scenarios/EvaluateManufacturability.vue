@@ -30,6 +30,8 @@
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Evaluate',
                     v-model='queryStatus')
+    progress-bars(:bars='queryStatus.polling.data.bars', :order="['sequence', 'primer']"
+                  v-if='queryStatus.polling.inProgress && queryStatus.polling.data')
     el-alert(v-if='queryStatus.requestError', :title="queryStatus.requestError",
        type="error", :closable="false")
   .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.pdf_report')

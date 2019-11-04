@@ -43,6 +43,7 @@ class worker_class(AsyncWorker):
             dc.AvoidPattern("BsaI_site"),
             dc.AvoidPattern("BsmBI_site"),
             dc.AvoidPattern("BbsI_site"),
+            dc.AvoidPattern("SapI_site"),
             dc.AvoidPattern("8x1mer"),
             dc.AvoidPattern("5x3mer"),
             dc.AvoidPattern("9x2mer"),
@@ -54,11 +55,11 @@ class worker_class(AsyncWorker):
         spreadsheet_io = BytesIO()
         dataframe.to_excel(spreadsheet_io)
         records = cr.records_from_breaches_dataframe(dataframe, records)
-        pdf_io = BytesIO()
-        cr.breaches_records_to_pdf(records, pdf_io, logger=self.logger)
         zipped_records = flametree.file_tree("@memory")
         for record in records:
             write_record(record, zipped_records._file("%s.gb" % record.id))
+        pdf_io = BytesIO()
+        cr.breaches_records_to_pdf(records, pdf_io, logger=self.logger)
 
         return {
             "pdf_report": {
