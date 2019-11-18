@@ -1,4 +1,4 @@
-LOCUS       Exported               10247 bp ds-DNA     linear   UNK 18-OCT-2019
+LOCUS       Exported               10247 bp ds-DNA     linear   UNK 18-NOV-2019
 DEFINITION  Saccharomyces cerevisiae S288C chromosome IV, complete sequence.
 ACCESSION   NC_001136
 VERSION     .
@@ -8,7 +8,7 @@ SOURCE      natural DNA sequence
 REFERENCE   1  (bases 1 to 10247)
   AUTHORS   .
   TITLE     Direct Submission
-  JOURNAL   Exported Friday, Oct 18, 2019 from SnapGene Viewer 4.3.11
+  JOURNAL   Exported Monday, Nov 18, 2019 from SnapGene Viewer 5.0.5
             https://www.snapgene.com
 FEATURES             Location/Qualifiers
      source          1..10247
@@ -86,9 +86,11 @@ FEATURES             Location/Qualifiers
                      /label=@cds
                      /note="color: #3366ff"
      misc_feature    1001..9247
+                     /label=~use_best_codon(s_cerevisiae)
                      /label=~CodonOptimize(s_cerevisiae)
                      /note="color: #ffff00"
      misc_feature    3000..5000
+                     /label=@all_unique_kmers(20, here)
                      /label=@AvoidNonUniqueSegments(20, here)
                      /note="color: #3366ff"
      misc_feature    9248..10247

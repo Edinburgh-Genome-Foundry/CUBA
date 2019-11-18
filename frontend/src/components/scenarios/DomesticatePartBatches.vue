@@ -61,7 +61,11 @@
        type="error", :closable="false")
 
     .results(v-if='!queryStatus.polling.inProgress && queryStatus.polling.data')
-      p(v-if='queryStatus.result.nfails > 0') There were {{queryStatus.result.nfails}} errors, see report for more.
+      div(v-if='queryStatus.result.nfails > 0')
+        p.
+          There were {{queryStatus.result.nfails}} errors, see report for more.
+        p(v-if='!form.allow_edits').
+          Maybe you should tick "Allow sequence edits" so sequences can be mutated to fix errors.
       p(v-else) Everything seems to be fine. See report.
       download-button(v-if='queryStatus.result.file',
         text='Download Report',

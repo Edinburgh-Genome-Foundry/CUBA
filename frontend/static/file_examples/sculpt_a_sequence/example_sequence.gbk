@@ -1,4 +1,4 @@
-LOCUS       Exported                4720 bp ds-DNA     circular UNK 17-OCT-2019
+LOCUS       Exported                4720 bp ds-DNA     circular UNK 18-NOV-2019
 DEFINITION  .
 ACCESSION   Example
 VERSION     .
@@ -8,7 +8,7 @@ SOURCE      natural DNA sequence
 REFERENCE   1  (bases 1 to 4720)
   AUTHORS   .
   TITLE     Direct Submission
-  JOURNAL   Exported Thursday, Oct 17, 2019 from SnapGene Viewer 4.3.11
+  JOURNAL   Exported Monday, Nov 18, 2019 from SnapGene Viewer 5.0.5
             https://www.snapgene.com
 FEATURES             Location/Qualifiers
      source          1..4720
@@ -27,12 +27,16 @@ FEATURES             Location/Qualifiers
                      /note="Gene aaCI"
                      /note="color: #c0c0c0; direction: LEFT"
      misc_feature    1410..1802
+                     /label=~use_best_codon(e_coli)
                      /label=~CodonOptimize(e_coli)
                      /note="color: #ffcc00; direction: RIGHT"
      CDS             1410..1802
                      /label=Gene barK
                      /note="Gene barK"
                      /note="color: #c0c0c0; direction: RIGHT"
+     misc_feature    1410..1802
+                     /label=@cds
+                     /note="color: #000080; direction: RIGHT"
      misc_feature    1805..1834
                      /label=@keep
                      /note="color: #000080"
@@ -44,6 +48,7 @@ FEATURES             Location/Qualifiers
                      /label=@cds
                      /note="color: #000080; direction: RIGHT"
      misc_feature    1835..2551
+                     /label=~use_best_codon(e_coli)
                      /label=~CodonOptimize(e_coli)
                      /note="color: #ffcc00; direction: RIGHT"
      CDS             1835..2551
@@ -58,6 +63,7 @@ FEATURES             Location/Qualifiers
                      /note="kanR terminator"
                      /note="color: #ffffff"
      misc_feature    complement(3213..4163)
+                     /label=~use_best_codon(e_coli)
                      /label=~CodonOptimize(e_coli)
                      /note="color: #ffcc00; direction: LEFT"
      CDS             complement(3213..4163)

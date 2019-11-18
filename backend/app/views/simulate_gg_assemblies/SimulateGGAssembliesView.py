@@ -28,7 +28,7 @@ class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
     parts = serializers.ListField(child=FileSerializer())
     connectors = serializers.ListField(child=FileSerializer())
-    include_fragments = serializers.BooleanField()
+    include_fragments = serializers.CharField()
     use_assembly_plan = serializers.BooleanField()
     single_assemblies = serializers.BooleanField()
     use_file_names_as_ids = serializers.BooleanField()
@@ -88,6 +88,11 @@ class worker_class(AsyncWorker):
             parts_without_data = assembly_plan.parts_without_data()
             if len(parts_without_data):
                 return {"success": False, "unknown_parts": parts_without_data}
+            data.include_fragments = {
+                'yes': True,
+                'no': False,
+                'on_failure': 'on_failure'
+            }[data.include_fragments]
             errors, zip_data = full_assembly_plan_report(
                 assembly_plan.assemblies_with_records(),
                 target="@memory",

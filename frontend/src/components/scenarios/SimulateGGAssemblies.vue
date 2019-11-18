@@ -101,8 +101,6 @@
     p(v-if='!form.use_assembly_plan')
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names as part IDs
     p
-      el-checkbox(v-model='form.include_fragments') Include parts and fragments in report (slower)
-    p
       el-checkbox(v-model='form.show_overhangs') Annotate overhangs in genbanks
     p
       el-checkbox(v-model='form.backbone_first') Force the backbone to be in first position
@@ -110,6 +108,11 @@
     p(v-if='form.backbone_first') Backbone name:
       el-input(v-model='form.backbone_name' size='mini',
                style='width: 250px; margin-left: 10px;')
+    p
+      el-select(v-model='form.include_fragments')
+        el-option(value='on_failure' label="Include parts and fragments on assembly failure only")
+        el-option(value='yes' label="Always include parts and fragments (slower)")
+        el-option(value='no' label="Don't include parts and fragments")
 
 
     backend-querier(:form='form',
@@ -173,7 +176,7 @@ export default {
         connectors: [],
         show_overhangs: false,
         select_connectors: false,
-        include_fragments: false,
+        include_fragments: 'on_failure',
         use_assembly_plan: false,
         assembly_plan: null,
         single_assemblies: true,
