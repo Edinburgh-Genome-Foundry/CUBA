@@ -49,8 +49,18 @@ class worker_class(AsyncWorker):
                 }
             }
         else:
-            groups, failed = csv_to_groups_data(csv_string=asm_data.decode())
-            result = find_logical_saboteurs(groups, failed_groups=failed)
+            groups_data = csv_to_groups_data(csv_string=asm_data.decode())
+            groups = {
+                e['id']: e['members']
+                for e in groups_data.values()
+            }
+            failed = [
+                e['id']
+                for e in groups_data.values()
+                if e['attempts'] == e['failures']
+            ]
+            result = find_logical_saboteurs(
+                groups, failed_groups=failed)
             return dict(
                 saboteurs=result["saboteurs"], suspicious=result["suspicious"]
             )

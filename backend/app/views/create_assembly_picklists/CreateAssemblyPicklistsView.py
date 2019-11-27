@@ -139,10 +139,18 @@ class worker_class(AsyncWorker):
 
         self.logger(message="Generating Picklist...")
         destination_plate = Plate4ti0960("Mixplate")
+        if data.destination_plate:
+            dest_filelike = file_to_filelike_object(data.destination_plate)
+            destination_plate = plate_from_content_spreadsheet(dest_filelike)
+        destination_wells = (
+            well
+            for well in destination_plate.iter_wells(direction='column')
+            if well.is_empty
+        )
         picklist, picklist_data = picklist_generator.make_picklist(
             assembly_plan,
             source_wells=source_plate.iter_wells(),
-            destination_wells=destination_plate.iter_wells(direction='column')
+            destination_wells=destination_wells
         )
         if picklist is None:
             return {

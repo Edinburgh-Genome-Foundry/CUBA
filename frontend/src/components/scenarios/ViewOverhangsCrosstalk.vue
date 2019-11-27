@@ -10,13 +10,26 @@
 
   .form
 
-    h4.formlabel Your overhangs
-    .example(@click="form.overhangs = 'ATTG, GCTA, ACAT, CCAG'"
-             style='cursor: pointer; color: grey; margin: 0.5em;') Example
-    el-input(type='textarea',
-             :rows='4',
-             v-model='form.overhangs',
-             placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+    h4.formlabel Choose your input
+    center
+      el-select(v-model='form.input_type' style='width: 80%;')
+        el-option(value='overhangs' label='A list of overhangs')
+        el-option(value='construct' label='Final constructs generated with CUBA')
+      //- el-option(value='parts'  label='Individual parts (and backbone)')
+
+    
+    div(v-if='form.input_type === "overhangs"')
+      h4.formlabel Overhangs
+      .example(@click="form.overhangs = 'ATTG, GCTA, ACAT, CCAG'"
+              style='cursor: pointer; color: grey; margin: 0.5em;') Example
+      el-input(type='textarea',
+              :rows='4',
+              v-model='form.overhangs',
+              placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+    div(v-else)
+      h4.formlabel Construct
+      files-uploader(v-model='form.construct', :multiple='false',
+                     tip="Accepted formats: FASTA, Genbank, Snapgene")
     p
       .dataset-parameter Dataset:
       .dataset-parameter
@@ -41,7 +54,7 @@
       img.result_image(:src='queryStatus.result.figure_data')
 
     p(style="margin-bottom: 5em").
-      In the this plot, if you see anything else than the square pairs around
+      In this plot, if you see anything else than the square pairs around
       the diagonal, it means there is cross-talking between your overhangs
       (so risk of misannealing). If one of these diagmonal square pairs appears
       lighter than the others, it means that the corresponding overhang has
@@ -86,8 +99,11 @@ export default {
       infos: infos,
       form: {
         overhangs: '',
+        construct: null,
+        input_type: 'overhangs',
         temperature: '37C',
         incubation: '01h'
+
       },
       queryStatus: {
         polling: {},
@@ -103,7 +119,7 @@ export default {
   methods: {
     validateForm () {
       var errors = []
-      if (!this.form.overhangs.length) {
+      if (!(this.form.overhangs.length || this.form.construct)) {
         errors.push('Provide files !')
       }
       return errors

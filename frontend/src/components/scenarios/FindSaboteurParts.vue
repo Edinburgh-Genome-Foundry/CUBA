@@ -55,7 +55,7 @@
           #[b probably bad].
           :
         ul
-          li(v-for='partName in queryStatus.result.suspicious', :key='partName') {{partName}}
+          li(v-for='partName in queryStatus.result.saboteurs', :key='partName') {{partName}}
       div(v-else)
         p No saboteur parts were found
       div(v-if='queryStatus.result.suspicious.length')
