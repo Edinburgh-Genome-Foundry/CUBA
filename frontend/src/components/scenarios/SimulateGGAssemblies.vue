@@ -54,7 +54,7 @@
     .enzymes-radio
       el-select(v-model='form.enzyme')
       
-        el-option(v-for="enzyme in ['BsaI', 'BsmBI', 'BbsI', 'SapI']",
+        el-option(v-for="enzyme in ['BsaI', 'BsmBI', 'BbsI', 'SapI', 'AarI']",
                   :key='enzyme', :value='enzyme', :label='enzyme')
         el-option(value='autoselect' label='Autoselect from part sequences')
     h4.formlabel Other options

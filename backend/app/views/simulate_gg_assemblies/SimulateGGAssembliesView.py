@@ -3,7 +3,7 @@
 from base64 import b64decode, b64encode
 
 from rest_framework import serializers
-from ..base import AsyncWorker, StartJobView, JobResult
+from ..base import AsyncWorker, StartJobView
 from ..tools import (
     records_from_data_files,
     file_to_filelike_object,
@@ -100,7 +100,7 @@ class worker_class(AsyncWorker):
                 assert_single_assemblies=data.single_assemblies,
                 logger=self.logger,
                 connector_records=connector_records,
-                fail_silently=True,
+                fail_silently=False,
                 include_fragments_plots=data.include_fragments,
                 include_parts_plots=data.include_fragments,
                 show_overhangs_in_genbank=data.show_overhangs,
@@ -138,3 +138,7 @@ class worker_class(AsyncWorker):
 class SimulateGGAssembliesView(StartJobView):
     serializer_class = serializer_class
     worker_class = worker_class
+
+import scipy
+import networkx
+print (scipy.__version__, networkx.__version__)

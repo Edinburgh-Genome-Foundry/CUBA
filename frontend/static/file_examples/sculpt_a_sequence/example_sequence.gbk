@@ -1,14 +1,14 @@
-LOCUS       Exported                4720 bp ds-DNA     circular UNK 18-NOV-2019
+LOCUS       Exported                4720 bp ds-DNA     circular UNK 06-DEC-2019
 DEFINITION  .
 ACCESSION   Example
 VERSION     .
-KEYWORDS    DC2017a-kanR_annotated
+KEYWORDS    DC2017a-kanR
 SOURCE      natural DNA sequence
   ORGANISM  unspecified
 REFERENCE   1  (bases 1 to 4720)
   AUTHORS   .
   TITLE     Direct Submission
-  JOURNAL   Exported Monday, Nov 18, 2019 from SnapGene Viewer 5.0.5
+  JOURNAL   Exported Friday, Dec 6, 2019 from SnapGene Viewer 5.0.6
             https://www.snapgene.com
 FEATURES             Location/Qualifiers
      source          1..4720
@@ -16,8 +16,7 @@ FEATURES             Location/Qualifiers
                      /mol_type="genomic DNA"
                      /note="color: #ffffff"
      misc_feature    10..1319
-                     /label=@gc(0-55%, window=50)
-                     /label=@EnforceGCContent(maxi=0.55, window=50)
+                     /label=@gc(0-55%/50bp)
                      /note="color: #000080"
      misc_feature    complement(333..1193)
                      /label=@cds
@@ -56,7 +55,7 @@ FEATURES             Location/Qualifiers
                      /note="Gene kanR Kanamycin resistance marker"
                      /note="color: #c0c0c0; direction: RIGHT"
      misc_feature    2149..4201
-                     /label=@no(BsrBI_site)
+                     /label=@no(BsrBI_site, strand=both)
                      /note="color: #000080"
      terminator      2552..2602
                      /label=kanR terminator
