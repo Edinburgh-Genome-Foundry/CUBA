@@ -67,7 +67,6 @@ class worker_class(AsyncWorker):
         else:
             problem = SeparatingDigestionsProblem(
                  sequences=sequences, enzymes=enzymes, ladder=ladder,
-                 linear=not data.circular_sequences,
                  max_enzymes_per_digestion=data.max_enzymes
             )
         self.logger(message='Selecting digestions...')
