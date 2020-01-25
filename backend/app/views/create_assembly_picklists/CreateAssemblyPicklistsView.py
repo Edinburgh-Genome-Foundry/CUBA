@@ -111,7 +111,7 @@ class worker_class(AsyncWorker):
         if data.quantity_unit == 'nM':
             part_mol = data.part_quantity * data.total_volume * 1e-15
             part_g = None
-        if data.quantity_unit == 'fmol':
+        if data.quantity_unit == 'ng':
             part_mol = None
             part_g = data.part_quantity * 1e-9
 

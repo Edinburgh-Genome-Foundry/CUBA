@@ -13,7 +13,7 @@
   .form
     h4.formlabel Enzyme Sites to choose from:
     .example(@click="form.sites_to_include = exampleEnzymes.join(', ')"
-             style='cursor: pointer; color: grey; margin: 0.5em;') Example 
+             style='cursor: pointer; color: grey; margin: 0.5em;') Example (click me)
     el-input(type='textarea', :rows='7'
               v-model='form.sites_to_include',
               placeholder='Enter enzyme names, e.g. "EcoRI, PvuI, ..."')

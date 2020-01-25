@@ -163,7 +163,7 @@ def records_from_data_file(data_file):
                         )
                         for name, seq in df.values
                     ]
-                    fmt = 'spreadsheet'
+                    fmt = "spreadsheet"
                 except:
                     raise ValueError(
                         "Format not recognized for file " + data_file.name
@@ -178,9 +178,9 @@ def record_to_formated_string(record, fmt="genbank", remove_descr=False):
         record = deepcopy(record)
         if isinstance(record, (list, tuple)):
             for r in record:
-                r.description = ''
+                r.description = ""
         else:
-            record.description = ''
+            record.description = ""
     fileobject = StringIO()
     write_record(record, fileobject, fmt)
     return fileobject.getvalue().encode("utf-8")
@@ -230,7 +230,7 @@ def data_to_html_data(data, datatype, filename=None):
         "genbank": "application/genbank",
         "fasta": "application/fasta",
         "pdf": "application/pdf",
-        "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     }.get(datatype, datatype)
     datatype = "data:%s;" % datatype
     data64 = "base64,%s" % b64encode(data).decode("utf-8")
@@ -298,10 +298,31 @@ def csv_to_list(csv_string, sep=","):
         if len(element.strip())
     ]
 
+
 def set_record_topology(record, topology):
+    """Set the Biopython record's topology, possibly passing if already set.
+
+    This actually sets the ``record.annotations['topology']``.The ``topology``
+    parameter can be "circular", "linear", "default_to_circular" (will default
+    to circular if ``annotations['topology']`` is not already set) or
+    "default_to_linear".
+    """
+    valid_topologies = [
+        "circular",
+        "linear",
+        "default_to_circular",
+        "default_to_linear",
+    ]
+    if topology not in valid_topologies:
+        raise ValueError(
+            "topology (%s) should be one of %s."
+            % (topology, ", ".join(valid_topologies))
+        )
     annotations = record.annotations
-    if topology.startswith('default-'):
-        if 'topology' not in annotations:
-            annotations['topology'] = topology[len('default-'):]
+    default_prefix = "default_to_"
+    if topology.startswith(default_prefix):
+        if "topology" not in annotations:
+            annotations["topology"] = topology[len(default_prefix) :]
     else:
-        annotations['topology'] = topology
+        annotations["topology"] = topology
+

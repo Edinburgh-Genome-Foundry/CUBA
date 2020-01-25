@@ -21,7 +21,7 @@
     div(v-if='form.input_type === "overhangs"')
       h4.formlabel Overhangs
       .example(@click="form.overhangs = 'ATTG, GCTA, ACAT, CCAG'"
-              style='cursor: pointer; color: grey; margin: 0.5em;') Example
+              style='cursor: pointer; color: grey; margin: 0.5em;') Example (click me)
       el-input(type='textarea',
               :rows='4',
               v-model='form.overhangs',

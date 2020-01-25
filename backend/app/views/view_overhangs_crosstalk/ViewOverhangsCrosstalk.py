@@ -32,8 +32,6 @@ class worker_class(AsyncWorker):
             record = records_from_data_files([data.construct])[0].upper()
             slots = kappagate.construct_record_to_slots(record, backbone_annotations=("",))
             overhangs = [o for s in slots for o in s if set(o) <= set("ATGC")]
-        print (overhangs)
-        print (slots)
 
         temperature, incubation = data.temperature, data.incubation
         data = tatapov.annealing_data[temperature][incubation]

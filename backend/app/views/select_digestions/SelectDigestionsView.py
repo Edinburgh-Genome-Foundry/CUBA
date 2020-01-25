@@ -40,7 +40,6 @@ class serializer_class(serializers.Serializer):
     ladder = serializers.CharField()
     max_digestions = serializers.IntegerField()
     max_enzymes = serializers.IntegerField()
-    circular_sequences = serializers.BooleanField()
     possible_enzymes = ComaSeparatedList()
     show_bands_sizes = serializers.BooleanField()
     plot_cuts = serializers.BooleanField()
@@ -61,6 +60,8 @@ class worker_class(AsyncWorker):
         sequences = OrderedDict(
             [(record.id, str(record.seq)) for record in records]
         )
+        for record in records:
+            print (record.annotations['topology'])
 
         self.logger(message="Initializing...")
 
@@ -70,7 +71,6 @@ class worker_class(AsyncWorker):
                 sequences=records,
                 enzymes=enzymes,
                 ladder=ladder,
-                topology="auto",
                 min_bands=mini,
                 max_bands=maxi,
                 max_enzymes_per_digestion=data.max_enzymes,
