@@ -24,7 +24,8 @@ export default {
         require('./CompareTwoSequences.vue').default,
         require('./RenderSequenticons.vue').default,
         require('./ViewOverhangsCrosstalk.vue').default,
-        require('./PredictBadCloneRates.vue').default
+        require('./PredictBadCloneRates.vue').default,
+        require('./ExtractFeatures.vue').default
       ]
     },
     {

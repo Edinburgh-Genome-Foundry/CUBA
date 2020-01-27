@@ -69,4 +69,6 @@ RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/SnapGene
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwagon
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnachisel
+ARG CACHEBUST=10
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/easy_dna
 RUN pip install networkx==2.4
