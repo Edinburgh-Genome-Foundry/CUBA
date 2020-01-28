@@ -25,3 +25,4 @@ from .substitute_parts_overhangs import SubstitutePartsOverhangsView
 from .sketch_constructs import SketchConstructsView
 from .transfer_features import TransferFeaturesView
 from .view_overhangs_crosstalk import ViewOverhangsCrosstalkView
+from .feature_extractor import FeatureExtractorView
