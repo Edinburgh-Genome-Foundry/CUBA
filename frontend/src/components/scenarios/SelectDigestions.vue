@@ -34,18 +34,28 @@
       file-example(v-if="form.goal === 'ideal'",
                    key='a',
                    filename='emma_parts.zip',
-                   @input='function (e) {form.files.push(e)}',
+                   @input=`function (e) {
+                     form.files.push(e)
+                     form.max_enzymes = 2
+                     form.possible_enzymes = enzymesPreselections['Common enzymes']
+                    }`,
                    fileHref='/static/file_examples/select_digestions/emma_parts.zip',
                    imgSrc='/static/file_examples/generic_logos/part.svg')
         p.
           A random collection of 18 parts on plasmid, from the EMMA standard.
-          Try this example while selecting the "Common Enzymes" collection, and
-          "2 max. enzymes per digestion" below.
+          This example will automatically set the enzymes below to the
+          "Common Enzymes" collection, and the maximum enzymes per digestion to 2
 
       file-example(v-if="form.goal === 'separating'"
                    filename='emma_constructs.zip',
                    key='b',
-                   @input='function (e) {form.files.push(e)}',
+                   @input=`function (e) {
+                     form.files.push(e)
+                     form.ladder = '35_to_5k'
+                     form.max_enzymes = 2
+                     form.max_digestions = 2
+                     form.possible_enzymes = enzymesPreselections["EGF's favorite"]
+                    }`,
                    fileHref='/static/file_examples/select_digestions/emma_constructs.zip',
                    imgSrc='/static/file_examples/generic_logos/part.svg')
         p.
@@ -63,10 +73,8 @@
       el-select(v-model='form.topology' size='small')
         el-option(value='circular' label='All sequences are circular')
         el-option(value='linear' label='All sequences are linear')
-        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
-        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
-    
-    el-checkbox(v-model='form.circular_sequences') Sequences are circular
+        el-option(value='default_to_circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default_to_linear' label='Autodetect each sequence\'s topology (default to linear)')
 
     h4.formlabel Ladder
     ladderselector(v-model='form.ladder')
@@ -143,11 +151,10 @@ export default {
         make_report: false,
         goal: 'ideal',
         bands_range: [3, 6],
-        circular_sequences: true,
         show_bands_sizes: false,
         plot_cuts: false,
         files: [],
-        topology: 'default-circular'
+        topology: 'default_to_circular'
       },
       infos: infos,
       goal_options: [

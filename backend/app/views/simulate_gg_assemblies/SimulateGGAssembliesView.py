@@ -127,7 +127,7 @@ class worker_class(AsyncWorker):
         return {
             "file": {
                 "data": data_to_html_data(zip_data, "zip"),
-                "name": "assemblies.zip",
+                "name": "predicted_assemblies.zip",
                 "mimetype": "application/zip",
             },
             "success": True,

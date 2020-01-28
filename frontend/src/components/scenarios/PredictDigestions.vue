@@ -28,8 +28,8 @@
       el-select(v-model='form.topology' size='small')
         el-option(value='circular' label='All sequences are circular')
         el-option(value='linear' label='All sequences are linear')
-        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
-        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
+        el-option(value='default_to_circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default_to_linear' label='Autodetect each sequence\'s topology (default to linear)')
     
     p
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names as sequence IDs

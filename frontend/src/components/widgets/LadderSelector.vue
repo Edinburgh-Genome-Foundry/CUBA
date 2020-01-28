@@ -7,7 +7,8 @@ el-select(v-model='ladder', placeholder='Select')
 <script>
 export default {
   props: {
-    value: {default: '100_to_10k'}
+    value: {default: '100_to_10k'},
+    form: {default: null}
   },
   data () {
     return {
@@ -43,6 +44,9 @@ export default {
   watch: {
     ladder () {
       this.$emit('input', this.ladder)
+    },
+    value (val) {
+      this.ladder = val
     }
   }
 }

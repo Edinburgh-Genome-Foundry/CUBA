@@ -47,8 +47,8 @@
       el-select(v-model='form.topology' size='small')
         el-option(value='circular' label='All sequences are circular')
         el-option(value='linear' label='All sequences are linear')
-        el-option(value='default-circular' label='Autodetect each sequence\'s topology  (default to circular)')
-        el-option(value='default-linear' label='Autodetect each sequence\'s topology (default to linear)')
+        el-option(value='default_to_circular' label='Autodetect each sequence\'s topology  (default to circular)')
+        el-option(value='default_to_linear' label='Autodetect each sequence\'s topology (default to linear)')
     
     h4.formlabel Restriction enzyme
     .enzymes-radio
@@ -184,7 +184,7 @@ export default {
         backbone_first: false,
         backbone_name: '',
         no_skipped_parts: true,
-        topology: 'default-circular'
+        topology: 'default_to_circular'
       },
       infos: infos,
       ladder_options: [

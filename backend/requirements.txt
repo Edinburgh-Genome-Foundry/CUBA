@@ -11,6 +11,7 @@ redis==2.10.5
 rq==0.6.0
 requests>=2.20.0
 watchdog==0.8.3
+openpyxl==3.0.1
 
 git+https://github.com/pygraphviz/pygraphviz.git
 git+https://github.com/networkx/networkx.git
