@@ -29,6 +29,7 @@ class FileSerializer(serializers.Serializer):
 class serializer_class(serializers.Serializer):
     files = serializers.ListField(child=FileSerializer())
     show_features = serializers.BooleanField()
+    include_genbanks = serializers.BooleanField()
 
 
 class worker_class(AsyncWorker):
@@ -49,6 +50,8 @@ class worker_class(AsyncWorker):
             dc.AvoidPattern("9x2mer"),
             dc.AvoidHairpins(stem_size=20, hairpin_window=200),
             dc.EnforceGCContent(mini=0.3, maxi=0.7, window=100),
+            dc.EnforceGCContent(mini=0.1, maxi=0.9, window=100),
+            dc.UniquifyAllKmers(k=15),
         ]
 
         dataframe = cr.constraints_breaches_dataframe(constraints, records)
@@ -56,8 +59,10 @@ class worker_class(AsyncWorker):
         dataframe.to_excel(spreadsheet_io)
         records = cr.records_from_breaches_dataframe(dataframe, records)
         zipped_records = flametree.file_tree("@memory")
-        for record in records:
-            write_record(record, zipped_records._file("%s.gb" % record.id))
+        if data.include_genbanks:
+            for record in records:
+                target = zipped_records._file("%s.gb" % record.id)
+                write_record(record, target)
         pdf_io = BytesIO()
         cr.breaches_records_to_pdf(records, pdf_io, logger=self.logger)
 

@@ -59,7 +59,6 @@ RUN pip install biopython==1.71
 ARG CACHEBUST=10
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/tatapov
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/kappagate
-RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primavera
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/geneblocks
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwitch
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/DnaFeaturesViewer
@@ -70,3 +69,4 @@ RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauld
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnachisel
 RUN pip install networkx==2.4
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwagon
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primavera

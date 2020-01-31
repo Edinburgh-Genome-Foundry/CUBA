@@ -25,7 +25,7 @@
                       text="Drop multiple Genbank/Fasta (or click to select)")
     .files-number(v-if='form.files.length > 0')
       p {{ form.files.length }} file{{ form.files.length > 1 ? 's' : '' }}  selected
-
+    el-checkbox(v-model='form.include_genbanks') Include genbank files
 
     backend-querier(:form='form', :backendUrl='infos.backendUrl',
                     :validateForm='validateForm', submitButtonText='Evaluate',
@@ -69,6 +69,7 @@ export default {
     return {
       form: {
         show_features: true,
+        include_genbanks: true,
         files: []
       },
       infos: infos,
