@@ -71,7 +71,7 @@ var infos = {
   path: 'example_scenario',
   description: '',
   backendUrl: 'start/example_scenario',
-  icon: require('@assets/images/black_white_logo.svg')
+  icon: require('../../images/black_white_logo.svg')
 }
 
 export default {

@@ -1,15 +1,19 @@
 """Bla."""
 
 from rest_framework import serializers
-from dnacauldron.utils import (substitute_overhangs)
+from dnacauldron.utils import substitute_overhangs
 from geneblocks import DiffBlocks
 import flametree
 from io import BytesIO
 from matplotlib.backends.backend_pdf import PdfPages
 
 from ..base import AsyncWorker, StartJobView
-from ..tools import (records_from_data_files, data_to_html_data, write_record,
-                     record_to_formated_string)
+from ..tools import (
+    records_from_data_files,
+    data_to_html_data,
+    write_record,
+    record_to_formated_string,
+)
 from ..serializers import FileSerializer
 
 
@@ -23,8 +27,8 @@ class serializer_class(serializers.Serializer):
     substitutions = serializers.CharField()
     enzyme = serializers.CharField()
 
-class worker_class(AsyncWorker):
 
+class worker_class(AsyncWorker):
     def work(self):
         data = self.data
         records = records_from_data_files(data.parts)
@@ -36,61 +40,57 @@ class worker_class(AsyncWorker):
             for l in data.substitutions.split("\n")
             if "=>" in l
         }
-        
-        new_records = []
-        pdf_io = BytesIO()
 
-        with PdfPages(pdf_io) as pdf:
-            for record in records:
-                enzyme = data.enzyme.replace("Autoselect", "auto")
-                record.linear = False
-                new_record = substitute_overhangs(
-                    record, substitutions, enzyme=enzyme,
-                    return_linear_parts=data.return_linear_parts)
-                new_record.file_name = record.file_name
-                new_record.id = record.id
-                new_records.append(new_record)
-                diffs = DiffBlocks.from_sequences(record, new_record)
-                ax, _ = diffs.plot()
-                ax.set_title('Modifications in %s' % record.file_name)
-                pdf.savefig(ax.figure, bbox_inches="tight")
-        
+        new_records = []
+        for record in records:
+            enzyme = data.enzyme.replace("Autoselect", "auto")
+            record.annotations['topology'] = 'circular'
+            new_record = substitute_overhangs(
+                record,
+                substitutions,
+                enzyme=enzyme,
+                return_linear_parts=data.return_linear_parts,
+            )
+            new_record.file_name = record.file_name
+            new_record.id = record.id
+            new_records.append(new_record)
+
         if data.return_linear_parts:
-            data = "\n\n".join([
-                ">%s\n%s" % (r.id, str(r.seq))
-                for r in new_records
-            ])
+            data = "\n\n".join(
+                [">%s\n%s" % (r.id, str(r.seq)) for r in new_records]
+            )
             filedata = {
-                'data': data,
-                'name': 'modified_records.fa',
-                'mimetype': 'application/biosequence.fasta'
+                "data": data,
+                "name": "modified_records.fa",
+                "mimetype": "application/biosequence.fasta",
             }
         elif len(new_records) == 1:
             data = record_to_formated_string(new_records[0])
             filedata = {
-                'data': data_to_html_data(data, 'txt'),
-                'name': '%s_modified.gb' % new_record.file_name,
-                'mimetype': 'application/biosequence.genbank'
+                "data": data_to_html_data(data, "txt"),
+                "name": "%s_modified.gb" % new_record.file_name,
+                "mimetype": "application/biosequence.genbank",
             }
         else:
-            zip_root = flametree.file_tree('@memory')
+            zip_root = flametree.file_tree("@memory")
             for rec in new_records:
                 f = zip_root._file("%s_modified.gb" % rec.file_name)
                 write_record(rec, f)
             filedata = {
-                'data': data_to_html_data(zip_root._close(), 'zip'),
-                'name': 'records_with_substitutions.zip',
-                'mimetype': 'application/zip'
+                "data": data_to_html_data(zip_root._close(), "zip"),
+                "name": "records_with_substitutions.zip",
+                "mimetype": "application/zip",
             }
         return {
-            'file': filedata,
-            'pdf_report': {
-                'data': data_to_html_data(pdf_io.getvalue(), 'pdf'),
-                'name': 'sequences_edits.pdf',
-                'mimetype': 'application/pdf'
-            },
-            'success': True
+            "file": filedata,
+            # "pdf_report": {
+            #     "data": data_to_html_data(pdf_io.getvalue(), "pdf"),
+            #     "name": "sequences_edits.pdf",
+            #     "mimetype": "application/pdf",
+            # },
+            "success": True,
         }
+
 
 class SubstitutePartsOverhangsView(StartJobView):
     serializer_class = serializer_class

@@ -2,9 +2,9 @@
 .sequence-viewer
     svg(width='600', :viewBox="viewBox")
       text.nucl(v-for='nt, i in sequence.slice(window.start, window.end)',
-               :x='i + window.start + 1 + 0.5', y='1', :key='i') {{nt}}
+               :x='i + window.start + 1 + 0.5', y='1', :key='`nucl_${i}`') {{nt}}
       text.ruler(v-for='nt, i in sequence.slice(window.start, window.end)',
-                 :x='i +  window.start + 1 + 0.5', y='2', :key='i'
+                 :x='i +  window.start + 1 + 0.5', y='2', :key='`ruler_${i}`'
                  v-if='!((i +  window.start + 1) % 10)') {{i +  window.start + 1}}
 </template>
 <script>

@@ -14,10 +14,10 @@
   .form
     h4.formlabel Provide parts to modify
     collapsible(title='Examples')
-      file-example(filename='example_genetic_parts_and_backbone.zip',
-                   fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
-                   @input='function (e) {form.parts.push(e)}',
-                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
+      file-example(filename='example_sequences.zip',
+                   fileHref='/static/file_examples/substitute_part_overhangs/example_sequences.zip',
+                   @input="function (e) {form.parts.push(e); form.substitutions = 'AATC=>AGGA, GCAC=>TGAG'}",
+                   imgSrc='/static/file_examples/generic_logos/part.svg')
         p.
           Genbank records of five parts (A, A2, B, B2, C) and receptor vector.
     files-uploader(v-model='form.parts', :multiple='true',
@@ -44,9 +44,9 @@
   .results(v-if='!queryStatus.polling.inProgress  && queryStatus.result.file')
     download-button(v-if='queryStatus.result.file',
                     :filedata='queryStatus.result.file')
-    center
-      iframe(:src="queryStatus.result.pdf_report.data" 
-              style="width: 90%; max-width: 800px; height:500px;" frameborder="0")
+    //- center
+    //-   iframe(:src="queryStatus.result.pdf_report.data" 
+    //-           style="width: 90%; max-width: 800px; height:500px;" frameborder="0")
       //- .unmodified(v-if='queryStatus.result.unmodified.length')
       //-   p These parts were unmodified: {{ queryStatus.result.unmodified.join(' ') }}
   powered-by(:softwareNames='infos.poweredby')

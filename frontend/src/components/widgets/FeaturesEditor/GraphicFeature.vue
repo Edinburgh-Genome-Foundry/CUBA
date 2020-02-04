@@ -2,7 +2,7 @@
 g.graphic-feature
   path(v-if="shape === 'arrow'", :d='path', @click="$emit('click')" v-bind:class="{ active: isSelected }",
        :fill='featureData.js_color',
-        @mouseover="$emit('mouseover', featureData.id)",
+        @mouseover="$emit('mouseover', featureData.name)",
         @mouseleave="$emit('mouseover', null)")
   rect(v-if="shape === 'rect'", :x='featureData.start', :y='featureData.level - 0.5 + 0.3',
        :width='featureData.end - featureData.start', :height='0.6', :rx='20', :ry='20',

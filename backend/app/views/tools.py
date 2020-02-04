@@ -49,7 +49,7 @@ def autoname_genbank_file(record):
     return record.id.replace(".", "_") + ".gb"
 
 
-def string_to_record(string):
+def string_to_records(string):
     """Convert a string of a fasta, genbank... into a simple ATGC string.
 
     Can also be used to detect a format.
@@ -58,7 +58,7 @@ def string_to_record(string):
     # print("============", len(matches.groups()[0]), len(string))
     # print (matches.groups()[0] == string)
     if (matches is not None) and (matches.groups()[0] == string):
-        return SeqRecord(Seq(string, DNAAlphabet())), "ATGC"
+        return [SeqRecord(Seq(string, DNAAlphabet()))], "ATGC"
 
     for fmt in ("fasta", "genbank"):
         if fmt == "genbank":
@@ -72,7 +72,7 @@ def string_to_record(string):
             pass
     try:
         record = snapgene_file_to_seqrecord(filecontent=StringIO(string))
-        return record
+        return [record]
     except:
         pass
     raise ValueError("Invalid sequence format")
@@ -99,7 +99,9 @@ def records_from_zip_file(zip_file):
         ext = f._extension.lower()
         if ext in ["gb", "gbk", "fa", "dna"]:
             try:
-                new_records, fmt = string_to_record(f.read())
+                new_records, fmt = string_to_records(f.read())
+                if not isinstance(new_records, list):
+                    new_records = [new_records]
             except:
                 content_stream = BytesIO(f.read("rb"))
                 try:
@@ -142,7 +144,7 @@ def records_from_zip_file(zip_file):
 def records_from_data_file(data_file):
     content = b64decode(data_file.content.split("base64,")[1])
     try:
-        records, fmt = string_to_record(content.decode("utf-8"))
+        records, fmt = string_to_records(content.decode("utf-8"))
     except:
         try:
             record = snapgene_file_to_seqrecord(fileobject=BytesIO(content))

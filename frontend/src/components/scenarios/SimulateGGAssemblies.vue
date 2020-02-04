@@ -23,6 +23,14 @@
           Genbank records of five parts (A, A2, B, B2, C) and receptor vector. the parts can go into
           one of 3 possible slots, forming a total of four possible assemblies.
       
+      file-example(filename='2-step_golden_gate_parts.zip',
+                   fileHref='/static/file_examples/simulate_gg_assemblies/2-step_golden_gate_parts.zip',
+                   @input='function (e) {form.parts.push(e); form.use_assembly_plan = true;}',
+                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
+        p.
+          Parts for a 2-step golden gate assembly (if you choose this example,
+          also select the example 2-step assembly plan to go with it).
+      
       file-example(filename='parts_for_sapI_assembly.zip',
                    fileHref='/static/file_examples/simulate_gg_assemblies/parts_for_sapI_assembly.zip',
                    @input='function (e) {form.parts.push(e)}',
@@ -56,7 +64,7 @@
       
         el-option(v-for="enzyme in ['BsaI', 'BsmBI', 'BbsI', 'SapI', 'AarI']",
                   :key='enzyme', :value='enzyme', :label='enzyme')
-        el-option(value='autoselect' label='Autoselect from part sequences')
+        el-option(value='auto' label='Autoselect from part sequences')
     h4.formlabel Other options
 
     p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
@@ -91,6 +99,13 @@
                      imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
           p.
             A picklist using the "example genetic parts" given as examples above.
+        file-example(filename='2-step-golden_gate_plan.csv',
+                     fileHref='/static/file_examples/simulate_gg_assemblies/2-step-golden_gate_plan.csv',
+                     @input='function (e) {form.assembly_plan = e}',
+                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+          p.
+            A picklist using the "2-step-golden_gate" parts given as examples
+            to create a hierarchical plan.
       files-uploader(v-model='form.assembly_plan', :multiple='false')
       p Part names in the picklist refer to <br/>
         el-select(v-model='form.use_file_names_as_ids')
@@ -101,18 +116,23 @@
     p(v-if='!form.use_assembly_plan')
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names as part IDs
     p
-      el-checkbox(v-model='form.show_overhangs') Annotate overhangs in genbanks
-    p
       el-checkbox(v-model='form.backbone_first') Force the backbone to be in first position
     
     p(v-if='form.backbone_first') Backbone name:
       el-input(v-model='form.backbone_name' size='mini',
                style='width: 250px; margin-left: 10px;')
     p
-      el-select(v-model='form.include_fragments')
-        el-option(value='on_failure' label="Include parts and fragments on assembly failure only")
-        el-option(value='yes' label="Always include parts and fragments (slower)")
-        el-option(value='no' label="Don't include parts and fragments")
+      el-checkbox(v-model='form.include_assembly_plots') Include constructs plots
+    p
+      el-select(v-model='form.include_fragment_plots')
+        el-option(value='on_failure' label="Plot parts and fragments on assembly failure only")
+        el-option(value='yes' label="Plot parts and fragments (slower)")
+        el-option(value='no' label="Don't plot parts and fragments")
+    p
+      el-select(v-model='form.include_graph_plots')
+        el-option(value='on_failure' label="Plot graphs on assembly failure only")
+        el-option(value='yes' label="Always plot graph (slower)")
+        el-option(value='no' label="Don't plot graph")
 
 
     backend-querier(:form='form',
@@ -133,22 +153,17 @@
         .nConstructs(v-if='queryStatus.result.infos.nconstructs || queryStatus.result.infos.nconstructs === 0')
           span(v-if='queryStatus.result.infos.nconstructs === 0' style='color: red').
             No construct could be found. See report for more.
-          span(v-else) {{queryStatus.result.infos.nconstructs}} constructs generated !
-
-        .errors(v-if='queryStatus.result.infos.errors && queryStatus.result.infos.errors.length')
-          p The following errors occured in the assembly plan (see report for more)
-          ul
-            li(v-for='[construct, error] in queryStatus.result.infos.errors') #[b {{construct}}]: {{error}}
-
-      .didyoumean(v-if='queryStatus.result.unknown_parts')
-        p There were parts in the assembly plan without any correspondance in the records:
-        .div(v-for='didyoumean, name in queryStatus.result.unknown_parts')
-          p Part {{name}}: did you mean...
-          ul
-            li(v-for='candidate in didyoumean') {{candidate}}
-
-      .results-summary(v-if='queryStatus.result.preview',
-                       v-html="queryStatus.result.preview.html")
+      .stats(v-if='queryStatus.result.assembly_stats')
+        ul
+          li #[b Valid assemblies:] {{queryStatus.result.assembly_stats.valid_assemblies}}
+          li #[b Errored assemblies:] {{queryStatus.result.assembly_stats.errored_assemblies}}
+          li #[b Cancelled assemblies:] {{queryStatus.result.assembly_stats.cancelled_assemblies}}
+      .stats(v-else) {{queryStatus.result.n_constructs}} constructs generated!
+      .errors(v-if='queryStatus.result.errors && queryStatus.result.errors.length')
+        p The following errors occured in the assembly plan (see report for more)
+        ul
+          li(v-for='error in queryStatus.result.errors') {{error}}
+      
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
@@ -171,12 +186,14 @@ export default {
   data () {
     return {
       form: {
-        enzyme: 'autoselect',
+        enzyme: 'auto',
         parts: [],
         connectors: [],
         show_overhangs: false,
         select_connectors: false,
-        include_fragments: 'on_failure',
+        include_fragment_plots: 'on_failure',
+        include_assembly_plots: true,
+        include_graph_plots: 'on_failure',
         use_assembly_plan: false,
         assembly_plan: null,
         single_assemblies: true,

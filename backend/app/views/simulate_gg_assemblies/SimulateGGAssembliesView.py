@@ -11,12 +11,7 @@ from ..tools import (
     set_record_topology,
 )
 from ..serializers import FileSerializer
-from dnacauldron import (
-    full_assembly_report,
-    autoselect_enzyme,
-    full_assembly_plan_report,
-)
-from plateo import AssemblyPlan
+import dnacauldron as dc
 import pandas
 
 digestion = serializers.ListField(child=serializers.CharField())
@@ -28,12 +23,13 @@ class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
     parts = serializers.ListField(child=FileSerializer())
     connectors = serializers.ListField(child=FileSerializer())
-    include_fragments = serializers.CharField()
+    include_fragment_plots = serializers.CharField()
+    include_graph_plots = serializers.CharField()
+    include_assembly_plots = serializers.BooleanField()
     use_assembly_plan = serializers.BooleanField()
     single_assemblies = serializers.BooleanField()
     use_file_names_as_ids = serializers.BooleanField()
     assembly_plan = FileSerializer(allow_null=True)
-    show_overhangs = serializers.BooleanField()
     backbone_first = serializers.BooleanField()
     backbone_name = serializers.CharField(allow_blank=True)
     no_skipped_parts = serializers.BooleanField()
@@ -42,10 +38,27 @@ class serializer_class(serializers.Serializer):
 
 class worker_class(AsyncWorker):
     def work(self):
-        self.logger(message="Reading Data...")
+        self.logger(message="Reading the Data...")
         data = self.data
 
+        # CHANGE THE VALUE OF THE BOOLEANS
+
+        def yes_no(value):
+            return {"yes": True, "no": False}.get(value, value)
+
+        include_fragment_plots = yes_no(data.include_fragment_plots)
+        include_graph_plots = yes_no(data.include_graph_plots)
+        include_assembly_plots = yes_no(data.include_assembly_plots)
+        report_writer = dc.AssemblyReportWriter(
+            include_mix_graphs=include_graph_plots,
+            include_assembly_plots=include_assembly_plots,
+            include_fragment_plots=include_fragment_plots,
+        )
+
+        # INITIALIZE ALL RECORDS IN A SEQUENCE REPOSITORY
+
         records = records_from_data_files(data.parts)
+        repository = dc.SequenceRepository()
         for record in records:
             # location-less features can cause bug when concatenating records.
             record.features = [
@@ -59,86 +72,103 @@ class worker_class(AsyncWorker):
                 r.id = r.name = r.file_name
                 if data.backbone_first and r.id == data.backbone_name:
                     r.is_backbone = True
-        connector_records = records_from_data_files(data.connectors)
-        for r in records + connector_records:
-            set_record_topology(r, topology=data.topology)
-            r.seq = r.seq.upper()
-        if data.enzyme == "autoselect":
-            possible_enzymes = ["BsaI", "BsmBI", "BbsI", "SapI"]
-            data.enzyme = autoselect_enzyme(records, enzymes=possible_enzymes)
+        repository.add_records(records, collection="parts")
 
-        self.logger(message="Generating a report, be patient.")
+        # CREATE A CONNECTORS COLLECTION IF CONNECTORS ARE PROVIDED
 
-        if data.use_assembly_plan:
-            filelike = file_to_filelike_object(data.assembly_plan)
-            if data.assembly_plan.name.lower().endswith(".csv"):
-                content = filelike.read().decode()
-                dataframe = pandas.DataFrame(
-                    [
-                        [e.strip() for e in line.split(",") if len(e.strip())]
-                        for line in content.split("\n")
-                        if len(line)
-                    ]
-                )
-            else:
-
-                dataframe = pandas.read_excel(filelike, header=None)
-            assembly_plan = AssemblyPlan.from_spreadsheet(dataframe=dataframe)
-            assembly_plan.parts_data = {r.id: {"record": r} for r in records}
-            parts_without_data = assembly_plan.parts_without_data()
-            if len(parts_without_data):
-                return {"success": False, "unknown_parts": parts_without_data}
-            data.include_fragments = {
-                'yes': True,
-                'no': False,
-                'on_failure': 'on_failure'
-            }[data.include_fragments]
-            errors, zip_data = full_assembly_plan_report(
-                assembly_plan.assemblies_with_records(),
-                target="@memory",
-                enzyme=data.enzyme,
-                assert_single_assemblies=data.single_assemblies,
-                logger=self.logger,
-                connector_records=connector_records,
-                fail_silently=False,
-                include_fragments_plots=data.include_fragments,
-                include_parts_plots=data.include_fragments,
-                show_overhangs_in_genbank=data.show_overhangs,
-                no_skipped_parts=data.no_skipped_parts,
+        connectors_collection = None
+        if len(data.connectors):
+            connector_records = records_from_data_files(data.connectors)
+            for r in records + connector_records:
+                set_record_topology(r, topology=data.topology)
+                r.seq = r.seq.upper()
+            repository.add_records(connector_records, collection="connectors")
+            connectors_collection = (
+                "connectors" if len(data.connectors) else None
             )
-            infos = dict(errors=errors)
+
+        # SIMULATE!
+
+        self.logger(message="Simulating the assembly...")
+
+        if not data.use_assembly_plan:
+
+            # SCENARIO: SINGLE ASSEMBLY
+
+            parts = [r.id for r in records]
+            assembly = dc.Type2sRestrictionAssembly(
+                name="simulated_assembly",
+                parts=parts,
+                enzyme=data.enzyme,
+                connectors_collection=connectors_collection,
+            )
+            simulation = assembly.simulate(sequence_repository=repository)
+            n = len(simulation.construct_records)
+            self.logger(
+                message="Done (%d constructs found), writing report..." % n
+            )
+            report_zip_data = simulation.write_report(
+                target="@memory", report_writer=report_writer
+            )
+            return {
+                "file": {
+                    "data": data_to_html_data(report_zip_data, "zip"),
+                    "name": "assembly_simulation.zip",
+                    "mimetype": "application/zip",
+                },
+                "errors": [str(e) for e in simulation.errors],
+                "n_constructs": len(simulation.construct_records),
+                "success": True,
+            }
 
         else:
 
-            nconstructs, zip_data = full_assembly_report(
-                records,
-                connector_records=connector_records,
-                target="@memory",
-                enzyme=data.enzyme,
-                max_assemblies=40,
-                fragments_filters="auto",
-                assemblies_prefix="assembly",
-                include_fragments_plots=data.include_fragments,
-                include_parts_plots=data.include_fragments,
-                show_overhangs_in_genbank=data.show_overhangs,
-            )
-            infos = dict(nconstructs=nconstructs)
+            # SCENARIO: FULL ASSEMBLY PLAN
 
-        return {
-            "file": {
-                "data": data_to_html_data(zip_data, "zip"),
-                "name": "predicted_assemblies.zip",
-                "mimetype": "application/zip",
-            },
-            "success": True,
-            "infos": infos,
-        }
+            filelike = file_to_filelike_object(data.assembly_plan)
+            assembly_plan = dc.AssemblyPlan.from_spreadsheet(
+                assembly_class=dc.Type2sRestrictionAssembly,
+                path=filelike,
+                connectors_collection=connectors_collection,
+                expect_no_unused_parts=data.no_skipped_parts,
+                expected_constructs=1
+                if data.single_assemblies
+                else "any_number",
+                name="_".join(data.assembly_plan.name.split(".")[:-1]),
+                is_csv=data.assembly_plan.name.lower().endswith(".csv"),
+                logger=self.logger,
+            )
+
+            simulation = assembly_plan.simulate(sequence_repository=repository)
+            stats = simulation.compute_stats()
+            n_errors = stats["errored_assemblies"]
+            self.logger(
+                message="Done (%d errors), writing report..." % n_errors
+            )
+            report_zip_data = simulation.write_report(
+                target="@memory",
+                assembly_report_writer=report_writer,
+                logger=self.logger,
+            )
+            errors = [
+                error
+                for assembly_simulation in simulation.assembly_simulations
+                for error in assembly_simulation.errors
+            ]
+
+            return {
+                "file": {
+                    "data": data_to_html_data(report_zip_data, "zip"),
+                    "name": "%s.zip" % assembly_plan.name,
+                    "mimetype": "application/zip",
+                },
+                "assembly_stats": stats,
+                "errors": [str(e) for e in errors],
+                "success": True,
+            }
+        self.logger(message="Simulating the assembly...")
 
 
 class SimulateGGAssembliesView(StartJobView):
     serializer_class = serializer_class
     worker_class = worker_class
-
-import scipy
-import networkx
-print (scipy.__version__, networkx.__version__)

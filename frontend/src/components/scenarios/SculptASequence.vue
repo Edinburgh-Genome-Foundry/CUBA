@@ -17,13 +17,13 @@
       file-example(filename='example_sequence.gbk',
                    @input='function (e) {form.file = e}',
                    fileHref='/static/file_examples/sculpt_a_sequence/example_sequence.gbk',
-                   imgSrc='/static/file_examples/sculpt_a_sequence/example_sequence.jpeg')
+                   imgSrc='/static/file_examples/sculpt_a_sequence/example_sequence.png')
         p.
           A plasmid with some genes to optimize.
       file-example(filename='num1_record.gbk',
                    @input='function (e) {form.file = e}',
                    fileHref='/static/file_examples/sculpt_a_sequence/num1_record.gbk',
-                   imgSrc='/static/file_examples/sculpt_a_sequence/num1_record.jpeg')
+                   imgSrc='/static/file_examples/sculpt_a_sequence/num1_record.png')
         p.
           Gene Num 1 of E. coli, annotated for optimization.
     files-uploader(v-model='form.file', tip="Genbank/Snapgene format only",
@@ -127,7 +127,7 @@ export default {
             console.log(feature)
             self.$set(self.form.editedFeatures, id.toString(), {
               id: id.toString(),
-              start: feature.start + 1,
+              start: feature.start,
               end: feature.end + 1,
               strand: feature.strand,
               label: feature.name,
