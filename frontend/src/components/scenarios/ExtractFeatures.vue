@@ -2,7 +2,9 @@
 .page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Extract features and save them as individual files.
+  p.scenario-description.
+    Extract features and save them as individual files
+    (app in progress, not guaranteed to work!) 
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Extract features and save them as individual files:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
