@@ -7,44 +7,39 @@
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Submit parts and a receptor vector. Get an annotated Genbank of the
-    resulting construct(s).
+    resulting construct(s). #[b Note:] if you want 
 
 
   .form
 
-    h4.formlabel Provide parts to assemble
-      helper Upload all the parts sequences for your assembli(es). Don't forget the receptor vector(s).
+    h4.formlabel Provide an assembly plan
+      helper.
+        Only the connector parts necessary to obtain assemblies will be
+        selected and added to the other parts.
     collapsible(title='Examples')
-      file-example(filename='example_genetic_parts_and_backbone.zip',
-                   fileHref='/static/file_examples/simulate_gg_assemblies/example_genetic_parts_and_backbone.zip',
+      file-example(filename='multi_assembly.xlsx',
+                    fileHref='/static/file_examples/simulate_multi_method_assemblies/multi_assembly.xlsx',
+                    @input='function (e) {form.assembly_plan = e}',
+                    imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+        p.
+          An assembly plan with many different cloning methods used (Golden Gate,
+          Gibson, BioBrick, LCR and Basic assembly).
+    files-uploader(v-model='form.assembly_plan', :multiple='false')
+    p Part names in the picklist refer to <br/>
+      el-select(v-model='form.use_file_names_as_ids')
+        el-option(:value='false', label="The IDs of the provided records")
+        el-option(:value='true', label="The file names (without extension)")
+
+
+    h4.formlabel Provide parts to assemble
+      helper Upload all the parts sequences for your assemblies. Don't forget the receptor vectors.
+    collapsible(title='Examples')
+      file-example(filename='part_sequences.zip',
+                   fileHref='/static/file_examples/simulate_multi_method_assemblies/part_sequences.zip',
                    @input='function (e) {form.parts.push(e)}',
                    imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
         p.
-          Genbank records of five parts (A, A2, B, B2, C) and receptor vector. the parts can go into
-          one of 3 possible slots, forming a total of four possible assemblies.
-      
-      file-example(filename='2-step_golden_gate_parts.zip',
-                   fileHref='/static/file_examples/simulate_gg_assemblies/2-step_golden_gate_parts.zip',
-                   @input='function (e) {form.parts.push(e); form.use_assembly_plan = true;}',
-                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
-        p.
-          Parts for a 2-step golden gate assembly (if you choose this example,
-          also select the example 2-step assembly plan to go with it).
-      
-      file-example(filename='parts_for_sapI_assembly.zip',
-                   fileHref='/static/file_examples/simulate_gg_assemblies/parts_for_sapI_assembly.zip',
-                   @input='function (e) {form.parts.push(e)}',
-                   imgSrc='/static/file_examples/generic_logos/sequences_records.png')
-        p.
-          SapI-based single assembly
-      file-example(filename='parts_missing_connectors.zip',
-                   fileHref='/static/file_examples/simulate_gg_assemblies/parts_missing_connectors.zip',
-                   @input='function (e) {form.parts.push(e)}',
-                   imgSrc='/static/file_examples/simulate_gg_assemblies/example_genetic_parts.png')
-        p.
-          Genbank records of 11 parts which could form a circular assembly if they were completed
-          with connectors. Tick "autoselect connectors" below and load the "example connectors",
-          then press "Predict final constructs".
+          Genbank and fasta records of all parts needed in the assembly plan
     //- Accepted formats: FASTA, Genbank, Snapgene
     files-uploader(v-model='form.parts', :multiple='true',
                    tip="Accepted formats: FASTA, Genbank, Snapgene")
@@ -58,14 +53,6 @@
         el-option(value='default_to_circular' label='Autodetect each sequence\'s topology  (default to circular)')
         el-option(value='default_to_linear' label='Autodetect each sequence\'s topology (default to linear)')
     
-    h4.formlabel Restriction enzyme
-    .enzymes-radio
-      el-select(v-model='form.enzyme')
-      
-        el-option(v-for="enzyme in ['BsaI', 'BsmBI', 'BbsI', 'SapI', 'AarI']",
-                  :key='enzyme', :value='enzyme', :label='enzyme')
-        el-option(value='auto' label='Autoselect from part sequences')
-    h4.formlabel Other options
 
     p: el-checkbox(v-model='form.select_connectors') Autoselect connectors  <br/>
     .select-connectors(v-if='form.select_connectors').animated.flipInX
@@ -74,55 +61,25 @@
           Connectors are neutral parts used to fill gaps in some assemblies.
           Drop here all the connector sequences you have, only the connectors
           necessary to obtain assemblies will be selected and added to the other parts.
+
+      p.
+        For each "connector_collection" referenced in your assembly plan, for
+        instance "CC1" in the example assembly plan, gather all the connectors in
+        the collection under a same-named zip file or fasta file
+        (CC1.zip or CCA.file).
+
       collapsible(title='Examples')
-        file-example(filename='emma_connectors.zip',
-                     fileHref='/static/file_examples/simulate_gg_assemblies/emma_connectors.zip',
+        file-example(filename='CC1.zip',
+                     fileHref='/static/file_examples/simulate_multi_method_assemblies/CC1.zip',
                      @input='function (e) {form.connectors.push(e)}',
-                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
+                     imgSrc='/static/file_examples/generic_logos/sequence_file.svg')
           p.
-            Connectors part, some of which can complete the parts given above as an example of
-            "parts missing connectors".
+            Connectors part, some of which can complete assembly one assembly
+            in the example assembly plan.
 
       files-uploader(v-model='form.connectors', :multiple='true',
                      text="Drop multiple Genbank/Fasta (or click to select)")
 
-    p: el-checkbox(v-model='form.use_assembly_plan') Provide a list of assemblies
-    .use-assembly-plan(v-if='form.use_assembly_plan').animated.flipInX
-      h4.formlabel Provide an assembly list
-        helper.
-          Only the connector parts necessary to obtain assemblies will be
-          selected and added to the other parts.
-      collapsible(title='Examples')
-        file-example(filename='example_assembly_plan.xls',
-                     fileHref='/static/file_examples/simulate_gg_assemblies/example_assembly_plan.xls',
-                     @input='function (e) {form.assembly_plan = e}',
-                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
-          p.
-            A picklist using the "example genetic parts" given as examples above.
-        file-example(filename='2-step-golden_gate_plan.csv',
-                     fileHref='/static/file_examples/simulate_gg_assemblies/2-step-golden_gate_plan.csv',
-                     @input='function (e) {form.assembly_plan = e}',
-                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
-          p.
-            A picklist using the "2-step-golden_gate" parts given as examples
-            to create a hierarchical plan.
-      files-uploader(v-model='form.assembly_plan', :multiple='false')
-      p Part names in the picklist refer to <br/>
-        el-select(v-model='form.use_file_names_as_ids')
-          el-option(:value='false', label="The IDs of the provided records")
-          el-option(:value='true', label="The file names (without extension)")
-      p: el-checkbox(v-model='form.single_assemblies') Ensure each line gives a single assembly
-      p: el-checkbox(v-model='form.no_skipped_parts') Ensure that no part is forgotten in the assemblies
-    p(v-if='!form.use_assembly_plan')
-      el-checkbox(v-model='form.use_file_names_as_ids') Use file names as part IDs
-    p
-      el-checkbox(v-model='form.backbone_first') Force the backbone to be in first position
-    
-    p(v-if='form.backbone_first') Backbone name:
-      el-input(v-model='form.backbone_name' size='mini',
-               style='width: 250px; margin-left: 10px;')
-    p
-      el-checkbox(v-model='form.include_assembly_plots') Include constructs plots
     p
       el-select(v-model='form.include_fragment_plots')
         el-option(value='on_failure' label="Plot parts and fragments on assembly failure only")
@@ -170,14 +127,15 @@
 <script>
 import learnmore from '../../components/widgets/LearnMore'
 import sequencesuploader from '../../components/widgets/SequencesUploader'
+import digestionset from '../../components/widgets/DigestionSelectorSet'
 
 var infos = {
-  title: 'Simulate Golden Gate Assemblies',
-  navbarTitle: 'Simulate Golden Gate',
-  path: 'simulate_gg_assemblies',
+  title: 'Simulate multi-method assemblies',
+  navbarTitle: 'Simulate multi-method assemblies',
+  path: 'simulate_multi_method_assemblies',
   description: '',
-  backendUrl: 'start/simulate_gg_assemblies',
-  icon: require('../../assets/images/assembly.svg'),
+  backendUrl: 'start/simulate_multi_method_assemblies',
+  icon: require('../../assets/images/simulate_multi_method_assembly.svg'),
   poweredby: ['dnacauldron', 'dnafeaturesviewer']
 }
 
@@ -188,18 +146,12 @@ export default {
         enzyme: 'auto',
         parts: [],
         connectors: [],
-        show_overhangs: false,
         select_connectors: false,
         include_fragment_plots: 'on_failure',
         include_assembly_plots: true,
         include_graph_plots: 'on_failure',
-        use_assembly_plan: false,
         assembly_plan: null,
-        single_assemblies: true,
         use_file_names_as_ids: false,
-        backbone_first: false,
-        backbone_name: '',
-        no_skipped_parts: true,
         topology: 'default_to_circular'
       },
       infos: infos,
@@ -218,7 +170,8 @@ export default {
   },
   components: {
     sequencesuploader,
-    learnmore
+    learnmore,
+    digestionset
   },
   infos: infos,
   methods: {

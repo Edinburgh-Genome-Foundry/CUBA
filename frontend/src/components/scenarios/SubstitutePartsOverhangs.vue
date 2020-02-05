@@ -16,7 +16,7 @@
     collapsible(title='Examples')
       file-example(filename='example_sequences.zip',
                    fileHref='/static/file_examples/substitute_part_overhangs/example_sequences.zip',
-                   @input="function (e) {form.parts.push(e); form.substitutions = 'AATC=>AGGA, GCAC=>TGAG'}",
+                   @input="function (e) {form.parts.push(e); form.substitutions = 'AATC=>AGGA\\nGCAC=>TGAG'}",
                    imgSrc='/static/file_examples/generic_logos/part.svg')
         p.
           Genbank records of five parts (A, A2, B, B2, C) and receptor vector.

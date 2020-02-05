@@ -57,7 +57,9 @@ class worker_class(AsyncWorker):
 
         # INITIALIZE ALL RECORDS IN A SEQUENCE REPOSITORY
 
-        records = records_from_data_files(data.parts)
+        records = records_from_data_files(
+            data.parts, use_file_names_as_ids=data.use_file_names_as_ids
+        )
         repository = dc.SequenceRepository()
         for record in records:
             # location-less features can cause bug when concatenating records.
@@ -67,11 +69,9 @@ class worker_class(AsyncWorker):
                 if f.location is not None
                 and f.location.start <= f.location.end
             ]
-        if data.use_file_names_as_ids:
-            for r in records:
-                r.id = r.name = r.file_name
-                if data.backbone_first and r.id == data.backbone_name:
-                    r.is_backbone = True
+        for r in records:
+            if data.backbone_first and r.id == data.backbone_name:
+                r.is_backbone = True
         repository.add_records(records, collection="parts")
 
         # CREATE A CONNECTORS COLLECTION IF CONNECTORS ARE PROVIDED
@@ -100,6 +100,7 @@ class worker_class(AsyncWorker):
                 name="simulated_assembly",
                 parts=parts,
                 enzyme=data.enzyme,
+                expected_constructs="any_number",
                 connectors_collection=connectors_collection,
             )
             simulation = assembly.simulate(sequence_repository=repository)

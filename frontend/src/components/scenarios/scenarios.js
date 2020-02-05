@@ -6,6 +6,7 @@ export default {
         require('./SculptASequence.vue').default,
         require('./DesignOverhangs.vue').default,
         require('./SimulateGGAssemblies').default,
+        require('./SimulateMultiMethodAssemblies').default,
         require('./InsertPartsOnBackbones').default,
         require('./SketchConstructs').default,
         require('./ConvertSequenceFiles').default,

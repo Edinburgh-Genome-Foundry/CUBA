@@ -72,5 +72,5 @@ RUN pip install networkx==2.4
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/bandwagon
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primavera
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/kappagate
-ARG CACHEBUST=13
+ARG CACHEBUST=14
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron

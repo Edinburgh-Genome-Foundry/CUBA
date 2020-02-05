@@ -1,4 +1,4 @@
-import sys
+import os
 from io import StringIO, BytesIO
 import re
 from base64 import b64encode, b64decode
@@ -92,7 +92,8 @@ def spreadsheet_file_to_dataframe(filedict, header="infer"):
         return pandas.read_excel(filelike, header=header)
 
 
-def records_from_zip_file(zip_file):
+def records_from_zip_file(zip_file, use_file_names_as_ids=False):
+    zip_name = zip_file.name
     zip_file = flametree.file_tree(file_to_filelike_object(zip_file))
     records = []
     for f in zip_file._all_files:
@@ -137,6 +138,11 @@ def records_from_zip_file(zip_file):
                 record.id = name
                 record.name = name
                 record.file_name = f._name_no_extension
+                record.zip_file_name = zip_name
+                if use_file_names_as_ids and single_record:
+                    basename = os.path.basename(record.file_name)
+                    basename_no_extension = os.path.splitext(basename)[0]
+                    record.id = basename_no_extension
             records += new_records
     return records
 
@@ -188,12 +194,14 @@ def record_to_formated_string(record, fmt="genbank", remove_descr=False):
     return fileobject.getvalue().encode("utf-8")
 
 
-def records_from_data_files(data_files):
+def records_from_data_files(data_files, use_file_names_as_ids=False):
     records = []
     for file_ in data_files:
         circular = ("circular" not in file_) or file_.circular
         if file_.name.lower().endswith("zip"):
-            records += records_from_zip_file(file_)
+            records += records_from_zip_file(
+                file_, use_file_names_as_ids=use_file_names_as_ids
+            )
             continue
         recs, fmt = records_from_data_file(file_)
         single_record = len(recs) == 1
@@ -221,6 +229,10 @@ def records_from_data_files(data_files):
             if str(record.name).strip() in UNKNOWN_IDS:
                 record.name = name
             record.file_name = name_no_extension
+            if use_file_names_as_ids and single_record:
+                basename = os.path.basename(record.source_file)
+                basename_no_extension = os.path.splitext(basename)[0]
+                record.id = basename_no_extension
         records += recs
     return records
 

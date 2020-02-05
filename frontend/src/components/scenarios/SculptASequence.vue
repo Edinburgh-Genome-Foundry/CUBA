@@ -47,6 +47,7 @@
       p.results-summary(v-if='queryStatus.result.summary',
                       v-html="queryStatus.result.summary")
       download-button(v-if='queryStatus.result.zip_file',
+                      text='Download Report',
                       :filedata='queryStatus.result.zip_file')
   powered-by(:softwareNames='infos.poweredby')
 </template>
