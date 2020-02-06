@@ -154,7 +154,7 @@
           li #[b Valid assemblies:] {{queryStatus.result.assembly_stats.valid_assemblies}}
           li #[b Errored assemblies:] {{queryStatus.result.assembly_stats.errored_assemblies}}
           li #[b Cancelled assemblies:] {{queryStatus.result.assembly_stats.cancelled_assemblies}}
-      .stats(v-else) {{queryStatus.result.n_constructs}} constructs generated!
+      .stats(v-if="'n_constructs' in queryStatus.result") {{queryStatus.result.n_constructs}} constructs generated!
       .errors(v-if='queryStatus.result.errors && queryStatus.result.errors.length')
         p The following errors occured in the assembly plan (see report for more)
         ul
@@ -192,7 +192,7 @@ export default {
         use_assembly_plan: false,
         assembly_plan: null,
         single_assemblies: true,
-        use_file_names_as_ids: false,
+        use_file_names_as_ids: true,
         backbone_first: false,
         backbone_name: '',
         no_skipped_parts: true,

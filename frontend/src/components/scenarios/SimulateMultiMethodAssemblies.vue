@@ -5,10 +5,13 @@
             tweetMessage="Simple online cloning simulator for Golden Gate:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description.
-    Submit parts and a receptor vector. Get an annotated Genbank of the
-    resulting construct(s). #[b Note:] if you want 
-
+  p.scenario-description
+    span.
+      Submit an assembly plan and parts records, get the final construct sequences
+      or an analysis of design flaws. To try an example, select the example file for
+      each upload box, and submit the form. If you want to simulate Golden Gate
+      assemblies in particular, try #[router-link(to='simulate_gg_assemblies') this other app].
+      
 
   .form
 
@@ -19,7 +22,7 @@
     collapsible(title='Examples')
       file-example(filename='multi_assembly.xlsx',
                     fileHref='/static/file_examples/simulate_multi_method_assemblies/multi_assembly.xlsx',
-                    @input='function (e) {form.assembly_plan = e}',
+                    @input='function (e) {form.assembly_plan = e; form.select_connectors = true}',
                     imgSrc='/static/file_examples/generic_logos/spreadsheet.svg')
         p.
           An assembly plan with many different cloning methods used (Golden Gate,
@@ -151,7 +154,7 @@ export default {
         include_assembly_plots: true,
         include_graph_plots: 'on_failure',
         assembly_plan: null,
-        use_file_names_as_ids: false,
+        use_file_names_as_ids: true,
         topology: 'default_to_circular'
       },
       infos: infos,
