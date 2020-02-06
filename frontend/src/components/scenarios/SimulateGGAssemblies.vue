@@ -146,7 +146,7 @@
              :title="queryStatus.requestError",
              type="error",
              :closable="false")
-    .results(v-if='!queryStatus.polling.inProgress')
+    .results(v-if='queryStatus.result && !queryStatus.polling.inProgress')
       download-button(v-if='queryStatus.result.file',
                       :filedata='queryStatus.result.file')
       .stats(v-if='queryStatus.result.assembly_stats')
