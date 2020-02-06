@@ -6,8 +6,8 @@
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    Submit parts and a receptor vector. Get an annotated Genbank of the
-    resulting construct(s).
+    Submit parts and an assembly plan. Get annotated Genbanks of the
+    resulting construct(s), or an analysis of design flaws.
 
 
   .form

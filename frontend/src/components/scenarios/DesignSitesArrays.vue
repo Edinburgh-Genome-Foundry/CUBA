@@ -6,7 +6,7 @@
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
 
-  p.scenario-description Find sets of compatible overhangs for your assembly problem.
+  p.scenario-description Design sequences with a very high concentration of restriction sites.
 
   //- learnmore Bla bla bla
 

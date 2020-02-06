@@ -2,7 +2,7 @@
 .page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Find sets of compatible overhangs for your assembly problem.
+  p.scenario-description Find common subsequences in a group of DNA sequences.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Find common regions between different DNA sequences:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")

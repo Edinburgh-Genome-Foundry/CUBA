@@ -6,7 +6,7 @@
             tweetMessage="Online restriction digest simulator:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Submit sequences and enzymatic mixes, get migration predictions.
+  p.scenario-description Submit sequences and enzymatic digestions, get band patterns predictions.
 
 
   .form

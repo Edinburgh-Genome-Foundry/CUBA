@@ -3,9 +3,9 @@
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    If you are going to do many (combinatorial) assemblies in parralel, this app
-    can help you select a few assemblies to run first to test no part is
-    corrupted.
+    If you intend to do many (combinatorial) assemblies in parralel, this app
+    can help you select a few assemblies to run first, to test that no genetic
+    part is corrupted.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Sequenticons are human-friendly, visual DNA sequence identifiers.",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")

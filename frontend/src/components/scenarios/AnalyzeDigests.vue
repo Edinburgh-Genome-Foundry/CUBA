@@ -7,7 +7,7 @@
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Provide the results of an automated restriction digestion, and get a complete
-    report on the results.
+    report comparing your results to the expected patterns.
 
 
   .form

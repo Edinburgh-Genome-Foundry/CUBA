@@ -6,7 +6,7 @@
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    Provide parts and have them domesticated for EMMA assembly or another standard.
+    Provide a part sequences to domesticate for EMMA assembly or another standard.
 
   .form
     h4.formlabel Standard

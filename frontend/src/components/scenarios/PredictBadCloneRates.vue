@@ -8,7 +8,8 @@
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Find out how much unwanted parts cross-talk there will be in your next assemblies,
-    and which proportion of clones will have the right constructs. 
+    and which proportion of clones will have the right constructs. Warning: this is
+    yet very experimental.
   el-alert(title="This is a very young and very experimental app coming with absolutely no warranties." type="warning" show-icon)
   .form
 

@@ -2,7 +2,7 @@
 .page
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
-  p.scenario-description Find sets of compatible overhangs for your assembly problem.
+  p.scenario-description View overhang crosstalk for your Golden Gate assembly project.
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Browse DNA overhangs annealing and cross-talk data:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")

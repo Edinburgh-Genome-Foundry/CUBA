@@ -3,7 +3,7 @@
   h1  {{ infos.title }}
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    Find which parts are associated with assembly failure!
+    Find which of your genetic parts are associated with assembly failure!
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Sequenticons are human-friendly, visual DNA sequence identifiers.",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")

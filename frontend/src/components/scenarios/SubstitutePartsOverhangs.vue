@@ -31,6 +31,7 @@
           el-radio(v-model='form.enzyme', class="radio", :label='enzyme') {{enzyme}}
 
     h4.formlabel Substitutions
+    p These substitutions will only affect overhangs, no changes will occur elsewhere in the part sequence. 
     el-input(type='textarea' :autosize='true', v-model='form.substitutions',
              placeholder='One substitution per line, e.g. ATGC => CTCA')
     p

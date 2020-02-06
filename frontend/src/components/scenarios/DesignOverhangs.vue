@@ -6,7 +6,9 @@
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
 
-  p.scenario-description Find sets of compatible overhangs for your assembly problem.
+  p.scenario-description.
+    Find sets of compatible overhangs for Golden Gate assembly, to extend an
+    assembly standard or decompose a sequence into compatible fragments
 
   //- learnmore Bla bla bla
 
@@ -16,7 +18,7 @@
 
     el-select(v-model='form.goal', placeholder='Select')
       el-option(label='Find a collection of compatible overhangs', value='overhangs_set')
-      el-option(label='Decompose a sequence into compatible overhangs', value='sequence_decomposition')
+      el-option(label='Decompose a sequence into compatible-ends fragments', value='sequence_decomposition')
       
 
     div(v-show='form.goal')

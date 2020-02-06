@@ -6,8 +6,8 @@
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
-    Provide a source plate map and a list of constructs, get a robotic picklist (=spreadsheet)
-    for Tecan EVO or Labcyte Echo.
+    Provide a source plate map and an assembly plan, get a robotic picklist
+    spreadsheet for Tecan EVO or Labcyte Echo.
 
   el-alert(title="This app is a stub. Not all features may work properly" type="warning" show-icon)
 
