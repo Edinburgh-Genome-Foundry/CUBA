@@ -16,10 +16,9 @@ exports.cssLoaders = function (options) {
   options = options || {}
 
   const cssLoader = {
-    loader: 'css-loader',
+    loader: 'css-loader?-url',
     options: {
-      sourceMap: options.sourceMap,
-      url: false
+      sourceMap: options.sourceMap
     }
   }
 
