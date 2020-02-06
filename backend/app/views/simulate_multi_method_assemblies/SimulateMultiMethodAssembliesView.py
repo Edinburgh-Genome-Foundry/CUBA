@@ -14,10 +14,6 @@ from ..serializers import FileSerializer
 import dnacauldron as dc
 import pandas
 
-digestion = serializers.ListField(child=serializers.CharField())
-# class SequenceFileSerializer(FileSerializer):
-#     circularity = serializers.BooleanField()
-
 
 class serializer_class(serializers.Serializer):
     parts = serializers.ListField(child=FileSerializer())

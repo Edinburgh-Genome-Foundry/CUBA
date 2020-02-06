@@ -19,8 +19,6 @@ from bandwagon import plot_records_digestions
 
 digestion = serializers.ListField(child=serializers.CharField())
 
-class SequenceFileSerializer(FileSerializer):
-    circularity = serializers.BooleanField()
 
 class serializer_class(serializers.Serializer):
     constructsMap = FileSerializer(allow_null=True)

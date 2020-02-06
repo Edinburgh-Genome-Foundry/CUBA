@@ -14,11 +14,6 @@ from ..serializers import FileSerializer
 import dnacauldron as dc
 import pandas
 
-digestion = serializers.ListField(child=serializers.CharField())
-# class SequenceFileSerializer(FileSerializer):
-#     circularity = serializers.BooleanField()
-
-
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
     parts = serializers.ListField(child=FileSerializer())
@@ -83,9 +78,7 @@ class worker_class(AsyncWorker):
                 set_record_topology(r, topology=data.topology)
                 r.seq = r.seq.upper()
             repository.add_records(connector_records, collection="connectors")
-            connectors_collection = (
-                "connectors" if len(data.connectors) else None
-            )
+            connectors_collection = "connectors"
 
         # SIMULATE!
 

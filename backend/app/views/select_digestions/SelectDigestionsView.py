@@ -57,9 +57,9 @@ class worker_class(AsyncWorker):
         records = records_from_data_files(data.files)
         for record in records:
             set_record_topology(record, data.topology)
-        sequences = OrderedDict(
-            [(record.id, str(record.seq)) for record in records]
-        )
+        # sequences = OrderedDict(
+        #     [(record.id, str(record.seq)) for record in records]
+        # )
 
         self.logger(message="Initializing...")
 
@@ -75,7 +75,7 @@ class worker_class(AsyncWorker):
             )
         else:
             problem = SeparatingDigestionsProblem(
-                sequences=sequences,
+                sequences=records,
                 enzymes=enzymes,
                 ladder=ladder,
                 max_enzymes_per_digestion=data.max_enzymes,

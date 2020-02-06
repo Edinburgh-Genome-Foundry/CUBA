@@ -149,10 +149,6 @@
     .results(v-if='!queryStatus.polling.inProgress')
       download-button(v-if='queryStatus.result.file',
                       :filedata='queryStatus.result.file')
-      .div(v-if='queryStatus.result.infos')
-        .nConstructs(v-if='queryStatus.result.infos.nconstructs || queryStatus.result.infos.nconstructs === 0')
-          span(v-if='queryStatus.result.infos.nconstructs === 0' style='color: red').
-            No construct could be found. See report for more.
       .stats(v-if='queryStatus.result.assembly_stats')
         ul
           li #[b Valid assemblies:] {{queryStatus.result.assembly_stats.valid_assemblies}}

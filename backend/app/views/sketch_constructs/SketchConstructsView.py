@@ -7,11 +7,6 @@ from ..base import AsyncWorker, StartJobView, JobResult
 from ..serializers import FileSerializer
 from caravagene import ConstructList
 
-
-digestion = serializers.ListField(child=serializers.CharField())
-class SequenceFileSerializer( FileSerializer):
-    circularity = serializers.BooleanField()
-
 class serializer_class(serializers.Serializer):
     format = serializers.CharField()
     orientation = serializers.CharField()
