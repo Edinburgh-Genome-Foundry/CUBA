@@ -91,7 +91,7 @@ export default {
         use_ordering_list: false,
         use_file_names_as_ids: true,
         ordering_list: '',
-        topology: 'default-circular'
+        topology: 'default_to_circular'
       },
       infos: infos,
       queryStatus: {
