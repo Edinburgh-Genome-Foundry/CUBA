@@ -74,3 +74,4 @@ RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/primaver
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/kappagate
 ARG CACHEBUST=15
 RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/dnacauldron
+RUN pip install --upgrade git+git://github.com/Edinburgh-Genome-Foundry/plateo
