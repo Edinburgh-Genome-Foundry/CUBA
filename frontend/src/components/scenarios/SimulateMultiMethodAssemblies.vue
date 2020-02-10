@@ -118,7 +118,6 @@
           li #[b Valid assemblies:] {{queryStatus.result.assembly_stats.valid_assemblies}}
           li #[b Errored assemblies:] {{queryStatus.result.assembly_stats.errored_assemblies}}
           li #[b Cancelled assemblies:] {{queryStatus.result.assembly_stats.cancelled_assemblies}}
-      .stats(v-else) {{queryStatus.result.n_constructs}} constructs generated!
       .errors(v-if='queryStatus.result.errors && queryStatus.result.errors.length')
         p The following errors occured in the assembly plan (see report for more)
         ul
