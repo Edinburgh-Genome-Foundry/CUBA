@@ -125,12 +125,12 @@
       el-checkbox(v-model='form.include_assembly_plots') Include constructs plots
     p
       el-select(v-model='form.include_fragment_plots')
-        el-option(value='on_failure' label="Plot parts and fragments on assembly failure only")
+        el-option(value='on_error' label="Plot parts and fragments on assembly failure only")
         el-option(value='yes' label="Plot parts and fragments (slower)")
         el-option(value='no' label="Don't plot parts and fragments")
     p
       el-select(v-model='form.include_graph_plots')
-        el-option(value='on_failure' label="Plot graphs on assembly failure only")
+        el-option(value='on_error' label="Plot graphs on assembly failure only")
         el-option(value='yes' label="Always plot graph (slower)")
         el-option(value='no' label="Don't plot graph")
 
@@ -186,9 +186,9 @@ export default {
         connectors: [],
         show_overhangs: false,
         select_connectors: false,
-        include_fragment_plots: 'on_failure',
+        include_fragment_plots: 'on_error',
         include_assembly_plots: true,
-        include_graph_plots: 'on_failure',
+        include_graph_plots: 'on_error',
         use_assembly_plan: false,
         assembly_plan: null,
         single_assemblies: true,

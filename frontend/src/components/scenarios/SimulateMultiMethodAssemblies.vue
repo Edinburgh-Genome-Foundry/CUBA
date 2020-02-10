@@ -85,12 +85,12 @@
 
     p
       el-select(v-model='form.include_fragment_plots')
-        el-option(value='on_failure' label="Plot parts and fragments on assembly failure only")
+        el-option(value='on_error' label="Plot parts and fragments on assembly failure only")
         el-option(value='yes' label="Plot parts and fragments (slower)")
         el-option(value='no' label="Don't plot parts and fragments")
     p
       el-select(v-model='form.include_graph_plots')
-        el-option(value='on_failure' label="Plot graphs on assembly failure only")
+        el-option(value='on_error' label="Plot graphs on assembly failure only")
         el-option(value='yes' label="Always plot graph (slower)")
         el-option(value='no' label="Don't plot graph")
 
@@ -150,9 +150,9 @@ export default {
         parts: [],
         connectors: [],
         select_connectors: false,
-        include_fragment_plots: 'on_failure',
+        include_fragment_plots: 'on_error',
         include_assembly_plots: true,
-        include_graph_plots: 'on_failure',
+        include_graph_plots: 'on_error',
         assembly_plan: null,
         use_file_names_as_ids: true,
         topology: 'default_to_circular'
