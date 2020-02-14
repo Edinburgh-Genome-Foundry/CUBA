@@ -62,6 +62,6 @@ class worker_class(AsyncWorker):
         }
 
 
-class FeatureExtractorView(StartJobView):
+class ExtractFeaturesView(StartJobView):
     serializer_class = serializer_class
     worker_class = worker_class

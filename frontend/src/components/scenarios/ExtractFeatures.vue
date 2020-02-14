@@ -39,11 +39,11 @@
 import learnmore from '../../components/widgets/LearnMore'
 
 var infos = {
-  title: 'Feature Extractor',
-  navbarTitle: 'Feature Extractor',
-  path: 'feature_extractor',
+  title: 'Extract Features',
+  navbarTitle: 'Extract Features',
+  path: 'extract_features',
   description: '',
-  backendUrl: 'start/feature_extractor',
+  backendUrl: 'start/extract_features',
   icon: require('../../assets/images/extract_sequence_features.svg')
 }
 
