@@ -2,8 +2,7 @@
 
 from rest_framework import serializers
 
-import easy_dna
-from easy_dna.extractor import extract_features, make_part_dict, process_report
+from easy_dna import extract_from_input
 import flametree
 
 from ..base import AsyncWorker, StartJobView
@@ -46,37 +45,12 @@ class worker_class(AsyncWorker):
 
         root = flametree.file_tree("@memory")
 
-        records_dict = dict()
-        for input_record in construct_list:
-            records = extract_features(input_record, direct_sense=direct_sense)
-            key = input_record.name[0:20]  # GenBank format hard limit for name
-            records_dict[key] = records
-
-        parts_report = make_part_dict(
-            records_dict, min_sequence_length=min_sequence_length
+        extract_from_input(
+            construct_list=construct_list,
+            direct_sense=direct_sense,
+            output_path=root,
+            min_sequence_length=min_sequence_length,
         )
-        common_parts_dict = parts_report[0]
-        records_dict["common_parts"] = list(common_parts_dict.values())
-
-        for key, v in records_dict.items():
-            records = records_dict[key]
-            record_dir = root._dir(key)
-            for j, record in enumerate(records):
-
-                record_name_alnum = "".join(
-                    x if x.isalnum() else "_" for x in record.name
-                )
-                record_filename = record_name_alnum + ".gb"
-                record_file_path = record_dir._file(record_filename)
-
-                try:
-                    write_record(record, record_file_path, fmt="genbank")
-
-                except Exception as err:
-                    print("Error writing", record_filename, str(err))
-
-        processed_report = process_report(parts_report[1])
-        processed_report.to_csv(root._file("report.csv").open("w"))
         zip_data = root._close()
 
         return {

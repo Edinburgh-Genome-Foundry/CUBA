@@ -4,7 +4,7 @@
   img.icon.center-block(slot='title-img', :src='infos.icon')
   p.scenario-description.
     Extract features and save them as individual files
-    (app in progress, not guaranteed to work!) 
+    (note that app is under development) 
   web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
             tweetMessage="Extract features and save them as individual files:",
             :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
