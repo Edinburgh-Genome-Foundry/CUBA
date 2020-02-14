@@ -102,8 +102,8 @@ urlpatterns = [
     url(r'^api/start/view_overhangs_crosstalk$',
         views.ViewOverhangsCrosstalkView.as_view(),
         name='view_overhangs_crosstalk'),
-    url(r'^api/start/feature_extractor$',
-        views.FeatureExtractorView.as_view(),
+    url(r'^api/start/extract_features$',
+        views.ExtractFeaturesView.as_view(),
         name='extract_features'),
 
     url(r'^api/docs/', include('rest_framework_docs.urls')),
