@@ -18,8 +18,7 @@ export default {
   computed: {
     emailHref () {
       return ('mailto:egf-software@ed.ac.uk?' +
-              '&cc=hille.tekotte@ed.ac.uk, valentin.zulkower@ed.ac.uk' +
-              '&body=Hello EGF team !' +
+              '&body=Hello EGF team!' +
               '&subject=' + this.emailSubject)
     },
     twitterHref () {

@@ -38,7 +38,7 @@ Example scenario
                   :validateForm='validateForm',
                   submitButtonText='Start Computations',
                   v-model='queryStatus')
-  //- If the backend uses the logger to store progress bars, they can be
+  //- If the backend uses the logger to store progress bars, they can be displayed here
   progress-bars(:bars='queryStatus.polling.data.bars',
                 :order="['loop', 'subloop']",
                 v-if='queryStatus.polling.inProgress && queryStatus.polling.data')

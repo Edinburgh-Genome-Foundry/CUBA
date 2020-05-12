@@ -1,6 +1,6 @@
 
 <p align="center">
-<img alt="DNA Cauldron Logo" title="DNA Cauldron Logo" src="https://github.com/Edinburgh-Genome-Foundry/CUBA/raw/master/frontend/src/assets/images/cuba-title.png" width="400">
+<img alt="EGF CUBA logo" title="EGF CUBA logo" src="https://github.com/Edinburgh-Genome-Foundry/CUBA/raw/master/frontend/src/assets/images/cuba-title.png" width="400">
 </p>
 <h1 align="center"> The EGF Collection of Useful Biological Apps </h1>
 
@@ -15,7 +15,7 @@ biological software.
 
 
 
-## How is it built ?
+## How is it built?
 
 CUBA is based on the [CAB](https://github.com/Edinburgh-Genome-Foundry/CAB)
 boilerplate, making it easy to create new apps with a form in the frontend and
@@ -33,7 +33,7 @@ The next steps will download, install, and launch CUBA on your computer.
 2. Download CUBA from Github:
 
 ```
-git clone git+github.com/Edinburgh-Genome-Foundry/CUBA.git
+git clone https://github.com/Edinburgh-Genome-Foundry/CUBA.git
 ```
 
 3. Go to the root ``CUBA/`` directory (the one containing this README and the
@@ -127,7 +127,7 @@ Licence
 CUBA is an open source software originally written by [Zulko](https://github.com/Zulko)
 at the [Edinburgh Genome Foundry](http://genomefoundry.org/) and released on
 [Github](https://github.com/Edinburgh-Genome-Foundry/CUBA) under the MIT licence
-(¢ Edinburgh Genome Foundry). Everyone is welcome to contribute !
+(Copyright 2017 Edinburgh Genome Foundry). Everyone is welcome to contribute!
 
 
 More biology software ?
@@ -138,5 +138,5 @@ More biology software ?
 </a>
 </p>
 
-EGF Codon is powered by the `EGF Codons <https://edinburgh-genome-foundry.github.io/>`_
+EGF Codon is powered by the [EGF Codons](https://edinburgh-genome-foundry.github.io/)
 synthetic biology software suite for DNA design, manufacturing and validation.
