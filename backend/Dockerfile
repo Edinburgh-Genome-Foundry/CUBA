@@ -37,7 +37,8 @@ RUN apt-get install -y unzip
 ENV QT_QPA_FONTDIR=/root/.fonts/
 RUN wget -O "Raleway.zip" "https://fonts.google.com/download?family=Raleway" \
     && unzip -u "Raleway.zip" -d /root/.fonts \
-    && rm -f "Raleway.zip"
+    && rm -f "Raleway.zip" \
+    && rm /root/.fonts/README.txt
 RUN wget -O "Inconsolata.zip" "https://fonts.google.com/download?family=Inconsolata" \
     && unzip -u "Inconsolata.zip" -d /root/.fonts \
     && rm -f "Inconsolata.zip"
