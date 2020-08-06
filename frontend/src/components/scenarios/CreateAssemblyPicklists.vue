@@ -57,13 +57,24 @@
       el-form-item(label='Total volume (µL)')
         el-input-number(v-model='form.total_volume', :min='0', :max='2000', :step='0.05')
 
+
+      el-checkbox(v-if="form.quantity_unit !== 'ng'", v-model='form.specify_ratio') Specify part : backbone molar ratio.
+
+      p(v-if="form.quantity_unit !== 'ng' && form.specify_ratio")
+        | The plasmid backbone name must match the name in the source plate (case-sensitive).
+        | You may specify multiple backbones, separated by a comma.
+      el-form-item(v-if="form.quantity_unit !== 'ng' && form.specify_ratio", label='Part : backbone ratio')
+        el-input-number(v-model='form.part_backbone_ratio', :min='0.01', :max='100', :step='0.5')
+      el-form-item(v-if="form.quantity_unit !== 'ng' && form.specify_ratio", label='Backbone name')
+        el-input(v-model='form.backbone_name')
+
     .parts-infos(v-if="form.quantity_unit !== 'ng'")
       hr
-      h4.formlabel Parts infos
+      h4.formlabel Part information
       :markdown-it
-        Since a molar quantity is desired, we need to know the molecular weigth of the DNA.
+        Since a molar quantity is desired, we need to know the molecular weight of the DNA.
         Provide either
-        - A table of the parts sizes, backbone included (see example file) or
+        - A table of the part sizes, backbone included (see example file) or
         - A series of Genbank/Fasta sequences of the parts.
 
       collapsible(title='Examples')
@@ -83,7 +94,10 @@
       files-uploader(v-model='form.parts_infos', tip='Genbank/Fasta/Snapgene sequences, or spreadsheet')
       el-checkbox(v-model='form.use_file_names_as_ids') Use file names (not record IDs) to identify parts.
     hr
-    h4.formlabel Source Plate
+    h4.formlabel Source plate
+    :markdown-it
+      The concentration should be specified in ng/µL (see example file).
+
     collapsible(title='Examples')
       file-example(filename='example_echo_plate.xlsx',
                    @input='function (e) {form.source_plate =e}',
@@ -153,91 +167,91 @@
 </template>
 
 <script>
-
 var infos = {
-  title: 'Create Assembly Picklists',
-  navbarTitle: 'Create Assembly Picklists',
-  path: 'create_assembly_picklists',
-  description: '',
-  backendUrl: 'start/create_assembly_picklists',
-  icon: require('../../assets/images/create_assembly_picklists.svg'),
-  poweredby: ['plateo']
-}
+  title: "Create Assembly Picklists",
+  navbarTitle: "Create Assembly Picklists",
+  path: "create_assembly_picklists",
+  description: "",
+  backendUrl: "start/create_assembly_picklists",
+  icon: require("../../assets/images/create_assembly_picklists.svg"),
+  poweredby: ["plateo"],
+};
 
 export default {
-  data () {
+  data() {
     return {
       form: {
         picklist: null,
         source_plate: null,
-        destination_type: 'new',
+        destination_type: "new",
         destination_size: 96,
         destination_plate: null,
-        fill_by: 'column',
-        quantity_unit: 'fmol',
+        fill_by: "column",
+        quantity_unit: "fmol",
         part_quantity: 1.3,
         buffer_volume: 0.3,
         total_volume: 1,
+        part_backbone_ratio: 1,
+        backbone_name: "",
         parts_infos: [],
-        dispenser_machine: 'labcyte_echo',
+        dispenser_machine: "labcyte_echo",
         dispenser_max_volume: 0.5,
         dispenser_min_volume: 5,
         dispenser_resolution: 2.5,
         dispenser_dead_volume: 8,
-        use_file_names_as_ids: true
+        use_file_names_as_ids: true,
       },
       quantityRanges: {
-        'fmol': {
+        fmol: {
           min: 0.1,
           max: 100,
           step: 0.1,
-          default: 1.3
+          default: 1.3,
         },
-        'nM': {
+        nM: {
           min: 0.1,
           max: 10,
           step: 0.1,
-          default: 1.3
+          default: 1.3,
         },
-        'ng': {
+        ng: {
           min: 1,
           max: 1000,
           step: 0.1,
-          default: 10
-        }
+          default: 10,
+        },
       },
       queryStatus: {
         polling: {},
         result: {},
-        requestError: ''
+        requestError: "",
       },
-      infos: infos
-    }
+      infos: infos,
+    };
   },
   infos: infos,
   methods: {
-    validateForm () {
-      var errors = []
+    validateForm() {
+      var errors = [];
       if (!this.form.source_plate) {
-        errors.push('Provide a source plate !')
+        errors.push("Provide a source plate !");
       }
-      return errors
-    }
+      return errors;
+    },
   },
   watch: {
-    'form.quantity_unit': function (val) {
-      this.$set(this.form, 'part_quantity', this.quantityRanges[val].default)
-    }
-  }
-}
+    "form.quantity_unit": function (val) {
+      this.$set(this.form, "part_quantity", this.quantityRanges[val].default);
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>
-
 h4.formlabel {
   text-align: center;
   text-transform: uppercase;
-  margin-top: 40px
+  margin-top: 40px;
 }
 
 .form {
@@ -246,19 +260,17 @@ h4.formlabel {
 }
 
 .title-img {
-  height:80px;
+  height: 80px;
   margin-top: -20px;
   margin-bottom: 20px;
-
 }
 
 .el-checkbox {
   font-weight: normal;
 }
 
-
 .el-select {
-  width: 100%
+  width: 100%;
 }
 
 .el-input-number.inline {
