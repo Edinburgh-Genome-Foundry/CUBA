@@ -58,14 +58,15 @@
         el-input-number(v-model='form.total_volume', :min='0', :max='2000', :step='0.05')
 
 
-      el-checkbox(v-if="form.quantity_unit !== 'ng'", v-model='form.specify_ratio') Specify part : backbone molar ratio.
+      //- el-checkbox(v-if="form.quantity_unit !== 'ng'", v-model='form.specify_ratio') 
 
-      p(v-if="form.quantity_unit !== 'ng' && form.specify_ratio")
-        | The plasmid backbone name must match the name in the source plate (case-sensitive).
-        | You may specify multiple backbones, separated by a comma.
-      el-form-item(v-if="form.quantity_unit !== 'ng' && form.specify_ratio", label='Part : backbone ratio')
+      p(v-if="form.quantity_unit !== 'ng'")
+        | Specify part:backbone molar ratio. The plasmid backbone name must match the 
+        | name in the source plate (case-sensitive).
+        | You may specify multiple backbones, separated by commas.
+      el-form-item(v-if="form.quantity_unit !== 'ng'", label='Part : backbone ratio')
         el-input-number(v-model='form.part_backbone_ratio', :min='0.01', :max='100', :step='0.5')
-      el-form-item(v-if="form.quantity_unit !== 'ng' && form.specify_ratio", label='Backbone name')
+      el-form-item(v-if="form.quantity_unit !== 'ng'", label='Backbone name')
         el-input(v-model='form.backbone_name')
 
     .parts-infos(v-if="form.quantity_unit !== 'ng'")

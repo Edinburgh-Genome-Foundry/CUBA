@@ -122,6 +122,9 @@ class worker_class(AsyncWorker):
         if data.quantity_unit == "ng":
             part_mol = None
             part_g = data.part_quantity * 1e-9
+            # Backbone:part molar ratio calculation is not performed in this case.
+            # This ensures no change regardless of form input:
+            data.part_backbone_ratio = 1
 
         self.logger(message="Generating picklist")
 
@@ -133,6 +136,9 @@ class worker_class(AsyncWorker):
             volume_rounding=2.5e-9,
             minimal_dispense_volume=5e-9,
         )
+
+        backbone_name_list = data.backbone_name.split(",")
+
         source_filelike = file_to_filelike_object(data.source_plate)
         source_plate = plate_from_content_spreadsheet(source_filelike)
         for well in source_plate.iter_wells():
@@ -143,17 +149,18 @@ class worker_class(AsyncWorker):
             quantities.pop(part)
             quantities[part.replace(" ", "_")] = quantity
 
+            if part in backbone_name_list:
+                # This section multiplies the backbone concentration with the
+                # part:backbone molar ratio. This tricks the calculator into making
+                # a picklist with the desired ratio.
+                # For example, a part:backbone = 2:1 will multiply the
+                # backbone concentration by 2, therefore half as much of it will be
+                # added to the well.
+                quantities[part.replace(" ", "_")] = quantity * data.part_backbone_ratio
+            else:
+                quantities[part.replace(" ", "_")] = quantity
+
         source_plate.name = "Source"
-
-        backbone_name_list = data.backbone_name.split(",")
-        if data.part_backbone_ratio != 1:
-            pass
-
-        # if data.part_backbone_ratio != 1 and data.backbone_name == "":
-        #     return {
-        #         "success": False,
-        #         "message": "Specify backbone name.",
-        #     }
 
         self.logger(message="Generating Picklist...")
         destination_plate = Plate4ti0960("Mixplate")
