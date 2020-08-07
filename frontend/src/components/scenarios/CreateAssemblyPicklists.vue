@@ -96,7 +96,7 @@
     hr
     h4.formlabel Source plate
     :markdown-it
-      The concentration should be specified in ng/µL (see example file).
+      The volume should be specified in µL and the concentration in ng/µL (see example file).
 
     collapsible(title='Examples')
       file-example(filename='example_echo_plate.xlsx',
@@ -106,7 +106,7 @@
         p.
           Map of a plate with common genetic parts from the EMMA standard.
 
-    files-uploader(v-model='form.source_plate', tip='Fasta or Genbank files', :multiple='false')
+    files-uploader(v-model='form.source_plate', tip='Excel file with "content", "volume" and "concentration" sheets', :multiple='false')
     hr
     h4.formlabel Destination Plate
     el-form(label-width='150px')
@@ -192,7 +192,7 @@ export default {
         buffer_volume: 0.3,
         total_volume: 1,
         part_backbone_ratio: 1,
-        backbone_name: "",
+        backbone_name: "hc_amp_ccdb",
         parts_infos: [],
         dispenser_machine: "labcyte_echo",
         dispenser_max_volume: 0.5,
