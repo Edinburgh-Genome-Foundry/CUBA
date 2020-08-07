@@ -139,7 +139,7 @@ class worker_class(AsyncWorker):
             if well.is_empty:
                 continue
             quantities = well.content.quantities
-            part, quantity = quantities.items()[0]
+            part, quantity = list(quantities.items())[0]
             quantities.pop(part)
             quantities[part.replace(" ", "_")] = quantity
 
