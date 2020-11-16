@@ -1,57 +1,75 @@
 <template lang="pug">
 .page
-  h1  {{ infos.title }}
-  img.icon.center-block(slot='title-img', :src='infos.icon')
+  h1 {{ infos.title }}
+  img.icon.center-block(slot="title-img", :src="infos.icon")
   p.scenario-description View overhang crosstalk for your Golden Gate assembly project.
-  web-links(:emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
-            tweetMessage="Browse DNA overhangs annealing and cross-talk data:",
-            :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path")
+  web-links(
+    :emailSubject="'[CUBA] Feedback on web app: ' + infos.title",
+    tweetMessage="Browse DNA overhangs annealing and cross-talk data:",
+    :tweetUrl="'https://cuba.genomefoundry.org/' + infos.path"
+  )
   //- learnmore Bla bla bla
 
   .form
-
     h4.formlabel Choose your input
     center
-      el-select(v-model='form.input_type' style='width: 80%;')
-        el-option(value='overhangs' label='A list of overhangs')
-        el-option(value='construct' label='Final constructs generated with CUBA')
+      el-select(v-model="form.input_type", style="width: 80%;")
+        el-option(value="overhangs", label="A list of overhangs")
+        el-option(
+          value="construct",
+          label="Final constructs generated with CUBA"
+        )
       //- el-option(value='parts'  label='Individual parts (and backbone)')
 
-    
-    div(v-if='form.input_type === "overhangs"')
+    div(v-if="form.input_type === 'overhangs'")
       h4.formlabel Overhangs
-      .example(@click="form.overhangs = 'ATTG, GCTA, ACAT, CCAG'"
-              style='cursor: pointer; color: grey; margin: 0.5em;') Example (click me)
-      el-input(type='textarea',
-              :rows='4',
-              v-model='form.overhangs',
-              placeholder='Enter comma-separated overhangs, e.g. ATTG, TTAC, ...')
+      .example(
+        @click="form.overhangs = 'ATTG, GCTA, ACAT, CCAG'",
+        style="cursor: pointer; color: grey; margin: 0.5em;"
+      ) Example (click me)
+      el-input(
+        type="textarea",
+        :rows="4",
+        v-model="form.overhangs",
+        placeholder="Enter comma-separated overhangs, e.g. ATTG, TTAC, ..."
+      )
     div(v-else)
       h4.formlabel Construct
-      files-uploader(v-model='form.construct', :multiple='false',
-                     tip="Accepted formats: FASTA, Genbank, Snapgene")
+      files-uploader(
+        v-model="form.construct",
+        :multiple="false",
+        tip="Accepted formats: FASTA, Genbank, Snapgene"
+      )
     p
       .dataset-parameter Dataset:
       .dataset-parameter
-        el-select(v-model='form.temperature')
-          el-option(value='25C', label='25C')
-          el-option(value='37C', label='37C')
+        el-select(v-model="form.temperature")
+          el-option(value="25C", label="25C")
+          el-option(value="37C", label="37C")
       .dataset-parameter
-        el-select(v-model='form.incubation')
-          el-option(value='01h', label='1h')
-          el-option(value='18h', label='18h')
-        
+        el-select(v-model="form.incubation")
+          el-option(value="01h", label="1h")
+          el-option(value="18h", label="18h")
 
+    backend-querier(
+      :form="form",
+      :backendUrl="infos.backendUrl",
+      :validateForm="validateForm",
+      submitButtonText="Plot crosstalk",
+      v-model="queryStatus"
+    )
+    el-alert(
+      v-show="queryStatus.requestError",
+      :title="queryStatus.requestError",
+      type="error",
+      :closable="false"
+    )
 
-    backend-querier(:form='form', :backendUrl='infos.backendUrl',
-                    :validateForm='validateForm', submitButtonText='Plot crosstalk',
-                    v-model='queryStatus')
-    el-alert(v-show='queryStatus.requestError', :title="queryStatus.requestError",
-       type="error", :closable="false")
-
-  .results(v-if='!queryStatus.polling.inProgress && queryStatus.result.figure_data')
+  .results(
+    v-if="!queryStatus.polling.inProgress && queryStatus.result.figure_data"
+  )
     center
-      img.result_image(:src='queryStatus.result.figure_data')
+      img.result_image(:src="queryStatus.result.figure_data")
 
     p(style="margin-bottom: 5em").
       In this plot, if you see anything else than the square pairs around
@@ -59,7 +77,7 @@
       (so risk of misannealing). If one of these diagmonal square pairs appears
       lighter than the others, it means that the corresponding overhang has
       weak self-annealing (risk of having no assembly).
-  
+
   :markdown-it
     **About this app**
 
@@ -72,68 +90,66 @@
     the data relevant to your overhangs, and plots it as a heatmap, similar to
     the figures shown in the paper.
 
-    
 
 
 
 
-  powered-by(:softwareNames='infos.poweredby')
+
+  powered-by(:softwareNames="infos.poweredby")
 </template>
 
 <script>
-import learnmore from '../../components/widgets/LearnMore'
+import learnmore from "../../components/widgets/LearnMore";
 
 var infos = {
-  title: 'View Overhangs Crosstalk',
-  navbarTitle: 'View Overhangs Crosstalk',
-  path: 'view-overhangs-crosstalk',
-  description: '',
-  backendUrl: 'start/view_overhangs_crosstalk',
-  icon: require('../../assets/images/view_overhangs_crosstalk.svg'),
-  poweredby: ['tatapov']
-}
+  title: "View Overhangs Crosstalk",
+  navbarTitle: "View Overhangs Crosstalk",
+  path: "view-overhangs-crosstalk",
+  description: "",
+  backendUrl: "start/view_overhangs_crosstalk",
+  icon: require("../../assets/images/view_overhangs_crosstalk.svg"),
+  poweredby: ["tatapov"],
+};
 
 export default {
-  data () {
+  data() {
     return {
       infos: infos,
       form: {
-        overhangs: '',
+        overhangs: "",
         construct: null,
-        input_type: 'overhangs',
-        temperature: '37C',
-        incubation: '01h'
-
+        input_type: "overhangs",
+        temperature: "37C",
+        incubation: "01h",
       },
       queryStatus: {
         polling: {},
         result: {},
-        requestError: ''
-      }
-    }
+        requestError: "",
+      },
+    };
   },
   components: {
-    learnmore
+    learnmore,
   },
   infos: infos,
   methods: {
-    validateForm () {
-      var errors = []
+    validateForm() {
+      var errors = [];
       if (!(this.form.overhangs.length || this.form.construct)) {
-        errors.push('Provide files !')
+        errors.push("Provide files !");
       }
-      return errors
-    }
-  }
-}
+      return errors;
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>
-
 h4.formlabel {
   text-align: center;
   text-transform: uppercase;
-  margin-top: 40px
+  margin-top: 40px;
 }
 
 .form {
@@ -142,7 +158,7 @@ h4.formlabel {
 }
 
 .title-img {
-  height:80px;
+  height: 80px;
   margin-top: -20px;
   margin-bottom: 20px;
 }
@@ -156,7 +172,6 @@ h4.formlabel {
   margin-left: 15px;
 }
 
-
 .el-slider.inline {
   display: inline-block;
   margin-left: 20px;
@@ -169,7 +184,6 @@ h4.formlabel {
   margin-left: 10px;
   width: 130px;
 }
-
 
 .result_image {
   max-width: 80%;
