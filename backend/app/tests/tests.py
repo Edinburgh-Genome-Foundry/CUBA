@@ -42,6 +42,13 @@ class SimulateGGAssemblies(AppTestCase):
         assembly_plan=None,
         use_file_names_as_ids=True,
         show_overhangs=True,
+        include_fragment_plots="on_error",
+        include_graph_plots="on_error",
+        include_assembly_plots=False,
+        backbone_first=False,
+        backbone_name="",
+        no_skipped_parts=True,
+        topology="default_to_circular",
     )
 
     def test_dual_assembly(self):
