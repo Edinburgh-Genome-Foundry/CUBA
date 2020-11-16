@@ -74,7 +74,7 @@
     p(style="margin-bottom: 5em").
       In this plot, if you see anything else than the square pairs around
       the diagonal, it means there is cross-talking between your overhangs
-      (so risk of misannealing). If one of these diagmonal square pairs appears
+      (so risk of misannealing). If one of these diagonal square pairs appears
       lighter than the others, it means that the corresponding overhang has
       weak self-annealing (risk of having no assembly).
 
