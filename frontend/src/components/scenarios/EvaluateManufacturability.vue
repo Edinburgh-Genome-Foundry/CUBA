@@ -42,75 +42,74 @@
                      :filedata='queryStatus.result.records')
       p(style='max-width: 500px;').
         Note: the feature labels indicate the constraints that are
-        breached. For instance a "No BsaI" label means that there is indeed
+        breached. For instance a "BsaI" label means that there is indeed
         a BsaI site at this location, breaching the "No BsaI" constraint.
       iframe(:src="queryStatus.result.pdf_report.data" 
               style="width: 90%; max-width: 1000px; height:800px;" frameborder="0")
-      
+
 
   powered-by(:softwareNames='infos.poweredby')
 </template>
 
 <script>
-import learnmore from '../../components/widgets/LearnMore'
+import learnmore from "../../components/widgets/LearnMore";
 
 var infos = {
-  title: 'Evaluate Manufacturability',
-  navbarTitle: 'Evaluate Manufacturability',
-  path: 'evaluate_manufacturability',
-  description: '',
-  backendUrl: 'start/evaluate_manufacturability',
-  icon: require('../../assets/images/evaluate_manufacturability.svg'),
-  poweredby: ['dnachisel']
-}
+  title: "Evaluate Manufacturability",
+  navbarTitle: "Evaluate Manufacturability",
+  path: "evaluate_manufacturability",
+  description: "",
+  backendUrl: "start/evaluate_manufacturability",
+  icon: require("../../assets/images/evaluate_manufacturability.svg"),
+  poweredby: ["dnachisel"],
+};
 
 export default {
-  data () {
+  data() {
     return {
       form: {
         show_features: true,
         include_genbanks: true,
-        files: []
+        files: [],
       },
       infos: infos,
       ladder_options: [
         {
-          label: 'Ladder 100 bp - 4000 bp',
-          value: '100-4k'
-        }
+          label: "Ladder 100 bp - 4000 bp",
+          value: "100-4k",
+        },
       ],
       queryStatus: {
         polling: {},
         result: {},
-        requestError: ''
-      }
-    }
+        requestError: "",
+      },
+    };
   },
   components: {
-    learnmore
+    learnmore,
   },
   infos: infos,
   methods: {
-    handleSuccess (evt) {
-      console.log(evt)
+    handleSuccess(evt) {
+      console.log(evt);
     },
-    validateForm () {
-      var errors = []
+    validateForm() {
+      var errors = [];
       if (this.form.files.length === 0) {
-        errors.push('Provide at least one sequence.')
+        errors.push("Provide at least one sequence.");
       }
-      return errors
-    }
-  }
-}
+      return errors;
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>
-
 h4.formlabel {
   text-align: center;
   text-transform: uppercase;
-  margin-top: 40px
+  margin-top: 40px;
 }
 
 .form {
@@ -119,10 +118,9 @@ h4.formlabel {
 }
 
 .title-img {
-  height:80px;
+  height: 80px;
   margin-top: -20px;
   margin-bottom: 20px;
-
 }
 
 .el-checkbox {
@@ -130,7 +128,7 @@ h4.formlabel {
 }
 
 .el-select {
-  width: 100%
+  width: 100%;
 }
 
 .report-radio {
@@ -149,7 +147,7 @@ h4.formlabel {
 .figure-preview {
   margin-bottom: 5em;
   img {
-    width:100%;
+    width: 100%;
   }
 }
 </style>
