@@ -13,10 +13,8 @@ requests>=2.20.0
 watchdog==0.8.3
 openpyxl==3.0.1
 weasyprint==51
-
-git+https://github.com/pygraphviz/pygraphviz.git
-git+https://github.com/networkx/networkx.git
-
+pygraphviz==1.5
+networkx==2.4
 
 git+git://github.com/Edinburgh-Genome-Foundry/BandWagon.git
 git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
