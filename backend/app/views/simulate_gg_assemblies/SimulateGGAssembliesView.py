@@ -49,6 +49,7 @@ class worker_class(AsyncWorker):
             include_mix_graphs=include_graph_plots,
             include_assembly_plots=include_assembly_plots,
             include_fragment_plots=include_fragment_plots,
+            include_pdf_report=True,
         )
 
         # INITIALIZE ALL RECORDS IN A SEQUENCE REPOSITORY
