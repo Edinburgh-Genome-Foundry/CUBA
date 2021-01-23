@@ -14,6 +14,7 @@ from ..serializers import FileSerializer
 import dnacauldron as dc
 import pandas
 
+
 class serializer_class(serializers.Serializer):
     enzyme = serializers.CharField()
     parts = serializers.ListField(child=FileSerializer())
@@ -48,6 +49,7 @@ class worker_class(AsyncWorker):
             include_mix_graphs=include_graph_plots,
             include_assembly_plots=include_assembly_plots,
             include_fragment_plots=include_fragment_plots,
+            include_pdf_report=True,
         )
 
         # INITIALIZE ALL RECORDS IN A SEQUENCE REPOSITORY
@@ -61,8 +63,7 @@ class worker_class(AsyncWorker):
             record.features = [
                 f
                 for f in record.features
-                if f.location is not None
-                and f.location.start <= f.location.end
+                if f.location is not None and f.location.start <= f.location.end
             ]
         for r in records:
             if data.backbone_first and r.id == data.backbone_name:
@@ -98,9 +99,7 @@ class worker_class(AsyncWorker):
             )
             simulation = assembly.simulate(sequence_repository=repository)
             n = len(simulation.construct_records)
-            self.logger(
-                message="Done (%d constructs found), writing report..." % n
-            )
+            self.logger(message="Done (%d constructs found), writing report..." % n)
             report_zip_data = simulation.write_report(
                 target="@memory", report_writer=report_writer
             )
@@ -125,9 +124,7 @@ class worker_class(AsyncWorker):
                 path=filelike,
                 connectors_collection=connectors_collection,
                 expect_no_unused_parts=data.no_skipped_parts,
-                expected_constructs=1
-                if data.single_assemblies
-                else "any_number",
+                expected_constructs=1 if data.single_assemblies else "any_number",
                 name="_".join(data.assembly_plan.name.split(".")[:-1]),
                 is_csv=data.assembly_plan.name.lower().endswith(".csv"),
                 logger=self.logger,
@@ -136,9 +133,7 @@ class worker_class(AsyncWorker):
             simulation = assembly_plan.simulate(sequence_repository=repository)
             stats = simulation.compute_stats()
             n_errors = stats["errored_assemblies"]
-            self.logger(
-                message="Done (%d errors), writing report..." % n_errors
-            )
+            self.logger(message="Done (%d errors), writing report..." % n_errors)
             report_zip_data = simulation.write_report(
                 target="@memory",
                 assembly_report_writer=report_writer,

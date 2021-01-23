@@ -6,17 +6,15 @@ drf-tracking==1.0.1
 django-cors-headers==2.0.0
 django_rq==0.9.2
 gunicorn~=19.3
-jinja2==2.9
+jinja2==2.10.1
 redis==2.10.5
 rq==0.6.0
 requests>=2.20.0
 watchdog==0.8.3
 openpyxl==3.0.1
 weasyprint==51
-
-git+https://github.com/pygraphviz/pygraphviz.git
-git+https://github.com/networkx/networkx.git
-
+pygraphviz==1.5
+networkx==2.4
 
 git+git://github.com/Edinburgh-Genome-Foundry/BandWagon.git
 git+git://github.com/Edinburgh-Genome-Foundry/BandWitch.git
