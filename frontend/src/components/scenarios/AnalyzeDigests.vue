@@ -119,6 +119,11 @@
       el-input-number.inline(:min='0', :max='5000',
                            v-model='form.ignoreBandsUnder', size='small', :step='10')
       span bp
+    p Minimum RFU / size ratio
+      helper.
+        All bands with ratio below this minimum (band[RFU] / band[Size (bp)] ) will be ignored
+      el-input-number.inline(:min='0', :max='1000',
+                           v-model='form.rfuSizeRatio', size='small', :step='0.1')
     el-checkbox(v-model='form.includeDigestionPlots') Include plots of cutting sites (slower)
 
 
@@ -179,6 +184,7 @@ export default {
         includeDigestionPlots: true,
         subanalysis: "standard",
         ignoreBandsUnder: 0,
+        rfuSizeRatio: 0.3,
         topology: "default_to_circular",
       },
       infos: infos,
