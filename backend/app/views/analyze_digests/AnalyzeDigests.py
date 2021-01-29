@@ -36,6 +36,7 @@ class serializer_class(serializers.Serializer):
     fragmentAnalysisArchive = FileSerializer(allow_null=True)
     includeDigestionPlots = serializers.BooleanField()
     ignoreBandsUnder = serializers.IntegerField()
+    rfuSizeRatio = serializers.FloatField()
     subanalysis = serializers.CharField()
     topology = serializers.CharField()
 
@@ -107,7 +108,9 @@ class worker_class(AsyncWorker):
         self.logger(message="Analyzing the data...")
 
         observations = BandsObservation.from_aati_fa_archive(
-            archive, ignore_bands_under=data.ignoreBandsUnder
+            archive,
+            ignore_bands_under=data.ignoreBandsUnder,
+            min_rfu_size_ratio=data.rfuSizeRatio,
         )
         clones = Clone.from_bands_observations(
             observations, constructs_map, digestions_map
