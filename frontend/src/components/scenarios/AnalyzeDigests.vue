@@ -42,7 +42,7 @@
         el-option(value='linear' label='All sequences are linear')
         el-option(value='default_to_circular' label='Autodetect each sequence\'s topology  (default to circular)')
         el-option(value='default_to_linear' label='Autodetect each sequence\'s topology (default to linear)')
-    
+
 
 
 
@@ -147,22 +147,22 @@
 </template>
 
 <script>
-import learnmore from '../../components/widgets/LearnMore'
-import sequencesuploader from '../../components/widgets/SequencesUploader'
-import digestionselector from '../../components/widgets/DigestionSelector'
+import learnmore from "../../components/widgets/LearnMore";
+import sequencesuploader from "../../components/widgets/SequencesUploader";
+import digestionselector from "../../components/widgets/DigestionSelector";
 
 var infos = {
-  title: 'Analyze Digests',
-  navbarTitle: 'Analyze Digests',
-  path: 'analyze-digests',
-  description: '',
-  backendUrl: 'start/analyze_digests',
-  icon: require('../../assets/images/analyze_digests.svg'),
-  poweredby: ['bandwitch', 'bandwagon']
-}
+  title: "Analyze Digests",
+  navbarTitle: "Analyze Digests",
+  path: "analyze-digests",
+  description: "",
+  backendUrl: "start/analyze_digests",
+  icon: require("../../assets/images/analyze_digests.svg"),
+  poweredby: ["bandwitch", "bandwagon"],
+};
 
 export default {
-  data () {
+  data() {
     return {
       form: {
         constructsMap: null,
@@ -172,74 +172,73 @@ export default {
         severalDigestionsPerClone: false,
         digestion: [],
         digestionsMap: null,
-        goal: 'validation',
+        goal: "validation",
         fragmentAnalysisArchive: null,
         tolerance: 0.05,
         bandsRange: [10, 15000],
         includeDigestionPlots: true,
-        subanalysis: 'standard',
+        subanalysis: "standard",
         ignoreBandsUnder: 0,
-        topology: 'default_to_circular'
+        topology: "default_to_circular",
       },
       infos: infos,
       ladder_options: [
         {
-          label: 'Ladder 100 bp - 4000 bp',
-          value: '100_to_4k'
+          label: "Ladder 100 bp - 4000 bp",
+          value: "100_to_4k",
         },
         {
-          label: 'Ladder 35 bp - 5 kbp (AATI)',
-          value: '35_to_5k'
+          label: "Ladder 35 bp - 5 kbp (AATI)",
+          value: "35_to_5k",
         },
         {
-          label: 'Ladder 75 bp - 15 kbp (AATI)',
-          value: '75_to_15k'
-        }
+          label: "Ladder 75 bp - 15 kbp (AATI)",
+          value: "75_to_15k",
+        },
       ],
       goal_options: [
         {
-          label: 'Sequence validation',
-          value: 'validation'
+          label: "Sequence validation",
+          value: "validation",
         },
         {
-          label: 'Sequence identification',
-          value: 'identification'
-        }
+          label: "Sequence identification",
+          value: "identification",
+        },
       ],
       queryStatus: {
         polling: {},
         result: {},
-        requestError: ''
-      }
-    }
+        requestError: "",
+      },
+    };
   },
   components: {
     sequencesuploader,
     learnmore,
-    digestionselector
+    digestionselector,
   },
   infos: infos,
   methods: {
-    handleSuccess (evt) {
-      console.log(evt)
+    handleSuccess(evt) {
+      console.log(evt);
     },
-    validateForm () {
-      var errors = []
+    validateForm() {
+      var errors = [];
       if (this.form.constructsSequences.length < 1) {
-        errors.push('Provide constructs sequences')
+        errors.push("Provide constructs sequences");
       }
-      return errors
-    }
-  }
-}
+      return errors;
+    },
+  },
+};
 </script>
 
 <style lang='scss' scoped>
-
 h4.formlabel {
   text-align: center;
   text-transform: uppercase;
-  margin-top: 40px
+  margin-top: 40px;
 }
 
 .form {
@@ -248,10 +247,9 @@ h4.formlabel {
 }
 
 .title-img {
-  height:80px;
+  height: 80px;
   margin-top: -20px;
   margin-bottom: 20px;
-
 }
 
 .el-checkbox {
@@ -265,9 +263,8 @@ h4.formlabel {
   width: 50%;
 }
 
-
 .el-select {
-  width: 100%
+  width: 100%;
 }
 
 .el-input-number.inline {
